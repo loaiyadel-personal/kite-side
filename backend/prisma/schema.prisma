@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         AdminRole @default(EDITOR)
+  isActive     Boolean  @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  EDITOR
+}
+
+// ── Gallery ───────────────────────────────────────────────────────────────────
+
+model GalleryItem {
+  id          String          @id @default(cuid())
+  type        GalleryItemType
+  url         String          // relative path or external URL
+  thumbnailUrl String?
+  caption     String?
+  altText     String?
+  category    String?         // "kiting", "restaurant", "sunset", etc.
+  sortOrder   Int             @default(0)
+  isPublished Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+}
+
+enum GalleryItemType {
+  PHOTO
+  VIDEO
+}
+
+// ── Restaurant ────────────────────────────────────────────────────────────────
+
+model MenuCategory {
+  id        String     @id @default(cuid())
+  name      String
+  nameAr    String?
+  sortOrder Int        @default(0)
+  items     MenuItem[]
+}
+
+model MenuItem {
+  id           String       @id @default(cuid())
+  categoryId   String
+  category     MenuCategory @relation(fields: [categoryId], references: [id])
+  name         String
+  nameAr       String?
+  description  String?
+  descriptionAr String?
+  price        Decimal      @db.Decimal(8,2)
+  imageUrl     String?
+  tags         String[]     // ["vegan","seafood","spicy"]
+  isAvailable  Boolean      @default(true)
+  sortOrder    Int          @default(0)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+// ── Courses ───────────────────────────────────────────────────────────────────
+
+model Course {
+  id           String       @id @default(cuid())
+  level        CourseLevel
+  name         String
+  description  String
+  durationHours Int
+  maxStudents  Int
+  priceEGP     Decimal      @db.Decimal(10,2)
+  priceUSD     Decimal?     @db.Decimal(8,2)
+  includes     String[]     // ["kite","board","harness","theory book"]
+  isPublished  Boolean      @default(true)
+  sortOrder    Int          @default(0)
+  inquiries    CourseInquiry[]
+}
+
+enum CourseLevel {
+  DISCOVERY
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  IKO_CERTIFICATION
+  INSTRUCTOR
+}
+
+model CourseInquiry {
+  id          String        @id @default(cuid())
+  courseId    String?
+  course      Course?       @relation(fields: [courseId], references: [id])
+  name        String
+  email       String
+  phone       String?
+  level       String?
+  preferredDates String?
+  message     String?
+  status      InquiryStatus @default(NEW)
+  createdAt   DateTime      @default(now())
+}
+
+// ── Rental & Beach Pricing ────────────────────────────────────────────────────
+
+model PriceItem {
+  id          String        @id @default(cuid())
+  category    PriceCategory
+  name        String
+  description String?
+  priceEGP    Decimal       @db.Decimal(10,2)
+  priceUSD    Decimal?      @db.Decimal(8,2)
+  unit        String        // "per hour", "per day", "per session", "flat"
+  isActive    Boolean       @default(true)
+  sortOrder   Int           @default(0)
+  updatedAt   DateTime      @updatedAt
+}
+
+enum PriceCategory {
+  RENTAL_KITE
+  RENTAL_BOARD
+  RENTAL_HARNESS
+  RENTAL_WETSUIT
+  RENTAL_FULL_GEAR
+  BEACH_USE
+  SHOP_ITEM
+}
+
+// ── Contact ───────────────────────────────────────────────────────────────────
+
+model ContactSubmission {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  subject     String
+  message     String
+  status      InquiryStatus @default(NEW)
+  repliedAt   DateTime?
+  createdAt   DateTime      @default(now())
+}
+
+enum InquiryStatus {
+  NEW
+  READ
+  REPLIED
+  CLOSED
+}
+
+// ── Analytics ─────────────────────────────────────────────────────────────────
+
+model PageView {
+  id         String   @id @default(cuid())
+  path       String
+  referrer   String?
+  userAgent  String?
+  deviceType String?  // "mobile", "tablet", "desktop"
+  country    String?
+  sessionId  String?
+  createdAt  DateTime @default(now())
+
+  @@index([path])
+  @@index([createdAt])
+}
