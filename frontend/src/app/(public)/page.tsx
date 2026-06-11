@@ -1,6 +1,7 @@
 import Navbar from '@/components/layout/Navbar'
 import HeroSection from '@/components/home/HeroSection'
 import WindWidget from '@/components/home/WindWidget'
+import SunTideWidget from '@/components/home/SunTideWidget'
 import AboutSection from '@/components/home/AboutSection'
 import ServicesSection from '@/components/home/ServicesSection'
 import LocationSection from '@/components/home/LocationSection'
@@ -13,6 +14,7 @@ export default function HomePage() {
       <main>
         <HeroSection />
         <WindWidget />
+        <SunTideWidget />
         <AboutSection />
         <ServicesSection />
         <LocationSection />
