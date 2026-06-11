@@ -146,7 +146,7 @@ export default function SunTideWidget() {
             )}
 
             <p className="text-xs text-white/20 mt-3">
-              Tide data from Wisuki · Suez reference station (39 km from Ras Sudr)
+              Tide forecast for Ras Sudr · Data from Wisuki
             </p>
           </div>
 
