@@ -1,5 +1,5 @@
 const INFO_CARDS = [
-  { emoji: '📍', label: 'Address', detail: 'Ras Sudr, South Sinai, Egypt' },
+  { emoji: '📍', label: 'Address', detail: 'Inside Paradise Resort, Ras Sudr, South Sinai Governorate, Egypt 8742101' },
   { emoji: '🚗', label: 'From Cairo', detail: '130km via Ahmed Hamdi Tunnel (2.5 hrs)' },
   { emoji: '🚗', label: 'From Sharm', detail: '200km via coastal road (2.5 hrs)' },
 ]
@@ -13,19 +13,20 @@ export default function LocationSection() {
             Location
           </span>
           <h2 className="font-outfit font-bold text-4xl text-[#022b3d]">Find Us in Ras Sudr</h2>
+          <p className="mt-2 text-gray-500 text-sm">Inside Paradise Resort · South Sinai, Egypt</p>
         </div>
 
-        {/* Map embed */}
+        {/* Map embed — Kite Side exact pin (29.4945477°N, 32.7339648°E) */}
         <div className="rounded-2xl overflow-hidden shadow-xl mb-8 border border-gray-200">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3422.0!2d32.6977!3d29.5997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sRas+Sudr!5e0!3m2!1sen!2seg!4v1234567890"
+            src="https://maps.google.com/maps?q=29.4945477,32.7339648&z=17&output=embed"
             width="100%"
             height="420"
             style={{ border: 0 }}
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Kite Side location — Ras Sudr, Egypt"
+            title="Kite Side — Inside Paradise Resort, Ras Sudr, Egypt"
           />
         </div>
 
@@ -44,7 +45,7 @@ export default function LocationSection() {
 
         <div className="text-center">
           <a
-            href="https://maps.google.com/?q=Ras+Sudr+Kite+Side+Egypt"
+            href="https://maps.app.goo.gl/2wMvsj449P4FDDRe8"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-white transition-all hover:brightness-110 hover:scale-105"

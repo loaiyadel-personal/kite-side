@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 
@@ -65,6 +66,18 @@ export default function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
+        {/* Logo */}
+        <div className="flex justify-center mb-6">
+          <Image
+            src="/logo.jpg"
+            alt="Kite Side"
+            width={120}
+            height={120}
+            className="rounded-full border-4 border-white/30 shadow-2xl"
+            priority
+          />
+        </div>
+
         <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-sm font-medium text-white/80 border border-white/20 bg-white/10 backdrop-blur-sm">
           🌊 Ras Sudr, Red Sea, Egypt
         </span>

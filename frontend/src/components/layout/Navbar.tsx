@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
@@ -36,8 +37,15 @@ export default function Navbar() {
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         {/* Logo */}
-        <Link href="/" className="font-outfit font-bold text-xl text-white tracking-wide">
-          🪁 KITE SIDE
+        <Link href="/" className="flex items-center gap-2.5">
+          <Image
+            src="/logo.jpg"
+            alt="Kite Side"
+            width={36}
+            height={36}
+            className="rounded-full border-2 border-white/20"
+          />
+          <span className="font-outfit font-bold text-xl text-white tracking-wide">KITE SIDE</span>
         </Link>
 
         {/* Desktop links */}

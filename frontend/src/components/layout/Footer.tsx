@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 const NAV_LINKS = [
@@ -39,7 +40,10 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Logo + tagline + socials */}
         <div>
-          <div className="font-outfit font-bold text-2xl mb-2">🪁 KITE SIDE</div>
+          <div className="flex items-center gap-2.5 mb-2">
+            <Image src="/logo.jpg" alt="Kite Side" width={40} height={40} className="rounded-full border-2 border-white/20" />
+            <span className="font-outfit font-bold text-2xl">KITE SIDE</span>
+          </div>
           <p className="text-white/60 text-sm mb-6 leading-relaxed">
             IKO certified kitesurfing center on Egypt's Red Sea. Learn, ride, and explore Ras Sudr.
           </p>

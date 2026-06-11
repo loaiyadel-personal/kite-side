@@ -84,7 +84,7 @@ export default function WindWidget() {
         {/* Live data card */}
         <div className="bg-[#022b3d] rounded-2xl p-6 mb-6 text-white shadow-xl">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium text-white/60 uppercase tracking-wider">Current Conditions — Ras Sudr</span>
+            <span className="text-sm font-medium text-white/60 uppercase tracking-wider">Current Conditions — Ras Sudr / Paradise Resort</span>
             <button
               onClick={fetchWind}
               disabled={loading}
@@ -139,7 +139,7 @@ export default function WindWidget() {
         {/* Windfinder embed */}
         <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100">
           <iframe
-            src="https://www.windfinder.com/widget/forecast/ras_sudr"
+            src="https://www.windfinder.com/widget/forecast/ras_sudr_paradise_resort"
             width="100%"
             height="330"
             frameBorder="0"

@@ -6,10 +6,28 @@ export const galleryApi = {
   getAll: (params?: { type?: string; category?: string }) => api.get('/gallery', { params }),
 }
 
-// ── Menu
+// ── Menu — public
 export const menuApi = {
   getAll: () => api.get('/menu'),
   getCategories: () => api.get('/menu/categories'),
+
+  // ── Admin menu management (used in Epic 6 admin panel)
+  createCategory: (data: { name: string; nameAr?: string; sortOrder?: number }) =>
+    api.post('/menu/categories', data),
+  updateCategory: (id: string, data: { name?: string; nameAr?: string; sortOrder?: number }) =>
+    api.put(`/menu/categories/${id}`, data),
+  deleteCategory: (id: string) =>
+    api.delete(`/menu/categories/${id}`),
+  createItem: (formData: FormData) =>
+    api.post('/menu/items', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  updateItem: (id: string, formData: FormData) =>
+    api.put(`/menu/items/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  toggleAvailability: (id: string) =>
+    api.put(`/menu/items/${id}/availability`),
+  deleteItem: (id: string) =>
+    api.delete(`/menu/items/${id}`),
+  reorder: (items: { id: string; sortOrder: number }[]) =>
+    api.put('/menu/reorder', { items }),
 }
 
 // ── Courses

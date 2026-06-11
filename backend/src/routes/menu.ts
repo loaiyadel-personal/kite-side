@@ -1,11 +1,28 @@
 import { Router } from 'express'
 import { requireAuth } from '../middleware/auth'
-// TODO: import controllers
+import {
+  getMenu, getCategories,
+  createCategory, updateCategory, deleteCategory,
+  createItem, updateItem, toggleAvailability, deleteItem, reorderItems,
+  upload,
+} from '../controllers/menuController'
+
 const router = Router()
-// Public read routes
-router.get('/', (_req, res) => res.json({ message: 'menu route — implement controllers' }))
-// Protected write routes
-router.post('/', requireAuth, (_req, res) => res.json({ message: 'create menu' }))
-router.put('/:id', requireAuth, (_req, res) => res.json({ message: 'update menu' }))
-router.delete('/:id', requireAuth, (_req, res) => res.json({ message: 'delete menu' }))
+
+// ── Public ────────────────────────────────────────────────────────────────────
+router.get('/', getMenu)
+router.get('/categories', getCategories)
+
+// ── Admin — categories ────────────────────────────────────────────────────────
+router.post('/categories',      requireAuth, createCategory)
+router.put('/categories/:id',   requireAuth, updateCategory)
+router.delete('/categories/:id',requireAuth, deleteCategory)
+
+// ── Admin — items ─────────────────────────────────────────────────────────────
+router.post('/items',                requireAuth, upload.single('image'), createItem)
+router.put('/items/:id',             requireAuth, upload.single('image'), updateItem)
+router.put('/items/:id/availability',requireAuth, toggleAvailability)
+router.delete('/items/:id',          requireAuth, deleteItem)
+router.put('/reorder',               requireAuth, reorderItems)
+
 export default router

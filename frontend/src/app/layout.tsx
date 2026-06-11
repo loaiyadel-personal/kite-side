@@ -24,7 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta property="og:title" content="Kite Side — Ras Sudr Egypt" />
         <meta property="og:description" content="IKO certified kitesurfing center on Egypt's Red Sea" />
         <meta property="og:type" content="website" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/logo.jpg" type="image/jpeg" />
+        <link rel="apple-touch-icon" href="/logo.jpg" />
       </head>
       <body className={`${inter.className} antialiased`}>
         <QueryClientProvider client={queryClient}>

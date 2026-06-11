@@ -18,9 +18,12 @@ build/
 .env.*.local
 !.env.example
 
-# Uploads (managed via storage service)
+# Uploads (managed via storage service — keep folder structure, not files)
 backend/uploads/*
 !backend/uploads/.gitkeep
+!backend/uploads/menu/
+backend/uploads/menu/*
+!backend/uploads/menu/.gitkeep
 
 # Logs
 *.log
