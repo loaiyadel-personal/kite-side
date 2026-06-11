@@ -1,5 +1,5 @@
 import api from './client'
-import type { ContactFormData, CourseInquiry } from '@/types'
+import type { ContactFormData } from '@/types'
 
 // ── Gallery
 export const galleryApi = {
