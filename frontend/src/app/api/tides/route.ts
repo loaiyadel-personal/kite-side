@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server'
 
 export interface TideEntry {
-  type: 'high' | 'low'
-  time: string   // "07:13"
-  height: number // 1.6
+  type:   'high' | 'low'
+  time:   string  // "07:13"
+  height: number  // 1.6
 }
 
 export interface TidesResponse {
-  high: TideEntry | null
-  low: TideEntry | null
-  all: TideEntry[]
+  entries: TideEntry[]
+  high:    TideEntry | null  // peak high of the day
+  low:     TideEntry | null  // lowest low of the day
 }
 
 export async function GET() {
@@ -18,27 +18,27 @@ export async function GET() {
       next: { revalidate: 3600 },
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; KiteSide/1.0)' },
     })
-    if (!res.ok) throw new Error(`Wisuki returned ${res.status}`)
+    if (!res.ok) throw new Error(`Wisuki ${res.status}`)
     const html = await res.text()
 
-    // Today in YYYY-MM-DD, matching the format in the page links
-    const today = new Date().toLocaleDateString('en-CA') // "2026-06-11"
+    // Today in YYYY-MM-DD matching the Wisuki link format
+    const today = new Date().toLocaleDateString('en-CA')
 
-    // Capture the block of HTML for today's row only
-    const rowRegex = new RegExp(
-      `action=plot&day=${today}[\\s\\S]{0,200}?(<td[\\s\\S]{0,1200}?)(?=action=plot&day=|</tbody>)`
-    )
-    const rowMatch = html.match(rowRegex)
-    if (!rowMatch) {
-      return NextResponse.json({ error: 'No tide data for today' }, { status: 404 })
+    // Split on all date links and find today's chunk
+    const parts = html.split('action=plot&day=')
+    const todayPart = parts.find(p => p.startsWith(today))
+    if (!todayPart) {
+      return NextResponse.json({ error: 'No data for today' }, { status: 404 })
     }
 
-    // Each tide entry: color:red (▼ low) or color:green (▲ high), then time, then height
-    // &#x25BC = ▼ (no semicolon in source), &#x25B2; = ▲ (with semicolon)
-    const tideRegex = /color:(red|green)[^>]*>&#x25B[C2];?<\/span>\s*<strong>(\d{2}:\d{2})<\/strong>\s*<span>([\d.]+)m<\/span>/g
+    // Take up to 800 chars — enough for 4 tide entries, stops before the next date
+    const rowChunk = todayPart.slice(0, 800)
+
+    // Each entry: color:red (▼ low) or color:green (▲ high), then time, then height
+    const tideRe = /color:(red|green)[^>]*>&#x25B[C2];?<\/span>\s*<strong>(\d{2}:\d{2})<\/strong>\s*<span>([\d.]+)m<\/span>/g
     const entries: TideEntry[] = []
     let m: RegExpExecArray | null
-    while ((m = tideRegex.exec(rowMatch[1])) !== null) {
+    while ((m = tideRe.exec(rowChunk)) !== null) {
       entries.push({
         type:   m[1] === 'green' ? 'high' : 'low',
         time:   m[2],
@@ -47,22 +47,22 @@ export async function GET() {
     }
 
     if (!entries.length) {
-      return NextResponse.json({ error: 'Could not parse tide data' }, { status: 404 })
+      return NextResponse.json({ error: 'Parse failed' }, { status: 404 })
     }
 
     const highs = entries.filter(e => e.type === 'high').sort((a, b) => b.height - a.height)
     const lows  = entries.filter(e => e.type === 'low' ).sort((a, b) => a.height - b.height)
 
     const data: TidesResponse = {
+      entries,
       high: highs[0] ?? null,
       low:  lows[0]  ?? null,
-      all:  entries,
     }
 
     return NextResponse.json(data, {
       headers: { 'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400' },
     })
-  } catch (err) {
-    return NextResponse.json({ error: 'Failed to fetch tide data' }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 })
   }
 }
