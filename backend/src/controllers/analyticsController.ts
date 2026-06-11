@@ -1,8 +1,15 @@
 import { Request, Response } from 'express'
+import { z } from 'zod'
 import { PrismaClient } from '@prisma/client'
 import { subDays, startOfDay } from 'date-fns'
 
 const prisma = new PrismaClient()
+
+const trackSchema = z.object({
+  path: z.string().max(500),
+  referrer: z.string().max(500).optional(),
+  sessionId: z.string().max(128),
+})
 
 function getDeviceType(ua: string = ''): string {
   if (/mobile/i.test(ua)) return 'mobile'
@@ -11,7 +18,7 @@ function getDeviceType(ua: string = ''): string {
 }
 
 export async function trackPageView(req: Request, res: Response) {
-  const { path, referrer, sessionId } = req.body
+  const { path, referrer, sessionId } = trackSchema.parse(req.body)
   await prisma.pageView.create({
     data: {
       path,

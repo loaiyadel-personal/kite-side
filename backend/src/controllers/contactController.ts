@@ -8,9 +8,17 @@ const prisma = new PrismaClient()
 const contactSchema = z.object({
   name: z.string().min(2).max(100),
   email: z.string().email(),
-  phone: z.string().optional(),
+  phone: z.string().max(30).optional(),
   subject: z.string().min(3).max(200),
   message: z.string().min(10).max(2000),
+})
+
+const updateStatusSchema = z.object({
+  status: z.enum(['NEW', 'READ', 'REPLIED', 'CLOSED']),
+})
+
+const replySchema = z.object({
+  replyText: z.string().min(1).max(5000),
 })
 
 export async function submitContact(req: Request, res: Response) {
@@ -41,14 +49,14 @@ export async function getSubmissions(req: Request, res: Response) {
 
 export async function updateStatus(req: Request, res: Response) {
   const { id } = req.params
-  const { status } = req.body
+  const { status } = updateStatusSchema.parse(req.body)
   const item = await prisma.contactSubmission.update({ where: { id }, data: { status } })
   res.json(item)
 }
 
 export async function replyToSubmission(req: Request, res: Response) {
   const { id } = req.params
-  const { replyText } = req.body
+  const { replyText } = replySchema.parse(req.body)
   const submission = await prisma.contactSubmission.findUniqueOrThrow({ where: { id } })
   await sendAdminReply(submission.email, submission.name, replyText)
   await prisma.contactSubmission.update({

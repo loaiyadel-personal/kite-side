@@ -9,10 +9,14 @@ out/
 dist/
 build/
 
-# Env files
+# Env files — never commit real secrets
 .env
 .env.local
+.env.development
+.env.production
+.env.test
 .env.*.local
+!.env.example
 
 # Uploads (managed via storage service)
 backend/uploads/*
