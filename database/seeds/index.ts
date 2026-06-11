@@ -231,32 +231,71 @@ async function main() {
   await prisma.menuItem.createMany({ data: items })
   console.log(`✅ Menu: ${categories.length} categories, ${items.length} items`)
 
-  // ── Courses (keep existing — skip if already seeded) ─────────────────────────
-  const courseData = [
-    { level: 'DISCOVERY',        name: 'Discovery Session',        description: 'Try kitesurfing for the first time in a safe, supervised 2-hour session. No experience needed.',                         durationHours: 2,  maxStudents: 2, priceEGP: 800,   priceUSD: 17,  includes: ['kite', 'board', 'harness', 'helmet', 'instructor'] },
-    { level: 'BEGINNER',         name: 'Beginner Course',          description: 'Learn the fundamentals: kite control, body drag, water start. IKO Level 1 & 2 certification upon completion.',           durationHours: 12, maxStudents: 3, priceEGP: 4500,  priceUSD: 95,  includes: ['kite', 'board', 'harness', 'wetsuit', 'theory book', 'IKO card'] },
-    { level: 'INTERMEDIATE',     name: 'Intermediate Course',      description: 'Master riding upwind, board control, and basic jumps. IKO Level 3 certification.',                                       durationHours: 8,  maxStudents: 4, priceEGP: 3200,  priceUSD: 68,  includes: ['kite', 'board', 'harness', 'coaching'] },
-    { level: 'ADVANCED',         name: 'Advanced Progression',     description: 'Jump higher, ride faster. Freestyle tricks, kite loops, and wave riding sessions.',                                      durationHours: 6,  maxStudents: 4, priceEGP: 2800,  priceUSD: 59,  includes: ['kite', 'board', 'harness', 'video analysis'] },
-    { level: 'IKO_CERTIFICATION',name: 'IKO Assistant Instructor', description: 'Become a certified IKO Assistant Instructor. Theory, teaching practice, exam.',                                         durationHours: 40, maxStudents: 6, priceEGP: 18000, priceUSD: 380, includes: ['full equipment', 'IKO manual', 'certification fee', 'exam'] },
-  ]
-  for (const c of courseData) {
-    await prisma.course.create({ data: c as any }).catch(() => {})
-  }
+  // ── Courses — wipe and replace ───────────────────────────────────────────────
+  await prisma.courseInquiry.deleteMany({})
+  await prisma.course.deleteMany({})
 
-  // ── Pricing (keep existing) ───────────────────────────────────────────────────
-  const priceData = [
-    { category: 'RENTAL_KITE',      name: 'Kite rental',        priceEGP: 500, priceUSD: 11, unit: 'per session (2h)' },
-    { category: 'RENTAL_BOARD',     name: 'Twintip board',      priceEGP: 200, priceUSD: 4,  unit: 'per session (2h)' },
-    { category: 'RENTAL_HARNESS',   name: 'Harness',            priceEGP: 100, priceUSD: 2,  unit: 'per session (2h)' },
-    { category: 'RENTAL_WETSUIT',   name: 'Wetsuit (3mm)',      priceEGP: 150, priceUSD: 3,  unit: 'per day' },
-    { category: 'RENTAL_FULL_GEAR', name: 'Full gear package',  description: 'Kite + board + harness', priceEGP: 750, priceUSD: 16, unit: 'per session (2h)' },
-    { category: 'BEACH_USE',        name: 'Day pass',           description: 'Beach access, shower, lockers', priceEGP: 150, priceUSD: 3, unit: 'per person' },
-    { category: 'BEACH_USE',        name: 'Sunbed + umbrella',  priceEGP: 100, priceUSD: 2,  unit: 'per day' },
-    { category: 'BEACH_USE',        name: 'Shower',             priceEGP: 30,                unit: 'per use' },
+  const courseData = [
+    {
+      level: 'DISCOVERY', sortOrder: 1,
+      name: 'Discovery Session',
+      description: "Try kitesurfing for the first time in a safe supervised session. No experience needed. Feel the power of the kite in Ras Sudr's shallow flat water.",
+      outcome: 'Understanding kite safety and basic kite control',
+      durationHours: 2, maxStudents: 2, priceEGP: 800, priceUSD: 17,
+      includes: ['Kite', 'Board', 'Harness', 'Helmet', 'Instructor', 'Theory introduction'],
+    },
+    {
+      level: 'BEGINNER', sortOrder: 2,
+      name: 'Beginner Course — IKO Level 1 & 2',
+      description: 'Learn all the fundamentals from scratch. Kite setup, safety systems, body drag, water start, and first rides. IKO Level 1 and 2 certification included.',
+      outcome: 'IKO Level 1 & 2 certified, riding independently in safe conditions',
+      durationHours: 12, maxStudents: 3, priceEGP: 4500, priceUSD: 95,
+      includes: ['Kite', 'Board', 'Harness', 'Wetsuit', 'Theory book', 'IKO certification card'],
+    },
+    {
+      level: 'INTERMEDIATE', sortOrder: 3,
+      name: 'Intermediate Course — IKO Level 3',
+      description: 'Master riding upwind, board control, transitions, and basic jumps.',
+      outcome: 'IKO Level 3 certified, riding upwind confidently',
+      durationHours: 8, maxStudents: 4, priceEGP: 3200, priceUSD: 68,
+      includes: ['Kite', 'Board', 'Harness', 'Coaching', 'Video analysis session'],
+    },
+    {
+      level: 'ADVANCED', sortOrder: 4,
+      name: 'Advanced Progression',
+      description: 'Push your limits with jumps, kite loops, handle passes, and wave riding. Personalized coaching for your progression.',
+      outcome: 'Freestyle foundations, jump technique, advanced maneuvers',
+      durationHours: 6, maxStudents: 4, priceEGP: 2800, priceUSD: 59,
+      includes: ['Kite', 'Board', 'Harness', 'Video analysis', 'Personalized feedback'],
+    },
+    {
+      level: 'IKO_CERTIFICATION', sortOrder: 5,
+      name: 'IKO Assistant Instructor',
+      description: 'Become a certified IKO Assistant Instructor. Full theory program, teaching practice, exam preparation, and official IKO certification.',
+      outcome: 'IKO Assistant Instructor certification, able to teach beginners',
+      durationHours: 40, maxStudents: 6, priceEGP: 18000, priceUSD: 380,
+      includes: ['Full equipment', 'IKO manual', 'Certification exam fee', 'Assessment'],
+    },
   ]
-  for (const p of priceData) {
-    await prisma.priceItem.create({ data: p as any }).catch(() => {})
-  }
+  await prisma.course.createMany({ data: courseData as any })
+  console.log(`✅ Courses: ${courseData.length} courses`)
+
+  // ── Pricing — wipe and replace ────────────────────────────────────────────────
+  await prisma.priceItem.deleteMany({})
+
+  const priceData = [
+    { category: 'RENTAL_KITE',      sortOrder: 1, name: 'Kite',                 priceEGP: 500, priceUSD: 11, unit: 'per session (2h)' },
+    { category: 'RENTAL_BOARD',     sortOrder: 2, name: 'Twintip board',        priceEGP: 200, priceUSD: 4,  unit: 'per session (2h)' },
+    { category: 'RENTAL_HARNESS',   sortOrder: 3, name: 'Harness',              priceEGP: 100, priceUSD: 2,  unit: 'per session (2h)' },
+    { category: 'RENTAL_WETSUIT',   sortOrder: 4, name: 'Wetsuit 3mm',          priceEGP: 150, priceUSD: 3,  unit: 'per day' },
+    { category: 'RENTAL_FULL_GEAR', sortOrder: 5, name: 'Full gear package',    description: 'Kite + board + harness', priceEGP: 750, priceUSD: 16, unit: 'per session (2h)' },
+    { category: 'BEACH_USE',        sortOrder: 1, name: 'Day pass',             description: 'Beach access + shower + lockers', priceEGP: 150, priceUSD: 3, unit: 'per person' },
+    { category: 'BEACH_USE',        sortOrder: 2, name: 'Sunbed + umbrella',    priceEGP: 100, priceUSD: 2,  unit: 'per day' },
+    { category: 'BEACH_USE',        sortOrder: 3, name: 'Shower',               priceEGP: 30,               unit: 'per use' },
+    { category: 'BEACH_USE',        sortOrder: 4, name: 'Parking',              priceEGP: 50,               unit: 'per day' },
+  ]
+  await prisma.priceItem.createMany({ data: priceData as any })
+  console.log(`✅ Pricing: ${priceData.length} items`)
 
   console.log('✅ Seed complete')
 }

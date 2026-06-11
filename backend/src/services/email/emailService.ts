@@ -53,6 +53,33 @@ export async function sendAdminNotification(submission: any) {
   })
 }
 
+export async function sendCourseInquiryNotification(inquiry: {
+  name: string; email: string; phone?: string | null
+  level?: string | null; courseId?: string | null
+  preferredDates?: string | null; howHeard?: string | null; message?: string | null
+}) {
+  await transporter.sendMail({
+    from: FROM,
+    to: process.env.ADMIN_EMAIL,
+    subject: `🪁 New course inquiry from ${esc(inquiry.name)}`,
+    html: `
+      <div style="font-family:sans-serif;max-width:520px;margin:auto">
+        <h3>New course booking inquiry</h3>
+        <table style="width:100%;border-collapse:collapse">
+          <tr><td style="padding:6px;font-weight:bold">Name</td><td>${esc(inquiry.name)}</td></tr>
+          <tr><td style="padding:6px;font-weight:bold">Email</td><td>${esc(inquiry.email)}</td></tr>
+          <tr><td style="padding:6px;font-weight:bold">Phone</td><td>${inquiry.phone ? esc(inquiry.phone) : '—'}</td></tr>
+          <tr><td style="padding:6px;font-weight:bold">Level</td><td>${inquiry.level ? esc(inquiry.level) : '—'}</td></tr>
+          <tr><td style="padding:6px;font-weight:bold">Preferred dates</td><td>${inquiry.preferredDates ? esc(inquiry.preferredDates) : '—'}</td></tr>
+          <tr><td style="padding:6px;font-weight:bold">How they heard</td><td>${inquiry.howHeard ? esc(inquiry.howHeard) : '—'}</td></tr>
+          <tr><td style="padding:6px;font-weight:bold;vertical-align:top">Message</td><td>${inquiry.message ? esc(inquiry.message) : '—'}</td></tr>
+        </table>
+        <p><a href="${process.env.ADMIN_URL || 'http://localhost:3000'}/admin/courses">View in admin panel →</a></p>
+      </div>
+    `,
+  })
+}
+
 export async function sendAdminReply(to: string, name: string, replyText: string) {
   await transporter.sendMail({
     from: FROM,

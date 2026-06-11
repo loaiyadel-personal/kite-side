@@ -76,18 +76,19 @@ model MenuItem {
 // ── Courses ───────────────────────────────────────────────────────────────────
 
 model Course {
-  id           String       @id @default(cuid())
-  level        CourseLevel
-  name         String
-  description  String
+  id            String          @id @default(cuid())
+  level         CourseLevel
+  name          String
+  description   String
+  outcome       String?
   durationHours Int
-  maxStudents  Int
-  priceEGP     Decimal      @db.Decimal(10,2)
-  priceUSD     Decimal?     @db.Decimal(8,2)
-  includes     String[]     // ["kite","board","harness","theory book"]
-  isPublished  Boolean      @default(true)
-  sortOrder    Int          @default(0)
-  inquiries    CourseInquiry[]
+  maxStudents   Int
+  priceEGP      Decimal         @db.Decimal(10,2)
+  priceUSD      Decimal?        @db.Decimal(8,2)
+  includes      String[]
+  isPublished   Boolean         @default(true)
+  sortOrder     Int             @default(0)
+  inquiries     CourseInquiry[]
 }
 
 enum CourseLevel {
@@ -100,17 +101,18 @@ enum CourseLevel {
 }
 
 model CourseInquiry {
-  id          String        @id @default(cuid())
-  courseId    String?
-  course      Course?       @relation(fields: [courseId], references: [id])
-  name        String
-  email       String
-  phone       String?
-  level       String?
+  id             String        @id @default(cuid())
+  courseId       String?
+  course         Course?       @relation(fields: [courseId], references: [id])
+  name           String
+  email          String
+  phone          String?
+  level          String?
   preferredDates String?
-  message     String?
-  status      InquiryStatus @default(NEW)
-  createdAt   DateTime      @default(now())
+  howHeard       String?
+  message        String?
+  status         InquiryStatus @default(NEW)
+  createdAt      DateTime      @default(now())
 }
 
 // ── Rental & Beach Pricing ────────────────────────────────────────────────────

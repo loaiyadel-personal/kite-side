@@ -49,6 +49,7 @@ app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200, standardHeaders: true, l
 // Tighter limits on sensitive endpoints
 app.use('/api/contact', rateLimit({ windowMs: 15 * 60 * 1000, max: 10 }))
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, max: 20 }))
+app.use('/api/courses/inquiry', rateLimit({ windowMs: 60 * 60 * 1000, max: 10 }))
 
 // Static file serving for uploads
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')))

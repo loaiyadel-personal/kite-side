@@ -1,11 +1,19 @@
 import { Router } from 'express'
 import { requireAuth } from '../middleware/auth'
-// TODO: import controllers
+import {
+  getPricing, createPriceItem, updatePriceItem,
+  togglePriceItem, deletePriceItem,
+} from '../controllers/pricingController'
+
 const router = Router()
-// Public read routes
-router.get('/', (_req, res) => res.json({ message: 'pricing route — implement controllers' }))
-// Protected write routes
-router.post('/', requireAuth, (_req, res) => res.json({ message: 'create pricing' }))
-router.put('/:id', requireAuth, (_req, res) => res.json({ message: 'update pricing' }))
-router.delete('/:id', requireAuth, (_req, res) => res.json({ message: 'delete pricing' }))
+
+// Public
+router.get('/', getPricing)
+
+// Admin
+router.post('/', requireAuth, createPriceItem)
+router.put('/:id', requireAuth, updatePriceItem)
+router.put('/:id/toggle', requireAuth, togglePriceItem)
+router.delete('/:id', requireAuth, deletePriceItem)
+
 export default router

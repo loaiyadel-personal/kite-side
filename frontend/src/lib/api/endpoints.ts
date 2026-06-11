@@ -33,13 +33,25 @@ export const menuApi = {
 // ── Courses
 export const coursesApi = {
   getAll: () => api.get('/courses'),
+  create: (data: any) => api.post('/courses', data),
+  update: (id: string, data: any) => api.put(`/courses/${id}`, data),
+  togglePublish: (id: string) => api.put(`/courses/${id}/publish`),
+  delete: (id: string) => api.delete(`/courses/${id}`),
   submitInquiry: (data: any) => api.post('/courses/inquiry', data),
+  getInquiries: (params?: { status?: string }) => api.get('/courses/inquiries', { params }),
+  updateInquiryStatus: (id: string, status: string) =>
+    api.put(`/courses/inquiries/${id}/status`, { status }),
 }
 
 // ── Pricing
 export const pricingApi = {
-  getAll: () => api.get('/pricing'),
+  getAll: (category?: string) =>
+    api.get('/pricing', { params: category ? { category } : undefined }),
   getByCategory: (category: string) => api.get(`/pricing?category=${category}`),
+  create: (data: any) => api.post('/pricing', data),
+  update: (id: string, data: any) => api.put(`/pricing/${id}`, data),
+  toggle: (id: string) => api.put(`/pricing/${id}/toggle`),
+  delete: (id: string) => api.delete(`/pricing/${id}`),
 }
 
 // ── Contact
