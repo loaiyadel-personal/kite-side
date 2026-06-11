@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { Sunrise, Sunset, RefreshCw } from 'lucide-react'
 import type { TidesResponse, TideEntry } from '@/app/api/tides/route'
 
 interface SunData {
@@ -59,81 +58,99 @@ export default function SunTideWidget() {
 
   return (
     <section className="px-4 pb-16 bg-white">
-      <div className="max-w-4xl mx-auto flex flex-col gap-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-[#022b3d] rounded-2xl p-6 shadow-xl">
 
-        {/* Sun row */}
-        <div className="grid grid-cols-2 gap-4">
-          <SunCard
-            icon={<Sunrise size={20} className="text-amber-600" />}
-            iconBg="bg-amber-100"
-            gradient="from-amber-50 to-orange-50"
-            border="border-amber-100"
-            label="Sunrise"
-            loading={loading}
-            primary={sun?.sunrise ?? '—'}
-            secondary={sun ? `Day length: ${sun.dayLength}` : ''}
-          />
-          <SunCard
-            icon={<Sunset size={20} className="text-orange-600" />}
-            iconBg="bg-orange-100"
-            gradient="from-orange-50 to-rose-50"
-            border="border-orange-100"
-            label="Sunset"
-            loading={loading}
-            primary={sun?.sunset ?? '—'}
-            secondary=""
-          />
-        </div>
+          {/* Sun row */}
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            {/* Sunrise */}
+            <div className="bg-white/5 rounded-xl p-4">
+              <div className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                {/* sunrise icon */}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5">
+                  <path d="M12 2v2M4.22 6.22l1.42 1.42M2 14h2M20 14h2M18.36 7.64l1.42-1.42M17 14a5 5 0 0 0-10 0"/>
+                  <path d="M3 14h18" strokeLinecap="round"/>
+                </svg>
+                Sunrise
+              </div>
+              {loading
+                ? <div className="h-8 w-16 bg-white/10 rounded animate-pulse" />
+                : <div className="font-outfit font-bold text-3xl text-white">{sun?.sunrise ?? '—'}</div>
+              }
+              {!loading && sun && (
+                <div className="text-xs text-white/30 mt-1">Day: {sun.dayLength}</div>
+              )}
+            </div>
 
-        {/* Tides row */}
-        <a
-          href="https://wisuki.com/tide/36/ras-sudr"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-gradient-to-br from-sky-50 to-teal-50 border border-sky-100 rounded-2xl p-5 hover:shadow-md hover:-translate-y-0.5 transition-all group"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              {/* Wave icon */}
-              <div className="w-8 h-8 rounded-lg bg-sky-100 flex items-center justify-center">
-                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5" stroke="#0284c7" strokeWidth="2">
+            {/* Sunset */}
+            <div className="bg-white/5 rounded-xl p-4">
+              <div className="text-xs text-white/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5">
+                  <path d="M12 10v2M4.22 10.22l1.42 1.42M2 18h2M20 18h2M18.36 11.64l1.42-1.42M17 18a5 5 0 0 0-10 0"/>
+                  <path d="M3 18h18" strokeLinecap="round"/>
+                  <path d="M8 22h8" strokeLinecap="round"/>
+                </svg>
+                Sunset
+              </div>
+              {loading
+                ? <div className="h-8 w-16 bg-white/10 rounded animate-pulse" />
+                : <div className="font-outfit font-bold text-3xl text-white">{sun?.sunset ?? '—'}</div>
+              }
+            </div>
+          </div>
+
+          {/* Tides */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#1a9fd4" strokeWidth="2" className="w-4 h-4">
                   <path d="M2 12c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0 3 2 4.5 0" strokeLinecap="round"/>
                   <path d="M2 17c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0 3 2 4.5 0" strokeLinecap="round"/>
                 </svg>
+                <span className="text-sm font-medium text-white/60 uppercase tracking-wider">
+                  Today's Tides — Ras Sudr
+                </span>
               </div>
-              <span className="font-semibold text-sky-900 text-sm">Today's Tides — Ras Sudr</span>
+              <a
+                href="https://wisuki.com/tide/36/ras-sudr"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-white/30 hover:text-white/60 transition-colors"
+              >
+                Full chart →
+              </a>
             </div>
-            <span className="text-xs text-sky-400 group-hover:text-sky-600 transition-colors">Full chart →</span>
+
+            {loading && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[0,1,2,3].map(i => (
+                  <div key={i} className="h-20 bg-white/5 rounded-xl animate-pulse" />
+                ))}
+              </div>
+            )}
+
+            {!loading && error && (
+              <div className="bg-white/5 rounded-xl px-4 py-3 text-sm text-white/40">
+                Could not load tide data —{' '}
+                <a href="https://wisuki.com/tide/36/ras-sudr" target="_blank" rel="noopener noreferrer"
+                  className="underline hover:text-white/60 transition-colors">view on Wisuki</a>
+              </div>
+            )}
+
+            {!loading && !error && tides?.entries && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {tides.entries.map((entry, i) => (
+                  <TideCard key={i} entry={entry} />
+                ))}
+              </div>
+            )}
+
+            <p className="text-xs text-white/20 mt-3">
+              Tide data from Wisuki · Suez reference station (39 km from Ras Sudr)
+            </p>
           </div>
 
-          {loading && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[0,1,2,3].map(i => (
-                <div key={i} className="h-20 bg-sky-100/50 rounded-xl animate-pulse" />
-              ))}
-            </div>
-          )}
-
-          {!loading && error && (
-            <div className="flex items-center gap-2 text-sm text-sky-600/60">
-              <RefreshCw size={13} />
-              <span>Could not load tides — click to view on Wisuki</span>
-            </div>
-          )}
-
-          {!loading && !error && tides?.entries && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {tides.entries.map((entry, i) => (
-                <TideCard key={i} entry={entry} />
-              ))}
-            </div>
-          )}
-
-          <p className="text-xs text-sky-400/70 mt-3">
-            Data from Wisuki · Suez station (39 km)
-          </p>
-        </a>
-
+        </div>
       </div>
     </section>
   )
@@ -143,47 +160,23 @@ function TideCard({ entry }: { entry: TideEntry }) {
   const isHigh = entry.type === 'high'
   return (
     <div className={[
-      'rounded-xl p-3.5 flex flex-col gap-1.5',
-      isHigh ? 'bg-sky-100/70' : 'bg-white/70',
+      'rounded-xl p-4 flex flex-col gap-1',
+      isHigh ? 'bg-[#1a9fd4]/20 border border-[#1a9fd4]/30' : 'bg-white/5',
     ].join(' ')}>
-      {/* Arrow + label */}
       <div className="flex items-center gap-1.5">
-        <span className={`text-base leading-none ${isHigh ? 'text-sky-600' : 'text-slate-400'}`}>
+        <span className={`text-sm leading-none ${isHigh ? 'text-[#1a9fd4]' : 'text-white/30'}`}>
           {isHigh ? '▲' : '▼'}
         </span>
-        <span className={`text-xs font-semibold uppercase tracking-wider ${isHigh ? 'text-sky-700' : 'text-slate-400'}`}>
+        <span className={`text-xs font-medium uppercase tracking-wider ${isHigh ? 'text-[#1a9fd4]' : 'text-white/30'}`}>
           {isHigh ? 'High' : 'Low'}
         </span>
       </div>
-      {/* Time */}
-      <div className="font-outfit font-bold text-xl text-sky-900 leading-none">
+      <div className="font-outfit font-bold text-2xl text-white leading-none mt-1">
         {entry.time}
       </div>
-      {/* Height */}
-      <div className={`text-sm font-semibold ${isHigh ? 'text-sky-700' : 'text-slate-500'}`}>
+      <div className={`text-sm font-semibold ${isHigh ? 'text-[#1a9fd4]' : 'text-white/40'}`}>
         {entry.height.toFixed(1)} m
       </div>
-    </div>
-  )
-}
-
-function SunCard({ icon, iconBg, gradient, border, label, loading, primary, secondary }: {
-  icon: React.ReactNode; iconBg: string; gradient: string; border: string
-  label: string; loading: boolean; primary: string; secondary: string
-}) {
-  return (
-    <div className={`bg-gradient-to-br ${gradient} ${border} border rounded-2xl p-5 flex flex-col gap-3`}>
-      <div className="flex items-center justify-between">
-        <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center`}>{icon}</div>
-        <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">{label}</span>
-      </div>
-      {loading
-        ? <div className="h-7 w-16 bg-gray-200/60 rounded animate-pulse" />
-        : <>
-            <div className="font-outfit font-bold text-2xl text-gray-800 leading-none">{primary}</div>
-            {secondary && <div className="text-xs text-gray-400">{secondary}</div>}
-          </>
-      }
     </div>
   )
 }
