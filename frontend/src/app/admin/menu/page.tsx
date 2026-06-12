@@ -5,7 +5,6 @@ import { useAdminAuth } from '@/lib/auth/AdminAuthContext'
 import PageHeader from '@/components/admin/ui/PageHeader'
 import Modal from '@/components/admin/ui/Modal'
 import ConfirmDialog from '@/components/admin/ui/ConfirmDialog'
-import StatusBadge from '@/components/admin/ui/StatusBadge'
 import EmptyState from '@/components/admin/ui/EmptyState'
 import ImageUpload from '@/components/admin/ui/ImageUpload'
 import ToggleSwitch from '@/components/admin/ui/ToggleSwitch'
@@ -16,17 +15,17 @@ import toast from 'react-hot-toast'
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
 
-interface Category { id: string; name: string; nameAr?: string; order: number }
+interface Category { id: string; name: string; nameAr?: string; sortOrder: number }
 interface MenuItem {
-  id:           string
-  name:         string
-  nameAr?:      string
-  description?: string
-  price:        number
-  categoryId:   string
-  imageUrl?:    string
-  isAvailable:  boolean
-  order:        number
+  id:            string
+  name:          string
+  nameAr?:       string | null
+  description?:  string | null
+  price:         string | number
+  categoryId:    string
+  imageUrl?:     string | null
+  isAvailable:   boolean
+  sortOrder:     number
 }
 
 const itemSchema = z.object({
@@ -57,21 +56,29 @@ export default function MenuPage() {
     if (!token) return
     setLoading(true)
     const h = { Authorization: `Bearer ${token}` }
-    const [catRes, itemRes] = await Promise.all([
+
+    const [catRes, menuRes] = await Promise.all([
       fetch(`${API}/menu/categories`, { headers: h }),
       fetch(`${API}/menu`, { headers: h }),
     ])
+
     if (catRes.ok) {
       const cats: Category[] = await catRes.json()
       setCategories(cats)
-      if (!activeCategory && cats.length > 0) setActiveCat(cats[0].id)
+      if (cats.length > 0) setActiveCat(prev => prev ?? cats[0].id)
     }
-    if (itemRes.ok) {
-      const data = await itemRes.json()
-      setItems(Array.isArray(data) ? data : data.items ?? [])
+
+    if (menuRes.ok) {
+      // API returns categories with nested items — flatten them
+      const grouped: (Category & { items: MenuItem[] })[] = await menuRes.json()
+      const flat = grouped.flatMap(cat =>
+        (cat.items ?? []).map(item => ({ ...item, categoryId: cat.id }))
+      )
+      setItems(flat)
     }
+
     setLoading(false)
-  }, [token, activeCategory])
+  }, [token])
 
   useEffect(() => { fetchAll() }, [token])
 
@@ -84,8 +91,11 @@ export default function MenuPage() {
 
   function openEdit(item: MenuItem) {
     form.reset({
-      name: item.name, nameAr: item.nameAr, description: item.description,
-      price: item.price, categoryId: item.categoryId,
+      name: item.name,
+      nameAr: item.nameAr ?? '',
+      description: item.description ?? '',
+      price: Number(item.price),
+      categoryId: item.categoryId,
     })
     setEditItem(item)
     setImageFile(null)
@@ -96,9 +106,9 @@ export default function MenuPage() {
     if (!token) return
     setSaving(true)
     const fd = new FormData()
-    Object.entries(data).forEach(([k, v]) => { if (v != null) fd.append(k, String(v)) })
+    Object.entries(data).forEach(([k, v]) => { if (v != null && v !== '') fd.append(k, String(v)) })
     if (imageFile) fd.append('image', imageFile)
-    const url   = editItem ? `${API}/menu/items/${editItem.id}` : `${API}/menu/items`
+    const url    = editItem ? `${API}/menu/items/${editItem.id}` : `${API}/menu/items`
     const method = editItem ? 'PUT' : 'POST'
     const res = await fetch(url, { method, headers: { Authorization: `Bearer ${token}` }, body: fd })
     setSaving(false)
@@ -137,11 +147,13 @@ export default function MenuPage() {
     } else toast.error('Delete failed')
   }
 
-  const visible = items.filter(i => !activeCategory || i.categoryId === activeCategory)
+  const visible = activeCategory ? items.filter(i => i.categoryId === activeCategory) : items
 
   return (
     <div>
-      <PageHeader title="Menu" subtitle={`${items.length} items across ${categories.length} categories`}
+      <PageHeader
+        title="Menu"
+        subtitle={`${items.length} items across ${categories.length} categories`}
         action={
           <button onClick={openAdd} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg transition-colors">
             + Add Item
@@ -149,13 +161,14 @@ export default function MenuPage() {
         }
       />
 
-      {/* Category tabs */}
       {categories.length > 0 && (
         <div className="flex gap-1 flex-wrap mb-5">
           {categories.map(c => (
             <button key={c.id} onClick={() => setActiveCat(c.id)}
               className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                activeCategory === c.id ? 'bg-[#1a9fd4] text-white' : 'bg-[#1e293b] border border-white/10 text-white/50 hover:text-white/80'
+                activeCategory === c.id
+                  ? 'bg-[#1a9fd4] text-white'
+                  : 'bg-[#1e293b] border border-white/10 text-white/50 hover:text-white/80'
               }`}>
               {c.name}
             </button>
@@ -164,7 +177,9 @@ export default function MenuPage() {
       )}
 
       {loading ? (
-        <div className="flex justify-center py-20"><div className="w-6 h-6 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" /></div>
+        <div className="flex justify-center py-20">
+          <div className="w-6 h-6 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" />
+        </div>
       ) : visible.length === 0 ? (
         <EmptyState icon="🍽️" title="No items" message="Add items to this category" />
       ) : (
@@ -180,7 +195,9 @@ export default function MenuPage() {
                   {item.nameAr && <p className="text-white/40 text-sm truncate">{item.nameAr}</p>}
                 </div>
                 {item.description && <p className="text-white/40 text-xs truncate mt-0.5">{item.description}</p>}
-                <p className="text-[#1a9fd4] font-semibold text-sm mt-1">EGP {item.price.toLocaleString()}</p>
+                <p className="text-[#1a9fd4] font-semibold text-sm mt-1">
+                  EGP {Number(item.price).toLocaleString()}
+                </p>
               </div>
               <div className="flex items-center gap-3 flex-none">
                 <ToggleSwitch checked={item.isAvailable} onChange={() => toggleAvailability(item)} />
@@ -192,10 +209,13 @@ export default function MenuPage() {
         </div>
       )}
 
-      <Modal open={addOpen} onClose={() => { setAddOpen(false); form.reset(); setEditItem(null); setImageFile(null) }}
-        title={editItem ? 'Edit Item' : 'Add Menu Item'}>
+      <Modal
+        open={addOpen}
+        onClose={() => { setAddOpen(false); form.reset(); setEditItem(null); setImageFile(null) }}
+        title={editItem ? 'Edit Item' : 'Add Menu Item'}
+      >
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <ImageUpload label="Photo (optional)" value={editItem?.imageUrl} onChange={setImageFile} aspectRatio="4/3" />
+          <ImageUpload label="Photo (optional)" value={editItem?.imageUrl ?? undefined} onChange={setImageFile} aspectRatio="4/3" />
           <div className="grid grid-cols-2 gap-3">
             <div>
               <input {...form.register('name')} placeholder="Name *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
