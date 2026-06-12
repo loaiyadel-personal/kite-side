@@ -4,10 +4,11 @@ import { useEffect, useState, useCallback } from 'react'
 import { RefreshCw, ExternalLink } from 'lucide-react'
 
 interface WindData {
-  speed: number
-  direction: number
-  gusts: number
-  updatedAt: string
+  speed:       number
+  direction:   number
+  gusts:       number
+  temperature: number
+  updatedAt:   string
 }
 
 function getWindProfile(speed: number): {
@@ -53,15 +54,16 @@ export default function WindWidget() {
     setError(false)
     try {
       const res = await fetch(
-        'https://api.open-meteo.com/v1/forecast?latitude=29.6&longitude=32.7&current=windspeed_10m,winddirection_10m,windgusts_10m&windspeed_unit=kn'
+        'https://api.open-meteo.com/v1/forecast?latitude=29.6&longitude=32.7&current=windspeed_10m,winddirection_10m,windgusts_10m,temperature_2m&windspeed_unit=kn'
       )
       const json = await res.json()
       const c = json.current
       setWind({
-        speed: Math.round(c.windspeed_10m),
-        direction: Math.round(c.winddirection_10m),
-        gusts: Math.round(c.windgusts_10m),
-        updatedAt: new Date().toLocaleTimeString('en-EG', { hour: '2-digit', minute: '2-digit' }),
+        speed:       Math.round(c.windspeed_10m),
+        direction:   Math.round(c.winddirection_10m),
+        gusts:       Math.round(c.windgusts_10m),
+        temperature: Math.round(c.temperature_2m),
+        updatedAt:   new Date().toLocaleTimeString('en-EG', { hour: '2-digit', minute: '2-digit' }),
       })
     } catch {
       setError(true)
@@ -88,9 +90,19 @@ export default function WindWidget() {
         <div className="bg-[#022b3d] rounded-2xl p-8 shadow-xl">
           {/* Header row */}
           <div className="flex items-center justify-between mb-8">
-            <span className="text-sm font-medium text-white/60 uppercase tracking-wider">
-              Ras Sudr · Paradise Resort
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-white/60 uppercase tracking-wider">
+                Ras Sudr · Paradise Resort
+              </span>
+              {wind && (
+                <span className="flex items-center gap-1 bg-[#1a9fd4]/20 text-[#1a9fd4] text-sm font-semibold px-2.5 py-0.5 rounded-full">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5">
+                    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {wind.temperature}°C
+                </span>
+              )}
+            </div>
             <button
               onClick={fetchWind}
               disabled={loading}
