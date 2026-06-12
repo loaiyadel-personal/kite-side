@@ -251,6 +251,14 @@ export default function ContactPage() {
                   className="flex items-center gap-2 px-4 py-2 bg-[#1a9fd4] hover:bg-[#158bbf] text-white text-sm rounded-lg transition-colors">
                   ✉️ Reply via Email
                 </a>
+                {selectedMsg.phone && (
+                  <a href={`https://wa.me/${selectedMsg.phone.replace(/\D/g, '')}?text=${encodeURIComponent(`Hi ${selectedMsg.name}! Thanks for reaching out to Kite Side Beach Club.`)}`}
+                    target="_blank" rel="noopener noreferrer"
+                    onClick={() => updateMsgStatus(selectedMsg.id, 'REPLIED')}
+                    className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors">
+                    📱 WhatsApp
+                  </a>
+                )}
                 {selectedMsg.status !== 'ARCHIVED' && (
                   <button onClick={() => updateMsgStatus(selectedMsg.id, 'ARCHIVED')}
                     className="px-4 py-2 text-white/40 hover:text-white/70 border border-white/10 hover:border-white/20 text-sm rounded-lg transition-colors">
@@ -266,7 +274,8 @@ export default function ContactPage() {
                 {selectedMsg.phone && (
                   <div>
                     <p className="text-white/30 text-xs mb-0.5">Phone</p>
-                    <p className="text-white/70">{selectedMsg.phone}</p>
+                    <a href={`https://wa.me/${selectedMsg.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
+                      className="text-[#1a9fd4] hover:underline">{selectedMsg.phone}</a>
                   </div>
                 )}
               </div>
