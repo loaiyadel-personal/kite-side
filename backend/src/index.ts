@@ -16,6 +16,7 @@ import galleryRoutes from './routes/gallery'
 import menuRoutes from './routes/menu'
 import coursesRoutes from './routes/courses'
 import pricingRoutes from './routes/pricing'
+import shopRoutes from './routes/shop'
 import contactRoutes from './routes/contact'
 import analyticsRoutes from './routes/analytics'
 import adminRoutes from './routes/admin'
@@ -60,6 +61,7 @@ app.use('/api/gallery', galleryRoutes)
 app.use('/api/menu', menuRoutes)
 app.use('/api/courses', coursesRoutes)
 app.use('/api/pricing', pricingRoutes)
+app.use('/api/shop', shopRoutes)
 app.use('/api/contact', contactRoutes)
 app.use('/api/analytics', analyticsRoutes)
 app.use('/api/admin', adminRoutes)

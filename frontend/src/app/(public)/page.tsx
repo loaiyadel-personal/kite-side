@@ -5,6 +5,7 @@ import SunTideWidget from '@/components/home/SunTideWidget'
 import AboutSection from '@/components/home/AboutSection'
 import ServicesSection from '@/components/home/ServicesSection'
 import GalleryPreview from '@/components/home/GalleryPreview'
+import ShopPreview from '@/components/home/ShopPreview'
 import LocationSection from '@/components/home/LocationSection'
 import Footer from '@/components/layout/Footer'
 
@@ -19,6 +20,7 @@ export default function HomePage() {
         <AboutSection />
         <ServicesSection />
         <GalleryPreview />
+        <ShopPreview />
         <LocationSection />
       </main>
       <Footer />

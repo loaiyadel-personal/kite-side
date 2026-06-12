@@ -280,22 +280,46 @@ async function main() {
   await prisma.course.createMany({ data: courseData as any })
   console.log(`✅ Courses: ${courseData.length} courses`)
 
-  // ── Pricing — wipe and replace ────────────────────────────────────────────────
+  // ── Pricing + Shop — wipe and replace ────────────────────────────────────────
   await prisma.priceItem.deleteMany({})
 
   const priceData = [
-    { category: 'RENTAL_KITE',      sortOrder: 1, name: 'Kite',                 priceEGP: 500, priceUSD: 11, unit: 'per session (2h)' },
-    { category: 'RENTAL_BOARD',     sortOrder: 2, name: 'Twintip board',        priceEGP: 200, priceUSD: 4,  unit: 'per session (2h)' },
-    { category: 'RENTAL_HARNESS',   sortOrder: 3, name: 'Harness',              priceEGP: 100, priceUSD: 2,  unit: 'per session (2h)' },
-    { category: 'RENTAL_WETSUIT',   sortOrder: 4, name: 'Wetsuit 3mm',          priceEGP: 150, priceUSD: 3,  unit: 'per day' },
-    { category: 'RENTAL_FULL_GEAR', sortOrder: 5, name: 'Full gear package',    description: 'Kite + board + harness', priceEGP: 750, priceUSD: 16, unit: 'per session (2h)' },
-    { category: 'BEACH_USE',        sortOrder: 1, name: 'Day pass',             description: 'Beach access + shower + lockers', priceEGP: 150, priceUSD: 3, unit: 'per person' },
-    { category: 'BEACH_USE',        sortOrder: 2, name: 'Sunbed + umbrella',    priceEGP: 100, priceUSD: 2,  unit: 'per day' },
-    { category: 'BEACH_USE',        sortOrder: 3, name: 'Shower',               priceEGP: 30,               unit: 'per use' },
-    { category: 'BEACH_USE',        sortOrder: 4, name: 'Parking',              priceEGP: 50,               unit: 'per day' },
+    // Rentals
+    { category: 'RENTAL_KITE',      sortOrder: 1, name: 'Kite Rental',         description: 'Includes kite, bar and lines',                           priceEGP: 500,  priceUSD: 11, unit: 'per session (2h)', isHighlighted: false },
+    { category: 'RENTAL_BOARD',     sortOrder: 2, name: 'Twintip Board Rental', description: 'Board with fins and pads',                               priceEGP: 200,  priceUSD: 4,  unit: 'per session (2h)', isHighlighted: false },
+    { category: 'RENTAL_HARNESS',   sortOrder: 3, name: 'Harness Rental',       description: 'Seat or waist harness',                                  priceEGP: 100,  priceUSD: 2,  unit: 'per session (2h)', isHighlighted: false },
+    { category: 'RENTAL_WETSUIT',   sortOrder: 4, name: 'Wetsuit Rental 3mm',   description: 'Full wetsuit',                                           priceEGP: 150,  priceUSD: 3,  unit: 'per day',           isHighlighted: false },
+    { category: 'RENTAL_FULL_GEAR', sortOrder: 5, name: 'Full Gear Package',    description: 'Kite + board + harness — best value for a full session', priceEGP: 750,  priceUSD: 16, unit: 'per session (2h)', isHighlighted: true  },
+    // Beach
+    { category: 'BEACH_USE',        sortOrder: 1, name: 'Day Pass',             description: 'Beach access, shower and locker included',               priceEGP: 150,  priceUSD: 3,  unit: 'per person per day', isHighlighted: false },
+    { category: 'BEACH_USE',        sortOrder: 2, name: 'Sunbed + Umbrella',    description: 'Comfortable sunbed with shade umbrella on the beach',    priceEGP: 100,  priceUSD: 2,  unit: 'per day',            isHighlighted: false },
+    { category: 'BEACH_USE',        sortOrder: 3, name: 'Shower',               description: 'Fresh water shower',                                     priceEGP: 30,               unit: 'per use',            isHighlighted: false },
+    { category: 'BEACH_USE',        sortOrder: 4, name: 'Parking',              description: 'Secure beach parking',                                   priceEGP: 50,               unit: 'per day',            isHighlighted: false },
+    { category: 'BEACH_USE',        sortOrder: 5, name: 'Locker',               description: 'Secure locker rental',                                   priceEGP: 50,               unit: 'per day',            isHighlighted: false },
+    // Shop items — Kites
+    { category: 'SHOP_ITEM', sortOrder: 1,  name: 'Trainer Kite 4m',         description: 'Perfect for beginners and kids. Includes bar and lines.',                    priceEGP: 8500,  priceUSD: 180,  unit: 'each', tags: ['kites']       },
+    { category: 'SHOP_ITEM', sortOrder: 2,  name: 'Cabrinha Crossbow 12m',   description: 'All-round performance kite. Excellent for intermediate riders.',             priceEGP: 42000, priceUSD: 890,  unit: 'each', tags: ['kites']       },
+    { category: 'SHOP_ITEM', sortOrder: 3,  name: 'Core XR7 10m',            description: 'High performance freeride kite. Great range and depower.',                   priceEGP: 48000, priceUSD: 1020, unit: 'each', tags: ['kites']       },
+    // Boards
+    { category: 'SHOP_ITEM', sortOrder: 4,  name: 'Twintip Board 138cm',     description: 'All-round twintip for beginners and intermediate riders. Includes fins and pads.', priceEGP: 18000, priceUSD: 380, unit: 'each', tags: ['boards'] },
+    { category: 'SHOP_ITEM', sortOrder: 5,  name: 'Twintip Board 142cm',     description: 'Larger board for lighter riders or low wind conditions.',                     priceEGP: 19500, priceUSD: 415,  unit: 'each', tags: ['boards']      },
+    // Harnesses
+    { category: 'SHOP_ITEM', sortOrder: 6,  name: 'Kite Harness — Seat',     description: 'Comfortable seat harness. Ideal for beginners.',                             priceEGP: 6500,  priceUSD: 138,  unit: 'each', tags: ['harnesses']   },
+    { category: 'SHOP_ITEM', sortOrder: 7,  name: 'Kite Harness — Waist',    description: 'Performance waist harness for intermediate to advanced riders.',             priceEGP: 7500,  priceUSD: 159,  unit: 'each', tags: ['harnesses']   },
+    // Accessories
+    { category: 'SHOP_ITEM', sortOrder: 8,  name: 'Helmet (Kite)',           description: 'Impact helmet for kitesurfing. Required for all lessons.',                   priceEGP: 2800,  priceUSD: 60,   unit: 'each', tags: ['accessories'] },
+    { category: 'SHOP_ITEM', sortOrder: 9,  name: 'Impact Vest',             description: 'Buoyancy and impact protection vest. IKO recommended.',                      priceEGP: 3200,  priceUSD: 68,   unit: 'each', tags: ['accessories'] },
+    { category: 'SHOP_ITEM', sortOrder: 10, name: 'Kite Lines Set',          description: '24m replacement lines set. Compatible with most bars.',                       priceEGP: 3800,  priceUSD: 81,   unit: 'each', tags: ['accessories'] },
+    { category: 'SHOP_ITEM', sortOrder: 11, name: 'Bar & Lines Complete',    description: 'Complete control bar with 24m lines and chicken loop.',                       priceEGP: 12000, priceUSD: 255,  unit: 'each', tags: ['accessories'] },
+    { category: 'SHOP_ITEM', sortOrder: 12, name: 'Kite Pump',               description: 'High pressure kite pump with pressure gauge.',                                priceEGP: 1200,  priceUSD: 26,   unit: 'each', tags: ['accessories'] },
+    // Wetsuits
+    { category: 'SHOP_ITEM', sortOrder: 13, name: 'Wetsuit 3mm Full',        description: 'Full 3mm wetsuit. Ideal for winter sessions in Ras Sudr.',                   priceEGP: 5500,  priceUSD: 117,  unit: 'each', tags: ['wetsuits']    },
+    // Bags
+    { category: 'SHOP_ITEM', sortOrder: 14, name: 'Kite Bag',                description: 'Large kite backpack. Fits kite, bar, and accessories.',                       priceEGP: 2200,  priceUSD: 47,   unit: 'each', tags: ['bags']        },
+    { category: 'SHOP_ITEM', sortOrder: 15, name: 'Board Bag',               description: 'Padded twintip board bag. Protects up to 145cm board.',                       priceEGP: 1800,  priceUSD: 38,   unit: 'each', tags: ['bags']        },
   ]
   await prisma.priceItem.createMany({ data: priceData as any })
-  console.log(`✅ Pricing: ${priceData.length} items`)
+  console.log(`✅ Pricing + Shop: ${priceData.length} items`)
 
   // ── Gallery — wipe and replace ────────────────────────────────────────────────
   await prisma.galleryItem.deleteMany({})

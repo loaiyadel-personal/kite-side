@@ -118,16 +118,20 @@ model CourseInquiry {
 // ── Rental & Beach Pricing ────────────────────────────────────────────────────
 
 model PriceItem {
-  id          String        @id @default(cuid())
-  category    PriceCategory
-  name        String
-  description String?
-  priceEGP    Decimal       @db.Decimal(10,2)
-  priceUSD    Decimal?      @db.Decimal(8,2)
-  unit        String        // "per hour", "per day", "per session", "flat"
-  isActive    Boolean       @default(true)
-  sortOrder   Int           @default(0)
-  updatedAt   DateTime      @updatedAt
+  id            String        @id @default(cuid())
+  category      PriceCategory
+  name          String
+  description   String?
+  priceEGP      Decimal       @db.Decimal(10,2)
+  priceUSD      Decimal?      @db.Decimal(8,2)
+  unit          String
+  isActive      Boolean       @default(true)
+  isHighlighted Boolean       @default(false)
+  imageUrl      String?
+  thumbnailUrl  String?
+  tags          String[]
+  sortOrder     Int           @default(0)
+  updatedAt     DateTime      @updatedAt
 }
 
 enum PriceCategory {

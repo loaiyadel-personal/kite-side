@@ -1,6 +1,19 @@
 import api from './client'
 import type { ContactFormData } from '@/types'
 
+// ── Shop
+export const shopApi = {
+  getAll:      (params?: { category?: string }) => api.get('/shop', { params }),
+  getAdminAll: () => api.get('/shop'),
+  create:      (formData: FormData) =>
+    api.post('/shop', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  update:      (id: string, formData: FormData) =>
+    api.put(`/shop/${id}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  toggle:      (id: string) => api.put(`/shop/${id}/toggle`),
+  reorder:     (items: { id: string; sortOrder: number }[]) => api.put('/shop/reorder', { items }),
+  delete:      (id: string) => api.delete(`/shop/${id}`),
+}
+
 // ── Gallery — public
 export const galleryApi = {
   getAll:      (params?: { type?: string; category?: string }) => api.get('/gallery', { params }),
@@ -58,13 +71,12 @@ export const coursesApi = {
 
 // ── Pricing
 export const pricingApi = {
-  getAll: (category?: string) =>
+  getAll:  (category?: string) =>
     api.get('/pricing', { params: category ? { category } : undefined }),
-  getByCategory: (category: string) => api.get(`/pricing?category=${category}`),
-  create: (data: any) => api.post('/pricing', data),
-  update: (id: string, data: any) => api.put(`/pricing/${id}`, data),
-  toggle: (id: string) => api.put(`/pricing/${id}/toggle`),
-  delete: (id: string) => api.delete(`/pricing/${id}`),
+  create:  (data: any) => api.post('/pricing', data),
+  update:  (id: string, data: any) => api.put(`/pricing/${id}`, data),
+  toggle:  (id: string) => api.put(`/pricing/${id}/toggle`),
+  delete:  (id: string) => api.delete(`/pricing/${id}`),
 }
 
 // ── Contact
