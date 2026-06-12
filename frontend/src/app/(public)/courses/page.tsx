@@ -24,21 +24,21 @@ async function getCourses(): Promise<Course[]> {
   }
 }
 
-async function getPricing(): Promise<PriceItem[]> {
+async function getPricing(): Promise<{ rentals: PriceItem[]; beach: PriceItem[] }> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pricing`, { cache: 'no-store' })
-    if (!res.ok) return []
+    if (!res.ok) return { rentals: [], beach: [] }
     return res.json()
   } catch {
-    return []
+    return { rentals: [], beach: [] }
   }
 }
 
 export default async function CoursesPage() {
   const [courses, pricing] = await Promise.all([getCourses(), getPricing()])
 
-  const rentalItems = pricing.filter(p => p.category.startsWith('RENTAL'))
-  const beachItems  = pricing.filter(p => p.category === 'BEACH_USE')
+  const rentalItems = pricing.rentals ?? []
+  const beachItems  = pricing.beach ?? []
 
   return (
     <>
