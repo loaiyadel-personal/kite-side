@@ -26,17 +26,17 @@ export default function ContactMap() {
           How to Find Us
         </h2>
 
-        {/* Map embed */}
+        {/* Map embed — exact pin (29.4945477°N, 32.7339648°E) */}
         <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-100 mb-8">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3422.0!2d32.6977!3d29.5997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sRas+Sudr!5e0!3m2!1sen!2seg"
+            src="https://maps.google.com/maps?q=29.4945477,32.7339648&z=17&output=embed"
             width="100%"
             height="400"
             style={{ border: 0 }}
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Kite Side location — Ras Sudr"
+            title="Kite Side — Inside Paradise Resort, Ras Sudr, Egypt"
           />
         </div>
 
