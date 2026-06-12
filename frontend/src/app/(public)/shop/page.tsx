@@ -15,7 +15,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
 
 async function fetchShopItems() {
   try {
-    const res = await fetch(`${API}/shop`, { next: { revalidate: 60 } })
+    const res = await fetch(`${API}/shop`, { cache: 'no-store' })
     if (!res.ok) return []
     return res.json()
   } catch { return [] }
@@ -23,7 +23,7 @@ async function fetchShopItems() {
 
 async function fetchPricing() {
   try {
-    const res = await fetch(`${API}/pricing`, { next: { revalidate: 60 } })
+    const res = await fetch(`${API}/pricing`, { cache: 'no-store' })
     if (!res.ok) return { rentals: [], beach: [] }
     return res.json()
   } catch { return { rentals: [], beach: [] } }

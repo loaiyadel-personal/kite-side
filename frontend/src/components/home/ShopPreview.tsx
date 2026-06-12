@@ -25,7 +25,7 @@ const TAG_STYLE: Record<string, { bg: string; icon: string }> = {
 async function fetchFeaturedItems(): Promise<ShopItem[]> {
   try {
     const api = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
-    const res = await fetch(`${api}/shop`, { next: { revalidate: 60 } })
+    const res = await fetch(`${api}/shop`, { cache: 'no-store' })
     if (!res.ok) return []
     const all: ShopItem[] = await res.json()
     return all.slice(0, 3)

@@ -13,7 +13,7 @@ async function fetchGalleryItems() {
   try {
     const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
     const res = await fetch(`${apiBase}/gallery`, {
-      next: { revalidate: 60 },
+      cache: 'no-store',
     })
     if (!res.ok) return []
     return res.json()
