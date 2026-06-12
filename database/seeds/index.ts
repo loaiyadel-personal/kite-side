@@ -28,13 +28,31 @@ async function main() {
 
   // ── Super admin ──────────────────────────────────────────────────────────────
   await prisma.adminUser.upsert({
-    where: { email: 'Ahmedyehya47@gmail.com' },
+    where: { username: 'superadmin' },
+    update: { email: 'loaiy.adel@gmail.com', name: 'Loaiy Adel', isActive: true },
+    create: {
+      username:     'superadmin',
+      email:        'loaiy.adel@gmail.com',
+      passwordHash: await bcrypt.hash('KiteSide2024!', 12),
+      name:         'Loaiy Adel',
+      role:         'SUPER_ADMIN',
+      isActive:     true,
+    },
+  })
+
+  // ── Site settings ────────────────────────────────────────────────────────────
+  await prisma.siteSettings.upsert({
+    where:  { id: 'main' },
     update: {},
     create: {
-      email: 'Ahmedyehya47@gmail.com',
-      passwordHash: await bcrypt.hash('KiteSide2024!', 12),
-      name: 'Ahmed Yahya',
-      role: 'SUPER_ADMIN',
+      id:           'main',
+      whatsapp:     '+201116407080',
+      phone:        '+201116407080',
+      email:        'loaiy.adel@gmail.com',
+      address:      'Inside Paradise Resort, Ras Sudr, South Sinai, Egypt',
+      instagramUrl: 'https://instagram.com/kite_side',
+      facebookUrl:  'https://facebook.com/p/Kite-Side-100093408729310',
+      googleMapsUrl: 'https://maps.google.com/maps?q=29.4945477,32.7339648&z=17&output=embed',
     },
   })
 

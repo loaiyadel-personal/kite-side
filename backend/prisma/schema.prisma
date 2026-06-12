@@ -10,15 +10,30 @@ datasource db {
 // ── Auth ──────────────────────────────────────────────────────────────────────
 
 model AdminUser {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String
-  role         AdminRole @default(EDITOR)
-  isActive     Boolean  @default(true)
-  lastLoginAt  DateTime?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                  String    @id @default(cuid())
+  username            String    @unique
+  email               String?
+  passwordHash        String
+  name                String
+  role                AdminRole @default(EDITOR)
+  isActive            Boolean   @default(true)
+  lastLoginAt         DateTime?
+  failedLoginAttempts Int       @default(0)
+  lockedUntil         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model SiteSettings {
+  id            String   @id @default("main")
+  whatsapp      String   @default("+201116407080")
+  phone         String   @default("+201116407080")
+  email         String   @default("loaiy.adel@gmail.com")
+  address       String   @default("Ras Sudr, South Sinai, Egypt")
+  instagramUrl  String   @default("https://instagram.com/kite_side")
+  facebookUrl   String   @default("https://facebook.com/p/Kite-Side-100093408729310")
+  googleMapsUrl String   @default("")
+  updatedAt     DateTime @updatedAt
 }
 
 enum AdminRole {
