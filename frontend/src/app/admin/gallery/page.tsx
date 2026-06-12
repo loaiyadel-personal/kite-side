@@ -123,7 +123,12 @@ export default function GalleryPage() {
       headers: { Authorization: `Bearer ${token}` },
     })
     if (res.ok) {
-      setItems(prev => prev.map(i => i.id === item.id ? { ...i, isPublished: !i.isPublished } : i))
+      const updated = await res.json()
+      setItems(prev => prev.map(i => i.id === item.id ? { ...i, isPublished: updated.isPublished } : i))
+      toast.success(updated.isPublished ? 'Published' : 'Set to draft')
+    } else {
+      const e = await res.json().catch(() => ({}))
+      toast.error(e.error || 'Failed to update — please try again')
     }
   }
 

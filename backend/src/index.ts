@@ -48,7 +48,7 @@ app.use(morgan('dev'))
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200, standardHeaders: true, legacyHeaders: false }))
 
 // Tighter limits on sensitive endpoints
-app.use('/api/contact', rateLimit({ windowMs: 15 * 60 * 1000, max: 5 }))
+app.use('/api/contact', rateLimit({ windowMs: 60 * 60 * 1000, max: 20 }))
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, max: 20 }))
 app.use('/api/auth/login', rateLimit({ windowMs: 60 * 60 * 1000, max: 10, message: { error: 'Too many login attempts. Try again in an hour.' } }))
 app.use('/api/courses/inquiry', rateLimit({ windowMs: 60 * 60 * 1000, max: 10 }))

@@ -37,20 +37,38 @@ const itemSchema = z.object({
 })
 type ItemForm = z.infer<typeof itemSchema>
 
+const catSchema = z.object({
+  name:    z.string().min(1, 'Name required'),
+  nameAr:  z.string().optional(),
+})
+type CatForm = z.infer<typeof catSchema>
+
 export default function MenuPage() {
   const { token } = useAdminAuth()
   const [categories, setCategories] = useState<Category[]>([])
   const [items, setItems]           = useState<MenuItem[]>([])
   const [activeCategory, setActiveCat] = useState<string | null>(null)
   const [loading, setLoading]       = useState(true)
-  const [addOpen, setAddOpen]       = useState(false)
-  const [editItem, setEditItem]     = useState<MenuItem | null>(null)
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
-  const [imageFile, setImageFile]   = useState<File | null>(null)
-  const [saving, setSaving]         = useState(false)
-  const [deleting, setDeleting]     = useState(false)
 
-  const form = useForm<ItemForm>({ resolver: zodResolver(itemSchema) })
+  // Item modal
+  const [itemModalOpen, setItemModalOpen] = useState(false)
+  const [editItem, setEditItem]     = useState<MenuItem | null>(null)
+  const [imageFile, setImageFile]   = useState<File | null>(null)
+  const [savingItem, setSavingItem] = useState(false)
+
+  // Category modal
+  const [catModalOpen, setCatModalOpen] = useState(false)
+  const [editCat, setEditCat]       = useState<Category | null>(null)
+  const [savingCat, setSavingCat]   = useState(false)
+
+  // Confirm dialogs
+  const [deleteItemTarget, setDeleteItemTarget] = useState<string | null>(null)
+  const [deleteCatTarget, setDeleteCatTarget]   = useState<string | null>(null)
+  const [deletingItem, setDeletingItem] = useState(false)
+  const [deletingCat, setDeletingCat]   = useState(false)
+
+  const itemForm = useForm<ItemForm>({ resolver: zodResolver(itemSchema) })
+  const catForm  = useForm<CatForm>({ resolver: zodResolver(catSchema) })
 
   const fetchAll = useCallback(async () => {
     if (!token) return
@@ -69,7 +87,6 @@ export default function MenuPage() {
     }
 
     if (menuRes.ok) {
-      // API returns categories with nested items — flatten them
       const grouped: (Category & { items: MenuItem[] })[] = await menuRes.json()
       const flat = grouped.flatMap(cat =>
         (cat.items ?? []).map(item => ({ ...item, categoryId: cat.id }))
@@ -82,15 +99,17 @@ export default function MenuPage() {
 
   useEffect(() => { fetchAll() }, [token])
 
-  function openAdd() {
-    form.reset({ categoryId: activeCategory ?? '' })
+  // ── Items ────────────────────────────────────────────────────────────────────
+
+  function openAddItem() {
+    itemForm.reset({ categoryId: activeCategory ?? '' })
     setImageFile(null)
     setEditItem(null)
-    setAddOpen(true)
+    setItemModalOpen(true)
   }
 
-  function openEdit(item: MenuItem) {
-    form.reset({
+  function openEditItem(item: MenuItem) {
+    itemForm.reset({
       name: item.name,
       nameAr: item.nameAr ?? '',
       description: item.description ?? '',
@@ -99,23 +118,23 @@ export default function MenuPage() {
     })
     setEditItem(item)
     setImageFile(null)
-    setAddOpen(true)
+    setItemModalOpen(true)
   }
 
-  async function onSubmit(data: ItemForm) {
+  async function onSubmitItem(data: ItemForm) {
     if (!token) return
-    setSaving(true)
+    setSavingItem(true)
     const fd = new FormData()
     Object.entries(data).forEach(([k, v]) => { if (v != null && v !== '') fd.append(k, String(v)) })
     if (imageFile) fd.append('image', imageFile)
     const url    = editItem ? `${API}/menu/items/${editItem.id}` : `${API}/menu/items`
     const method = editItem ? 'PUT' : 'POST'
     const res = await fetch(url, { method, headers: { Authorization: `Bearer ${token}` }, body: fd })
-    setSaving(false)
+    setSavingItem(false)
     if (res.ok) {
       toast.success(editItem ? 'Updated' : 'Created')
-      setAddOpen(false)
-      form.reset()
+      setItemModalOpen(false)
+      itemForm.reset()
       setEditItem(null)
       setImageFile(null)
       fetchAll()
@@ -131,47 +150,126 @@ export default function MenuPage() {
       method: 'PUT', headers: { Authorization: `Bearer ${token}` },
     })
     if (res.ok) setItems(prev => prev.map(i => i.id === item.id ? { ...i, isAvailable: !i.isAvailable } : i))
+    else toast.error('Failed to update')
   }
 
   async function deleteMenuItem() {
-    if (!token || !deleteTarget) return
-    setDeleting(true)
-    const res = await fetch(`${API}/menu/items/${deleteTarget}`, {
+    if (!token || !deleteItemTarget) return
+    setDeletingItem(true)
+    const res = await fetch(`${API}/menu/items/${deleteItemTarget}`, {
       method: 'DELETE', headers: { Authorization: `Bearer ${token}` },
     })
-    setDeleting(false)
+    setDeletingItem(false)
     if (res.ok) {
       toast.success('Deleted')
-      setItems(prev => prev.filter(i => i.id !== deleteTarget))
-      setDeleteTarget(null)
+      setItems(prev => prev.filter(i => i.id !== deleteItemTarget))
+      setDeleteItemTarget(null)
     } else toast.error('Delete failed')
   }
 
+  // ── Categories ───────────────────────────────────────────────────────────────
+
+  function openAddCat() {
+    catForm.reset({ name: '', nameAr: '' })
+    setEditCat(null)
+    setCatModalOpen(true)
+  }
+
+  function openEditCat(cat: Category) {
+    catForm.reset({ name: cat.name, nameAr: cat.nameAr ?? '' })
+    setEditCat(cat)
+    setCatModalOpen(true)
+  }
+
+  async function onSubmitCat(data: CatForm) {
+    if (!token) return
+    setSavingCat(true)
+    const url    = editCat ? `${API}/menu/categories/${editCat.id}` : `${API}/menu/categories`
+    const method = editCat ? 'PUT' : 'POST'
+    const res = await fetch(url, {
+      method,
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    setSavingCat(false)
+    if (res.ok) {
+      toast.success(editCat ? 'Category updated' : 'Category created')
+      setCatModalOpen(false)
+      catForm.reset()
+      setEditCat(null)
+      fetchAll()
+    } else {
+      const e = await res.json().catch(() => ({}))
+      toast.error(e.error || 'Failed to save')
+    }
+  }
+
+  async function deleteCategory() {
+    if (!token || !deleteCatTarget) return
+    setDeletingCat(true)
+    const res = await fetch(`${API}/menu/categories/${deleteCatTarget}`, {
+      method: 'DELETE', headers: { Authorization: `Bearer ${token}` },
+    })
+    setDeletingCat(false)
+    if (res.ok) {
+      toast.success('Category deleted')
+      if (activeCategory === deleteCatTarget) setActiveCat(null)
+      setDeleteCatTarget(null)
+      fetchAll()
+    } else {
+      const e = await res.json().catch(() => ({}))
+      toast.error(e.error || 'Delete failed — remove all items first')
+    }
+  }
+
   const visible = activeCategory ? items.filter(i => i.categoryId === activeCategory) : items
+  const inputCls = 'w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20'
 
   return (
     <div>
       <PageHeader
         title="Menu"
-        subtitle={`${items.length} items across ${categories.length} categories`}
+        subtitle={`${items.length} items · ${categories.length} categories`}
         action={
-          <button onClick={openAdd} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg transition-colors">
-            + Add Item
-          </button>
+          <div className="flex gap-2">
+            <button onClick={openAddCat} className="px-4 py-2 text-sm border border-white/10 hover:border-white/20 text-white/60 hover:text-white rounded-lg transition-colors">
+              + Category
+            </button>
+            <button onClick={openAddItem} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg transition-colors">
+              + Add Item
+            </button>
+          </div>
         }
       />
 
+      {/* Category tabs with edit/delete */}
       {categories.length > 0 && (
         <div className="flex gap-1 flex-wrap mb-5">
           {categories.map(c => (
-            <button key={c.id} onClick={() => setActiveCat(c.id)}
-              className={`px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                activeCategory === c.id
-                  ? 'bg-[#1a9fd4] text-white'
-                  : 'bg-[#1e293b] border border-white/10 text-white/50 hover:text-white/80'
-              }`}>
-              {c.name}
-            </button>
+            <div key={c.id} className={`group flex items-center gap-1 rounded-lg text-sm transition-colors ${
+              activeCategory === c.id
+                ? 'bg-[#1a9fd4] text-white'
+                : 'bg-[#1e293b] border border-white/10 text-white/50 hover:text-white/80'
+            }`}>
+              <button
+                onClick={() => setActiveCat(c.id)}
+                className="px-3 py-1.5"
+              >
+                {c.name}
+              </button>
+              <div className="hidden group-hover:flex items-center gap-0.5 pr-1.5">
+                <button
+                  onClick={(e) => { e.stopPropagation(); openEditCat(c) }}
+                  className={`p-0.5 rounded text-xs hover:opacity-100 ${activeCategory === c.id ? 'text-white/70 hover:text-white' : 'text-white/30 hover:text-white/60'}`}
+                  title="Rename category"
+                >✏️</button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); setDeleteCatTarget(c.id) }}
+                  className={`p-0.5 rounded text-xs ${activeCategory === c.id ? 'text-white/70 hover:text-white' : 'text-white/20 hover:text-red-400'}`}
+                  title="Delete category"
+                >🗑</button>
+              </div>
+            </div>
           ))}
         </div>
       )}
@@ -201,55 +299,87 @@ export default function MenuPage() {
               </div>
               <div className="flex items-center gap-3 flex-none">
                 <ToggleSwitch checked={item.isAvailable} onChange={() => toggleAvailability(item)} />
-                <button onClick={() => openEdit(item)} className="text-white/30 hover:text-white/70 text-sm p-1 transition-colors">✏️</button>
-                <button onClick={() => setDeleteTarget(item.id)} className="text-white/20 hover:text-red-400 text-sm p-1 transition-colors">🗑</button>
+                <button onClick={() => openEditItem(item)} className="text-white/30 hover:text-white/70 text-sm p-1 transition-colors">✏️</button>
+                <button onClick={() => setDeleteItemTarget(item.id)} className="text-white/20 hover:text-red-400 text-sm p-1 transition-colors">🗑</button>
               </div>
             </div>
           ))}
         </div>
       )}
 
+      {/* Item modal */}
       <Modal
-        open={addOpen}
-        onClose={() => { setAddOpen(false); form.reset(); setEditItem(null); setImageFile(null) }}
+        open={itemModalOpen}
+        onClose={() => { setItemModalOpen(false); itemForm.reset(); setEditItem(null); setImageFile(null) }}
         title={editItem ? 'Edit Item' : 'Add Menu Item'}
       >
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={itemForm.handleSubmit(onSubmitItem)} className="space-y-4">
           <ImageUpload label="Photo (optional)" value={editItem?.imageUrl ?? undefined} onChange={setImageFile} aspectRatio="4/3" />
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <input {...form.register('name')} placeholder="Name *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
-              {form.formState.errors.name && <p className="text-red-400 text-xs mt-1">{form.formState.errors.name.message}</p>}
+              <input {...itemForm.register('name')} placeholder="Name *" className={inputCls} />
+              {itemForm.formState.errors.name && <p className="text-red-400 text-xs mt-1">{itemForm.formState.errors.name.message}</p>}
             </div>
-            <input {...form.register('nameAr')} placeholder="Arabic name" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+            <input {...itemForm.register('nameAr')} placeholder="Arabic name" className={inputCls} />
           </div>
-          <textarea {...form.register('description')} placeholder="Description" rows={2} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20 resize-none" />
+          <textarea {...itemForm.register('description')} placeholder="Description" rows={2} className={`${inputCls} resize-none`} />
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <input {...form.register('price')} type="number" placeholder="Price (EGP) *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
-              {form.formState.errors.price && <p className="text-red-400 text-xs mt-1">{form.formState.errors.price.message}</p>}
+              <input {...itemForm.register('price')} type="number" placeholder="Price (EGP) *" className={inputCls} />
+              {itemForm.formState.errors.price && <p className="text-red-400 text-xs mt-1">{itemForm.formState.errors.price.message}</p>}
             </div>
             <div>
-              <select {...form.register('categoryId')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors">
+              <select {...itemForm.register('categoryId')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors">
                 <option value="">Select category</option>
                 {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
-              {form.formState.errors.categoryId && <p className="text-red-400 text-xs mt-1">{form.formState.errors.categoryId.message}</p>}
+              {itemForm.formState.errors.categoryId && <p className="text-red-400 text-xs mt-1">{itemForm.formState.errors.categoryId.message}</p>}
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-2">
-            <button type="button" onClick={() => setAddOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
-            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
-              {saving ? 'Saving…' : editItem ? 'Update' : 'Create'}
+            <button type="button" onClick={() => setItemModalOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
+            <button type="submit" disabled={savingItem} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+              {savingItem ? 'Saving…' : editItem ? 'Update' : 'Create'}
             </button>
           </div>
         </form>
       </Modal>
 
+      {/* Category modal */}
+      <Modal
+        open={catModalOpen}
+        onClose={() => { setCatModalOpen(false); catForm.reset(); setEditCat(null) }}
+        title={editCat ? 'Rename Category' : 'Add Category'}
+        size="sm"
+      >
+        <form onSubmit={catForm.handleSubmit(onSubmitCat)} className="space-y-4">
+          <div>
+            <input {...catForm.register('name')} placeholder="Category name *" className={inputCls} autoFocus />
+            {catForm.formState.errors.name && <p className="text-red-400 text-xs mt-1">{catForm.formState.errors.name.message}</p>}
+          </div>
+          <input {...catForm.register('nameAr')} placeholder="Arabic name (optional)" className={inputCls} />
+          <div className="flex justify-end gap-3 pt-2">
+            <button type="button" onClick={() => setCatModalOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
+            <button type="submit" disabled={savingCat} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+              {savingCat ? 'Saving…' : editCat ? 'Rename' : 'Create'}
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* Confirm item delete */}
       <ConfirmDialog
-        open={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={deleteMenuItem}
+        open={!!deleteItemTarget} onClose={() => setDeleteItemTarget(null)} onConfirm={deleteMenuItem}
         title="Delete item" message="Delete this menu item? This cannot be undone."
-        confirmLabel="Delete" danger loading={deleting}
+        confirmLabel="Delete" danger loading={deletingItem}
+      />
+
+      {/* Confirm category delete */}
+      <ConfirmDialog
+        open={!!deleteCatTarget} onClose={() => setDeleteCatTarget(null)} onConfirm={deleteCategory}
+        title="Delete category"
+        message="This will delete the category and ALL its items permanently. Move items to another category first if you want to keep them."
+        confirmLabel="Delete Category" danger loading={deletingCat}
       />
     </div>
   )

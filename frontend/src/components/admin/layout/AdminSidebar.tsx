@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useAdminAuth } from '@/lib/auth/AdminAuthContext'
 
@@ -18,6 +19,7 @@ const NAV = [
       { label: 'Gallery',  href: '/admin/gallery',   icon: '🖼️' },
       { label: 'Menu',     href: '/admin/menu',      icon: '🍽️' },
       { label: 'Courses',  href: '/admin/courses',   icon: '🪁' },
+      { label: 'Pricing',  href: '/admin/pricing',   icon: '💰' },
       { label: 'Shop',     href: '/admin/shop',      icon: '🏪' },
     ],
   },
@@ -45,9 +47,9 @@ export default function AdminSidebar() {
   return (
     <aside className="hidden md:flex w-60 flex-col flex-none bg-[#1e293b] border-r border-white/5">
       {/* Header */}
-      <div className="px-5 py-5 border-b border-white/5">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">🪁</span>
+      <div className="px-5 py-4 border-b border-white/5">
+        <div className="flex items-center gap-3">
+          <Image src="/logo.jpg" alt="Kite Side" width={40} height={40} className="rounded-lg object-cover flex-none" />
           <div>
             <p className="font-outfit font-bold text-white text-base leading-none">Kite Side</p>
             <p className="text-white/40 text-xs mt-0.5">Admin Panel</p>
