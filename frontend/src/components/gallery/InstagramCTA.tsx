@@ -14,13 +14,13 @@ export default function InstagramCTA() {
           Behind-the-scenes, daily conditions, and the moments we don&apos;t post here.
         </p>
         <a
-          href="https://www.instagram.com/kiteside.ras.sudr/"
+          href="https://www.instagram.com/kite_side/"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#1a9fd4] text-white font-semibold text-sm hover:bg-[#1589b8] transition-colors"
         >
           <Instagram size={18} />
-          @kiteside.ras.sudr
+          @kite_side
         </a>
       </div>
     </section>
