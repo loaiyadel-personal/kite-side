@@ -1,11 +1,31 @@
 import { Router } from 'express'
 import { requireAuth } from '../middleware/auth'
-// TODO: import controllers
+import {
+  getGallery,
+  getCategories,
+  getAdminGallery,
+  createPhoto,
+  createVideo,
+  updateGalleryItem,
+  togglePublish,
+  reorderGallery,
+  deleteGalleryItem,
+  uploadMiddleware,
+} from '../controllers/galleryController'
+
 const router = Router()
-// Public read routes
-router.get('/', (_req, res) => res.json({ message: 'gallery route — implement controllers' }))
-// Protected write routes
-router.post('/', requireAuth, (_req, res) => res.json({ message: 'create gallery' }))
-router.put('/:id', requireAuth, (_req, res) => res.json({ message: 'update gallery' }))
-router.delete('/:id', requireAuth, (_req, res) => res.json({ message: 'delete gallery' }))
+
+// Public
+router.get('/categories', getCategories)
+router.get('/', getGallery)
+
+// Admin — /admin and /reorder declared before /:id to avoid param capture
+router.get('/admin',       requireAuth, getAdminGallery)
+router.post('/photo',      requireAuth, uploadMiddleware, createPhoto)
+router.post('/video',      requireAuth, createVideo)
+router.put('/reorder',     requireAuth, reorderGallery)
+router.put('/:id/publish', requireAuth, togglePublish)
+router.put('/:id',         requireAuth, updateGalleryItem)
+router.delete('/:id',      requireAuth, deleteGalleryItem)
+
 export default router

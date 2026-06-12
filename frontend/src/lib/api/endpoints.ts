@@ -1,9 +1,22 @@
 import api from './client'
 import type { ContactFormData } from '@/types'
 
-// ── Gallery
+// ── Gallery — public
 export const galleryApi = {
-  getAll: (params?: { type?: string; category?: string }) => api.get('/gallery', { params }),
+  getAll:      (params?: { type?: string; category?: string }) => api.get('/gallery', { params }),
+  getCategories: () => api.get('/gallery/categories'),
+
+  // Admin
+  getAdminAll:   () => api.get('/gallery/admin'),
+  upload:        (formData: FormData) =>
+    api.post('/gallery/photo', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  uploadVideo:   (data: { url: string; thumbnailUrl?: string; caption?: string; altText?: string; category?: string; sortOrder?: number }) =>
+    api.post('/gallery/video', data),
+  update:        (id: string, data: { caption?: string; altText?: string; category?: string; sortOrder?: number; isPublished?: boolean; url?: string }) =>
+    api.put(`/gallery/${id}`, data),
+  togglePublish: (id: string) => api.put(`/gallery/${id}/publish`),
+  reorder:       (items: { id: string; sortOrder: number }[]) => api.put('/gallery/reorder', { items }),
+  delete:        (id: string) => api.delete(`/gallery/${id}`),
 }
 
 // ── Menu — public

@@ -297,6 +297,33 @@ async function main() {
   await prisma.priceItem.createMany({ data: priceData as any })
   console.log(`✅ Pricing: ${priceData.length} items`)
 
+  // ── Gallery — wipe and replace ────────────────────────────────────────────────
+  await prisma.galleryItem.deleteMany({})
+
+  const galleryData = [
+    // Kiting photos (sortOrder 1-6)
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/kite1/1200/800', thumbnailUrl: 'https://picsum.photos/seed/kite1/600/400', caption: 'High-flying jump at Ras Sudr', altText: 'Kitesurfer jumping high above the water', category: 'kiting', sortOrder: 1, isPublished: true },
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/kite2/1200/800', thumbnailUrl: 'https://picsum.photos/seed/kite2/600/400', caption: 'Perfect flat water session', altText: 'Kitesurfer riding across flat turquoise water', category: 'kiting', sortOrder: 2, isPublished: true },
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/kite3/1200/800', thumbnailUrl: 'https://picsum.photos/seed/kite3/600/400', caption: 'Beginners course on the beach', altText: 'Instructor teaching kite control on the beach', category: 'kiting', sortOrder: 3, isPublished: true },
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/kite4/1200/900', thumbnailUrl: 'https://picsum.photos/seed/kite4/600/450', caption: 'Sunset kite session', altText: 'Silhouette of a kitesurfer at sunset', category: 'kiting', sortOrder: 4, isPublished: true },
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/kite5/1200/800', thumbnailUrl: 'https://picsum.photos/seed/kite5/600/400', caption: 'Group lesson in progress', altText: 'Group of students learning to kitesurf', category: 'kiting', sortOrder: 5, isPublished: true },
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/kite6/1200/800', thumbnailUrl: 'https://picsum.photos/seed/kite6/600/400', caption: 'Downwinder along the coast', altText: 'Kitesurfer riding a downwind run along the coast', category: 'kiting', sortOrder: 6, isPublished: true },
+    // Restaurant photos (sortOrder 7-10)
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/resto1/1200/800', thumbnailUrl: 'https://picsum.photos/seed/resto1/600/400', caption: 'Fresh seafood platter', altText: 'Colorful seafood platter on a wooden table', category: 'restaurant', sortOrder: 7, isPublished: true },
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/resto2/1200/900', thumbnailUrl: 'https://picsum.photos/seed/resto2/600/450', caption: 'Beachfront dining at golden hour', altText: 'Restaurant tables on the beach at sunset', category: 'restaurant', sortOrder: 8, isPublished: true },
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/resto3/1200/800', thumbnailUrl: 'https://picsum.photos/seed/resto3/600/400', caption: 'Cold drinks on a hot day', altText: 'Tropical drinks on a beach bar counter', category: 'restaurant', sortOrder: 9, isPublished: true },
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/resto4/1200/800', thumbnailUrl: 'https://picsum.photos/seed/resto4/600/400', caption: 'Shisha and view', altText: 'Shisha pipe with sea view in the background', category: 'restaurant', sortOrder: 10, isPublished: true },
+    // Spot photos (sortOrder 11-12)
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/spot1/1200/800', thumbnailUrl: 'https://picsum.photos/seed/spot1/600/400', caption: 'The Ras Sudr lagoon', altText: 'Crystal-clear shallow lagoon at Ras Sudr', category: 'spot', sortOrder: 11, isPublished: true },
+    { type: 'PHOTO', url: 'https://picsum.photos/seed/spot2/1200/800', thumbnailUrl: 'https://picsum.photos/seed/spot2/600/400', caption: 'The Red Sea horizon', altText: 'Wide panoramic view of the Red Sea at Ras Sudr', category: 'spot', sortOrder: 12, isPublished: true },
+    // Videos (sortOrder 13-15)
+    { type: 'VIDEO', url: 'https://www.youtube.com/embed/placeholder-kite-video-1', thumbnailUrl: null, caption: 'Best of Ras Sudr — Season Highlights', altText: null, category: 'kiting', sortOrder: 13, isPublished: true },
+    { type: 'VIDEO', url: 'https://www.youtube.com/embed/placeholder-kite-video-2', thumbnailUrl: null, caption: 'Learn to Kitesurf at Kite Side', altText: null, category: 'kiting', sortOrder: 14, isPublished: true },
+    { type: 'VIDEO', url: 'https://www.youtube.com/embed/placeholder-resto-video-1', thumbnailUrl: null, caption: 'A day at Kite Side Beach Club', altText: null, category: 'restaurant', sortOrder: 15, isPublished: true },
+  ]
+  await prisma.galleryItem.createMany({ data: galleryData as any })
+  console.log(`✅ Gallery: ${galleryData.length} items`)
+
   console.log('✅ Seed complete')
 }
 

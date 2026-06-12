@@ -7,6 +7,14 @@ const nextConfig = {
         hostname: 'localhost',
         port: '4000',
       },
+      {
+        protocol: 'https',
+        hostname: 'api.kiteside.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
     ],
   },
   async rewrites() {

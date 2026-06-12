@@ -24,6 +24,9 @@ backend/uploads/*
 !backend/uploads/menu/
 backend/uploads/menu/*
 !backend/uploads/menu/.gitkeep
+!backend/uploads/gallery/
+backend/uploads/gallery/*
+!backend/uploads/gallery/.gitkeep
 
 # Logs
 *.log
