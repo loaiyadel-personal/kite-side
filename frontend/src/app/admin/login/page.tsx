@@ -12,7 +12,7 @@ export default function LoginPage() {
           <div className="flex justify-center mb-4">
             <Image src="/logo.jpg" alt="Kite Side" width={72} height={72} className="rounded-2xl object-cover shadow-lg" />
           </div>
-          <h1 className="font-outfit font-bold text-white text-2xl">Kite Side Admin</h1>
+          <h1 className="font-display font-bold text-white text-2xl tracking-[-0.01em]">Kite Side Admin</h1>
           <p className="text-white/40 text-sm mt-1">Sign in to manage your site</p>
         </div>
         <div className="bg-[#1e293b] border border-white/10 rounded-2xl p-7 shadow-2xl">

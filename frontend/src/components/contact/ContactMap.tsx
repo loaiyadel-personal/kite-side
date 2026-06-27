@@ -22,7 +22,7 @@ export default function ContactMap() {
   return (
     <section className="py-16 px-4 bg-white">
       <div className="max-w-4xl mx-auto">
-        <h2 className="font-outfit font-bold text-3xl text-[#022b3d] text-center mb-10">
+        <h2 className="font-outfit font-bold text-3xl text-brand-dark text-center mb-10">
           How to Find Us
         </h2>
 
@@ -44,9 +44,9 @@ export default function ContactMap() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           {directions.map(({ from, detail, time }) => (
             <div key={from} className="bg-gray-50 rounded-2xl p-5 flex gap-3">
-              <Car size={20} className="text-[#1a9fd4] flex-none mt-0.5" />
+              <Car size={20} className="text-brand-primary flex-none mt-0.5" />
               <div>
-                <div className="font-semibold text-[#022b3d] text-sm">{from}</div>
+                <div className="font-semibold text-brand-dark text-sm">{from}</div>
                 <div className="text-gray-500 text-xs mt-1">{detail}</div>
                 <div className="text-gray-400 text-xs">{time}</div>
               </div>
@@ -59,7 +59,7 @@ export default function ContactMap() {
             href="https://maps.app.goo.gl/2wMvsj449P4FDDRe8"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-[#022b3d] text-white font-semibold px-6 py-3 rounded-xl hover:bg-[#0a4f6e] transition-colors"
+            className="inline-flex items-center gap-2 bg-brand-dark text-white font-semibold px-6 py-3 rounded-xl hover:bg-[#0a4f6e] transition-colors"
           >
             Open in Google Maps →
           </a>

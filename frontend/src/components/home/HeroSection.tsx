@@ -4,9 +4,11 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
+import { motion, useReducedMotion } from 'framer-motion'
 
 export default function HeroSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const prefersReduced = useReducedMotion()
 
   // Subtle floating particles (wind effect)
   useEffect(() => {
@@ -56,60 +58,105 @@ export default function HeroSection() {
     }
   }, [])
 
+  const initial = prefersReduced ? false : { opacity: 0, y: 32 }
+  const animate = prefersReduced ? {} : { opacity: 1, y: 0 }
+
   return (
     <section
       className="relative flex items-center justify-center min-h-screen overflow-hidden"
-      style={{ background: 'linear-gradient(160deg, #022b3d 0%, #0a6d96 60%, #0e8bb5 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #022b3d 0%, #0a4f6e 45%, #1284a8 100%)' }}
     >
       {/* Particle canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
 
+      {/* Top glow */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse, rgba(90,172,188,0.18) 0%, transparent 65%)' }}
+      />
+
+      {/* Bottom wave fade into next section */}
+      <div className="absolute bottom-0 left-0 right-0 pointer-events-none" aria-hidden="true">
+        <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="block w-full h-16 md:h-20">
+          <path d="M0,40 C180,80 360,0 540,40 C720,80 900,0 1080,40 C1260,80 1380,20 1440,40 L1440,80 L0,80 Z" fill="white" />
+        </svg>
+      </div>
+
       {/* Content */}
-      <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
+      <div className="relative z-10 text-center px-4 max-w-3xl mx-auto pb-20">
         {/* Logo */}
-        <div className="flex justify-center mb-6">
+        <motion.div
+          className="flex justify-center mb-8"
+          initial={initial}
+          animate={animate}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <Image
             src="/logo.jpg"
             alt="Kite Side"
             width={120}
             height={120}
-            className="rounded-full border-4 border-white/30 shadow-2xl"
+            className="rounded-full border-4 border-white/25 shadow-[0_8px_40px_rgba(90,172,188,0.3)]"
             priority
           />
-        </div>
+        </motion.div>
 
-        <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-sm font-medium text-white/80 border border-white/20 bg-white/10 backdrop-blur-sm">
-          🌊 Ras Sudr, Red Sea, Egypt
-        </span>
+        <motion.span
+          className="inline-block mb-6 px-5 py-2 rounded-full text-sm font-medium text-white/80 border border-white/20 bg-white/8 backdrop-blur-sm tracking-widest uppercase"
+          initial={initial}
+          animate={animate}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          Ras Sudr, Red Sea, Egypt
+        </motion.span>
 
-        <h1 className="font-outfit font-bold text-6xl sm:text-7xl md:text-8xl text-white leading-none mb-6 drop-shadow-lg">
-          Ride the Wind
-        </h1>
+        <motion.h1
+          className="font-display font-bold text-6xl sm:text-7xl md:text-[5.5rem] text-white leading-[1.05] mb-6 tracking-[-0.02em]"
+          initial={initial}
+          animate={animate}
+          transition={{ duration: 0.65, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        >
+          Ride the{' '}
+          <span className="text-hero-gradient">Wind</span>
+        </motion.h1>
 
-        <p className="text-lg sm:text-xl text-white/80 mb-10 max-w-xl mx-auto leading-relaxed">
+        <motion.p
+          className="text-lg sm:text-xl text-white/75 mb-10 max-w-xl mx-auto leading-[1.7]"
+          initial={initial}
+          animate={animate}
+          transition={{ duration: 0.6, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+        >
           IKO Certified Kitesurfing Center on Egypt's Most Consistent Wind Spot
-        </p>
+        </motion.p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href="/courses"
-            className="px-8 py-4 rounded-full font-semibold text-white text-base transition-all hover:brightness-110 hover:scale-105 shadow-lg"
-            style={{ backgroundColor: '#0a6d96' }}
-          >
-            Book a Course
-          </Link>
-          <Link
-            href="/gallery"
-            className="px-8 py-4 rounded-full font-semibold text-white text-base border-2 border-white/60 transition-all hover:bg-white/10 hover:scale-105"
-          >
-            View Gallery
-          </Link>
-        </div>
+        <motion.div
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          initial={initial}
+          animate={animate}
+          transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+            <Link
+              href="/courses"
+              className="inline-block px-9 py-4 rounded-full font-semibold text-white text-base bg-brand-primary transition-all duration-200 hover:shadow-[0_0_28px_rgba(90,172,188,0.55)] hover:brightness-110"
+            >
+              Book a Course
+            </Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+            <Link
+              href="/gallery"
+              className="inline-block px-9 py-4 rounded-full font-semibold text-white text-base border-2 border-white/40 transition-all duration-200 hover:bg-white/10 hover:border-white/70"
+            >
+              View Gallery
+            </Link>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Scroll chevron */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <ChevronDown size={32} className="text-white/50" />
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce z-10">
+        <ChevronDown size={28} className="text-white/40" />
       </div>
     </section>
   )

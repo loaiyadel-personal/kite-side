@@ -13,7 +13,7 @@ const DEFAULTS: Record<string, { label: string; color: string }> = {
   ACTIVE:      { label: 'Active',     color: 'bg-green-500/20 text-green-400' },
   INACTIVE:    { label: 'Inactive',   color: 'bg-white/10 text-white/40' },
   SUPER_ADMIN: { label: 'Super Admin', color: 'bg-yellow-500/20 text-yellow-400' },
-  EDITOR:      { label: 'Editor',     color: 'bg-[#1a9fd4]/20 text-[#1a9fd4]' },
+  EDITOR:      { label: 'Editor',     color: 'bg-brand-primary/20 text-brand-primary' },
 }
 
 export default function StatusBadge({ status, map }: Props) {

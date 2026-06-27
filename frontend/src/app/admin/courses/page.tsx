@@ -143,20 +143,20 @@ export default function CoursesPage() {
     } else toast.error('Delete failed')
   }
 
-  const inputCls = 'w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20'
+  const inputCls = 'w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20'
 
   return (
     <div>
       <PageHeader title="Courses" subtitle={`${courses.length} courses`}
         action={
-          <button onClick={openAdd} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg transition-colors">
+          <button onClick={openAdd} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg transition-colors">
             + Add Course
           </button>
         }
       />
 
       {loading ? (
-        <div className="flex justify-center py-20"><div className="w-6 h-6 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" /></div>
+        <div className="flex justify-center py-20"><div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" /></div>
       ) : courses.length === 0 ? (
         <EmptyState icon="🪁" title="No courses yet" message="Add your first kitesurfing course" />
       ) : (
@@ -171,7 +171,7 @@ export default function CoursesPage() {
                 </div>
                 <p className="text-white/40 text-sm truncate">{c.description}</p>
                 <div className="flex items-center gap-3 mt-1.5 text-xs text-white/40">
-                  <span className="text-[#1a9fd4] font-semibold">EGP {Number(c.priceEGP).toLocaleString()}</span>
+                  <span className="text-brand-primary font-semibold">EGP {Number(c.priceEGP).toLocaleString()}</span>
                   {c.priceUSD && <span className="text-white/30">/ ${Number(c.priceUSD)}</span>}
                   <span>⏱ {c.durationHours}h</span>
                   <span>👥 max {c.maxStudents}</span>
@@ -192,7 +192,7 @@ export default function CoursesPage() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs text-white/40 mb-1">Level *</label>
-              <select {...form.register('level')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors">
+              <select {...form.register('level')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors">
                 {LEVELS.map(l => <option key={l.value} value={l.value}>{l.label}</option>)}
               </select>
             </div>
@@ -243,7 +243,7 @@ export default function CoursesPage() {
 
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={() => setModalOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
-            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
               {saving ? 'Saving…' : editing ? 'Update' : 'Create'}
             </button>
           </div>

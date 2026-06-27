@@ -2,7 +2,7 @@ import { Award, Wind, Waves } from 'lucide-react'
 
 export default function CoursesHero() {
   return (
-    <section className="relative min-h-[560px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#022b3d] via-[#0a4f6e] to-[#1a9fd4]">
+    <section className="relative min-h-[560px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-brand-dark via-[#0a4f6e] to-brand-primary">
       {/* Background texture */}
       <div className="absolute inset-0 opacity-10"
         style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}
@@ -15,9 +15,9 @@ export default function CoursesHero() {
           IKO Certified Kitesurfing Center
         </div>
 
-        <h1 className="font-outfit font-bold text-5xl md:text-6xl text-white leading-tight mb-6">
+        <h1 className="font-display font-bold text-5xl md:text-6xl text-white leading-tight mb-6 tracking-[-0.02em]">
           Learn to Kite<br />
-          <span className="text-[#1a9fd4]">in Ras Sudr</span>
+          <span className="text-hero-gradient">in Ras Sudr</span>
         </h1>
 
         <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto mb-12">
@@ -27,15 +27,15 @@ export default function CoursesHero() {
 
         {/* Stats */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
-          <div className="flex items-center gap-3 bg-white/10 rounded-2xl px-6 py-4 backdrop-blur-sm">
-            <Wind size={24} className="text-[#1a9fd4] flex-none" />
+          <div className="flex items-center gap-3 bg-white/10 rounded-2xl px-6 py-4 backdrop-blur-sm border border-white/10">
+            <Wind size={24} className="text-brand-primary flex-none" />
             <div className="text-left">
               <div className="font-outfit font-bold text-2xl text-white">300+</div>
               <div className="text-white/60 text-sm">Wind Days / Year</div>
             </div>
           </div>
-          <div className="flex items-center gap-3 bg-white/10 rounded-2xl px-6 py-4 backdrop-blur-sm">
-            <Waves size={24} className="text-[#1a9fd4] flex-none" />
+          <div className="flex items-center gap-3 bg-white/10 rounded-2xl px-6 py-4 backdrop-blur-sm border border-white/10">
+            <Waves size={24} className="text-brand-primary flex-none" />
             <div className="text-left">
               <div className="font-outfit font-bold text-sm text-white leading-snug">Flat Shallow Water</div>
               <div className="text-white/60 text-sm">Perfect for learning</div>

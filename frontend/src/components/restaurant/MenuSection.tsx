@@ -28,7 +28,7 @@ export default function MenuSection({ name, note, items }: Props) {
     <section id={slugify(name)} className="py-12 px-4 scroll-mt-28">
       <div className="max-w-6xl mx-auto">
         <div className="mb-6">
-          <h2 className="font-outfit font-bold text-3xl text-[#022b3d] inline-block">
+          <h2 className="font-display font-bold text-3xl text-brand-dark inline-block">
             {name}
           </h2>
           <div className="mt-1 h-1 w-16 rounded-full" style={{ backgroundColor: '#1a9fd4' }} />

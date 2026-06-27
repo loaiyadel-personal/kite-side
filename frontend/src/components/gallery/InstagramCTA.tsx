@@ -2,12 +2,12 @@ import { Instagram } from 'lucide-react'
 
 export default function InstagramCTA() {
   return (
-    <section className="py-20 px-4 bg-[#022b3d]">
+    <section className="py-20 px-4 bg-brand-dark">
       <div className="max-w-xl mx-auto text-center">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#1a9fd4]/20 mb-6">
-          <Instagram size={28} className="text-[#1a9fd4]" />
+        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-brand-primary/20 mb-6">
+          <Instagram size={28} className="text-brand-primary" />
         </div>
-        <h2 className="font-outfit font-bold text-3xl text-white mb-3">
+        <h2 className="font-display font-bold text-3xl text-white mb-3">
           Follow our story
         </h2>
         <p className="text-white/50 mb-8">
@@ -17,7 +17,7 @@ export default function InstagramCTA() {
           href="https://www.instagram.com/kite_side/"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#1a9fd4] text-white font-semibold text-sm hover:bg-[#1589b8] transition-colors"
+          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-brand-primary text-white font-semibold text-sm hover:bg-[#1589b8] transition-colors"
         >
           <Instagram size={18} />
           @kite_side

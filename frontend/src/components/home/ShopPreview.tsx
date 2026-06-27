@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ShoppingBag } from 'lucide-react'
 
 const WA = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '201116407080'
 
@@ -13,13 +13,13 @@ interface ShopItem {
   imageUrl:     string | null
 }
 
-const TAG_STYLE: Record<string, { bg: string; icon: string }> = {
-  kites:       { bg: 'from-[#1a9fd4] to-[#022b3d]',      icon: '🪁' },
-  boards:      { bg: 'from-teal-500 to-[#022b3d]',        icon: '🏄' },
-  harnesses:   { bg: 'from-cyan-600 to-[#022b3d]',        icon: '🎽' },
-  accessories: { bg: 'from-[#e84a2e]/80 to-[#022b3d]',    icon: '⚡' },
-  wetsuits:    { bg: 'from-blue-600 to-[#022b3d]',        icon: '🌊' },
-  bags:        { bg: 'from-gray-500 to-[#022b3d]',        icon: '🎒' },
+const TAG_STYLE: Record<string, { bg: string }> = {
+  kites:       { bg: 'from-brand-primary/60 to-brand-dark'  },
+  boards:      { bg: 'from-teal-500/60 to-brand-dark'       },
+  harnesses:   { bg: 'from-cyan-600/60 to-brand-dark'       },
+  accessories: { bg: 'from-brand-accent/50 to-brand-dark'   },
+  wetsuits:    { bg: 'from-blue-600/60 to-brand-dark'       },
+  bags:        { bg: 'from-gray-500/60 to-brand-dark'       },
 }
 
 async function fetchFeaturedItems(): Promise<ShopItem[]> {
@@ -41,21 +41,21 @@ export default async function ShopPreview() {
   if (!items.length) return null
 
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-24 px-4 bg-brand-surface">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="text-[#1a9fd4] text-sm font-medium uppercase tracking-widest mb-2">
+            <p className="text-brand-primary text-xs font-semibold uppercase tracking-widest mb-3">
               Pro Shop
             </p>
-            <h2 className="font-outfit font-bold text-3xl sm:text-4xl text-[#022b3d]">
-              Pro Shop & Rentals
+            <h2 className="font-display font-bold text-3xl sm:text-4xl text-brand-dark tracking-[-0.02em]">
+              Pro Shop &amp; Rentals
             </h2>
-            <p className="text-gray-500 mt-1">Quality gear to buy or rent right here at the beach</p>
+            <p className="text-gray-500 mt-2 leading-relaxed">Quality gear to buy or rent right here at the beach</p>
           </div>
           <Link
             href="/shop"
-            className="hidden sm:inline-flex items-center gap-1.5 text-[#1a9fd4] font-semibold text-sm hover:gap-3 transition-all"
+            className="hidden sm:inline-flex items-center gap-1.5 text-brand-primary font-semibold text-sm hover:gap-3 transition-all duration-200"
           >
             Visit the Shop <ArrowRight size={16} />
           </Link>
@@ -64,11 +64,15 @@ export default async function ShopPreview() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
           {items.map(item => {
             const tag   = item.tags[0] ?? ''
-            const style = TAG_STYLE[tag] ?? { bg: 'from-[#1a9fd4] to-[#022b3d]', icon: '🛒' }
+            const style = TAG_STYLE[tag] ?? { bg: 'from-brand-primary/50 to-brand-dark' }
             const thumb = item.thumbnailUrl ?? item.imageUrl
 
             return (
-              <Link key={item.id} href="/shop" className="group rounded-2xl border border-gray-100 overflow-hidden hover:border-[#1a9fd4]/40 hover:shadow-lg transition-all">
+              <Link
+                key={item.id}
+                href="/shop"
+                className="group bg-white rounded-2xl border border-brand-surface overflow-hidden transition-all duration-200 hover:-translate-y-1 shadow-card hover:shadow-card-hover"
+              >
                 <div className="aspect-[4/3] overflow-hidden">
                   {thumb ? (
                     <img
@@ -79,13 +83,13 @@ export default async function ShopPreview() {
                     />
                   ) : (
                     <div className={`w-full h-full bg-gradient-to-br ${style.bg} flex items-center justify-center`}>
-                      <span className="text-4xl">{style.icon}</span>
+                      <ShoppingBag size={36} className="text-white/40" />
                     </div>
                   )}
                 </div>
                 <div className="p-4">
-                  <h3 className="font-outfit font-bold text-[#022b3d] text-sm mb-1">{item.name}</h3>
-                  <p className="font-outfit font-bold text-[#1a9fd4]">
+                  <h3 className="font-display font-bold text-brand-dark text-sm mb-1 tracking-[-0.01em]">{item.name}</h3>
+                  <p className="font-outfit font-bold text-brand-primary">
                     {formatEGP(item.priceEGP)} <span className="text-xs font-normal text-gray-400">EGP</span>
                   </p>
                 </div>
@@ -97,7 +101,7 @@ export default async function ShopPreview() {
         <div className="flex flex-wrap justify-center gap-3">
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#022b3d] text-white font-semibold text-sm hover:bg-[#034a6a] transition-colors"
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-brand-dark text-white font-semibold text-sm transition-all duration-200 hover:bg-brand-deep hover:shadow-card"
           >
             Visit the Shop <ArrowRight size={16} />
           </Link>
@@ -105,7 +109,7 @@ export default async function ShopPreview() {
             href={`https://wa.me/${WA}?text=${encodeURIComponent("Hi! I'd like to rent equipment at Kite Side")}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#1a9fd4] text-[#1a9fd4] font-semibold text-sm hover:bg-[#1a9fd4]/5 transition-colors"
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-full border-2 border-brand-primary text-brand-primary font-semibold text-sm transition-all duration-200 hover:bg-brand-primary hover:text-white"
           >
             Rent Equipment
           </a>

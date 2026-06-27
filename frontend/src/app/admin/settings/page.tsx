@@ -82,7 +82,7 @@ export default function SettingsPage() {
     }
   }
 
-  const inputCls = 'w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20'
+  const inputCls = 'w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20'
 
   return (
     <div className="max-w-2xl">
@@ -130,7 +130,7 @@ export default function SettingsPage() {
               <input {...siteForm.register('googleMapsUrl')} className={inputCls} />
             </div>
             <div className="pt-2">
-              <button type="submit" disabled={savingSite} className="px-5 py-2 bg-[#1a9fd4] hover:bg-[#158bbf] text-white text-sm rounded-lg disabled:opacity-50 transition-colors">
+              <button type="submit" disabled={savingSite} className="px-5 py-2 bg-brand-primary hover:bg-[#158bbf] text-white text-sm rounded-lg disabled:opacity-50 transition-colors">
                 {savingSite ? 'Saving…' : 'Save Settings'}
               </button>
             </div>
@@ -159,7 +159,7 @@ export default function SettingsPage() {
             {pwForm.formState.errors.confirmPassword && <p className="text-red-400 text-xs mt-1">{pwForm.formState.errors.confirmPassword.message}</p>}
           </div>
           <div className="pt-2">
-            <button type="submit" disabled={savingPw} className="px-5 py-2 bg-[#1a9fd4] hover:bg-[#158bbf] text-white text-sm rounded-lg disabled:opacity-50 transition-colors">
+            <button type="submit" disabled={savingPw} className="px-5 py-2 bg-brand-primary hover:bg-[#158bbf] text-white text-sm rounded-lg disabled:opacity-50 transition-colors">
               {savingPw ? 'Changing…' : 'Change Password'}
             </button>
           </div>

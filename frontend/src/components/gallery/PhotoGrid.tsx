@@ -80,7 +80,7 @@ function PhotoCard({ photo, onClick }: { photo: GalleryItem; onClick: () => void
     <div className="break-inside-avoid mb-4">
       <button
         onClick={onClick}
-        className="group relative w-full overflow-hidden rounded-xl shadow-sm border border-gray-100 block focus:outline-none focus:ring-2 focus:ring-[#1a9fd4]"
+        className="group relative w-full overflow-hidden rounded-xl shadow-sm border border-gray-100 block focus:outline-none focus:ring-2 focus:ring-brand-primary"
       >
         {isPlaceholder || errored ? (
           <PlaceholderCard category={photo.category} caption={photo.caption} />
@@ -95,7 +95,7 @@ function PhotoCard({ photo, onClick }: { photo: GalleryItem; onClick: () => void
         )}
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-[#022b3d]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+        <div className="absolute inset-0 bg-brand-dark/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
           {photo.caption && (
             <p className="text-white text-sm font-medium leading-snug line-clamp-2">
               {photo.caption}
@@ -108,13 +108,13 @@ function PhotoCard({ photo, onClick }: { photo: GalleryItem; onClick: () => void
 }
 
 const CATEGORY_STYLE: Record<string, { bg: string; icon: string }> = {
-  kiting:     { bg: 'from-[#1a9fd4]/40 to-[#022b3d]',   icon: '🪁' },
-  restaurant: { bg: 'from-amber-500/30 to-[#022b3d]',    icon: '🍽️' },
-  spot:       { bg: 'from-teal-500/30 to-[#022b3d]',     icon: '🌊' },
+  kiting:     { bg: 'from-brand-primary/40 to-brand-dark',   icon: '🪁' },
+  restaurant: { bg: 'from-amber-500/30 to-brand-dark',    icon: '🍽️' },
+  spot:       { bg: 'from-teal-500/30 to-brand-dark',     icon: '🌊' },
 }
 
 function PlaceholderCard({ category, caption }: { category: string | null; caption: string | null }) {
-  const style = CATEGORY_STYLE[category ?? ''] ?? { bg: 'from-[#1a9fd4]/20 to-[#022b3d]', icon: '📷' }
+  const style = CATEGORY_STYLE[category ?? ''] ?? { bg: 'from-brand-primary/20 to-brand-dark', icon: '📷' }
   return (
     <div className={`aspect-[4/3] bg-gradient-to-br ${style.bg} flex flex-col items-center justify-center gap-2`}>
       <span className="text-3xl">{style.icon}</span>

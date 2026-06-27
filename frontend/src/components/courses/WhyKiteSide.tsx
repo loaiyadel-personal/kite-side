@@ -12,7 +12,7 @@ const features = [
     icon: Wind,
     title: 'Best Wind Spot',
     desc: '300+ wind days per year with consistent thermal winds — one of the most reliable kite spots on the Red Sea.',
-    color: 'text-[#1a9fd4]',
+    color: 'text-brand-primary',
     bg: 'bg-sky-50',
   },
   {
@@ -35,7 +35,7 @@ export default function WhyKiteSide() {
   return (
     <section className="py-20 px-4 bg-gray-50">
       <div className="max-w-5xl mx-auto">
-        <h2 className="font-outfit font-bold text-3xl text-[#022b3d] text-center mb-4">
+        <h2 className="font-display font-bold text-3xl text-brand-dark text-center mb-4">
           Why Learn at Kite Side?
         </h2>
         <p className="text-gray-500 text-center mb-12 max-w-xl mx-auto">
@@ -49,7 +49,7 @@ export default function WhyKiteSide() {
                 <Icon size={24} className={color} />
               </div>
               <div>
-                <h3 className="font-outfit font-semibold text-[#022b3d] text-lg mb-1">{title}</h3>
+                <h3 className="font-outfit font-semibold text-brand-dark text-lg mb-1">{title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
               </div>
             </div>

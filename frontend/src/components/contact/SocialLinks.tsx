@@ -2,7 +2,7 @@ export default function SocialLinks() {
   return (
     <section className="py-16 px-4 bg-gray-50">
       <div className="max-w-3xl mx-auto">
-        <h2 className="font-outfit font-bold text-3xl text-[#022b3d] text-center mb-3">
+        <h2 className="font-outfit font-bold text-3xl text-brand-dark text-center mb-3">
           Follow Our Journey
         </h2>
         <p className="text-gray-500 text-center mb-10">
@@ -24,7 +24,7 @@ export default function SocialLinks() {
               </svg>
             </div>
             <div>
-              <div className="font-outfit font-bold text-lg text-[#022b3d] group-hover:text-[#bc1888] transition-colors">
+              <div className="font-outfit font-bold text-lg text-brand-dark group-hover:text-[#bc1888] transition-colors">
                 @kite_side
               </div>
               <p className="text-gray-500 text-sm mt-1 leading-relaxed">
@@ -50,7 +50,7 @@ export default function SocialLinks() {
               </svg>
             </div>
             <div>
-              <div className="font-outfit font-bold text-lg text-[#022b3d] group-hover:text-[#1877f2] transition-colors">
+              <div className="font-outfit font-bold text-lg text-brand-dark group-hover:text-[#1877f2] transition-colors">
                 Kite Side Beach Club
               </div>
               <p className="text-gray-500 text-sm mt-1 leading-relaxed">

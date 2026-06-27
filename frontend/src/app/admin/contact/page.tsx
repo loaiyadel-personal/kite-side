@@ -145,7 +145,7 @@ export default function ContactPage() {
       {/* Top-level tabs */}
       <div className="flex gap-1 mb-4 bg-[#1e293b] border border-white/10 rounded-xl p-1 w-fit">
         <button onClick={() => { setTab('messages'); setSelectedMsg(null); setSelectedInq(null) }}
-          className={`px-4 py-1.5 rounded-lg text-sm transition-colors ${tab === 'messages' ? 'bg-[#1a9fd4] text-white' : 'text-white/40 hover:text-white/70'}`}>
+          className={`px-4 py-1.5 rounded-lg text-sm transition-colors ${tab === 'messages' ? 'bg-brand-primary text-white' : 'text-white/40 hover:text-white/70'}`}>
           Messages
           {messages.filter(m => m.status === 'NEW').length > 0 && (
             <span className="ml-1.5 bg-[#e84a2e] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
@@ -154,7 +154,7 @@ export default function ContactPage() {
           )}
         </button>
         <button onClick={() => { setTab('bookings'); setSelectedMsg(null); setSelectedInq(null) }}
-          className={`px-4 py-1.5 rounded-lg text-sm transition-colors ${tab === 'bookings' ? 'bg-[#1a9fd4] text-white' : 'text-white/40 hover:text-white/70'}`}>
+          className={`px-4 py-1.5 rounded-lg text-sm transition-colors ${tab === 'bookings' ? 'bg-brand-primary text-white' : 'text-white/40 hover:text-white/70'}`}>
           Course Bookings
           {inquiries.filter(i => i.status === 'NEW').length > 0 && (
             <span className="ml-1.5 bg-[#e84a2e] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
@@ -184,7 +184,7 @@ export default function ContactPage() {
         <div className="bg-[#1e293b] border border-white/10 rounded-xl overflow-y-auto">
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <div className="w-6 h-6 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" />
+              <div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" />
             </div>
           ) : tab === 'messages' ? (
             messages.length === 0
@@ -194,7 +194,7 @@ export default function ContactPage() {
                   className={`w-full text-left px-4 py-3.5 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors ${selectedMsg?.id === msg.id ? 'bg-white/5' : ''}`}>
                   <div className="flex items-start justify-between gap-2 mb-1">
                     <p className={`text-sm font-medium truncate ${msg.status === 'NEW' ? 'text-white' : 'text-white/60'}`}>
-                      {msg.status === 'NEW' && <span className="inline-block w-1.5 h-1.5 bg-[#1a9fd4] rounded-full mr-1.5 mb-0.5" />}
+                      {msg.status === 'NEW' && <span className="inline-block w-1.5 h-1.5 bg-brand-primary rounded-full mr-1.5 mb-0.5" />}
                       {msg.name}
                     </p>
                     <StatusBadge status={msg.status} />
@@ -211,7 +211,7 @@ export default function ContactPage() {
                   className={`w-full text-left px-4 py-3.5 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors ${selectedInq?.id === inq.id ? 'bg-white/5' : ''}`}>
                   <div className="flex items-start justify-between gap-2 mb-1">
                     <p className={`text-sm font-medium truncate ${inq.status === 'NEW' ? 'text-white' : 'text-white/60'}`}>
-                      {inq.status === 'NEW' && <span className="inline-block w-1.5 h-1.5 bg-[#1a9fd4] rounded-full mr-1.5 mb-0.5" />}
+                      {inq.status === 'NEW' && <span className="inline-block w-1.5 h-1.5 bg-brand-primary rounded-full mr-1.5 mb-0.5" />}
                       {inq.name}
                     </p>
                     <StatusBadge status={inq.status} />
@@ -248,7 +248,7 @@ export default function ContactPage() {
               <div className="flex flex-wrap gap-3 mb-5">
                 <a href={`mailto:${selectedMsg.email}?subject=Re: ${encodeURIComponent(selectedMsg.subject || 'Your message')}`}
                   onClick={() => updateMsgStatus(selectedMsg.id, 'REPLIED')}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#1a9fd4] hover:bg-[#158bbf] text-white text-sm rounded-lg transition-colors">
+                  className="flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-[#158bbf] text-white text-sm rounded-lg transition-colors">
                   ✉️ Reply via Email
                 </a>
                 {selectedMsg.phone && (
@@ -269,13 +269,13 @@ export default function ContactPage() {
               <div className="border-t border-white/10 pt-4 grid grid-cols-2 gap-3 text-sm">
                 <div>
                   <p className="text-white/30 text-xs mb-0.5">Email</p>
-                  <a href={`mailto:${selectedMsg.email}`} className="text-[#1a9fd4] hover:underline">{selectedMsg.email}</a>
+                  <a href={`mailto:${selectedMsg.email}`} className="text-brand-primary hover:underline">{selectedMsg.email}</a>
                 </div>
                 {selectedMsg.phone && (
                   <div>
                     <p className="text-white/30 text-xs mb-0.5">Phone</p>
                     <a href={`https://wa.me/${selectedMsg.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
-                      className="text-[#1a9fd4] hover:underline">{selectedMsg.phone}</a>
+                      className="text-brand-primary hover:underline">{selectedMsg.phone}</a>
                   </div>
                 )}
               </div>
@@ -319,7 +319,7 @@ export default function ContactPage() {
               <div className="flex flex-wrap gap-3 mb-5">
                 <a href={`mailto:${selectedInq.email}?subject=Your ${selectedInq.course?.name ?? 'course'} booking at Kite Side`}
                   onClick={() => updateInqStatus(selectedInq.id, 'REPLIED')}
-                  className="flex items-center gap-2 px-4 py-2 bg-[#1a9fd4] hover:bg-[#158bbf] text-white text-sm rounded-lg transition-colors">
+                  className="flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-[#158bbf] text-white text-sm rounded-lg transition-colors">
                   ✉️ Reply via Email
                 </a>
                 {selectedInq.phone && (

@@ -33,7 +33,7 @@ export default function ImageUpload({ value, onChange, onClear, label = 'Image',
     <div>
       {label && <label className="block text-sm text-white/60 mb-1.5">{label}</label>}
       <div
-        className="relative rounded-xl border-2 border-dashed border-white/15 hover:border-[#1a9fd4]/50 transition-colors cursor-pointer overflow-hidden bg-white/5"
+        className="relative rounded-xl border-2 border-dashed border-white/15 hover:border-brand-primary/50 transition-colors cursor-pointer overflow-hidden bg-white/5"
         style={{ aspectRatio }}
         onClick={() => inputRef.current?.click()}
         onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) handleFile(f) }}

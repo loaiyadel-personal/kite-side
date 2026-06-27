@@ -21,7 +21,7 @@ export default function CoursesSection({ courses }: Props) {
     <>
       <section className="py-16 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
-          <h2 className="font-outfit font-bold text-3xl text-[#022b3d] text-center mb-4">
+          <h2 className="font-display font-bold text-3xl text-brand-dark text-center mb-4">
             Our Courses
           </h2>
           <p className="text-gray-500 text-center mb-8 max-w-xl mx-auto">

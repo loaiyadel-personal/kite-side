@@ -39,7 +39,7 @@ export default function LoginForm() {
         <input
           {...register('username')}
           autoComplete="username"
-          className="w-full bg-white/5 border border-white/10 focus:border-[#1a9fd4]/60 rounded-lg px-4 py-2.5 text-white placeholder-white/20 text-sm outline-none transition-colors"
+          className="w-full bg-white/5 border border-white/10 focus:border-brand-primary/60 rounded-lg px-4 py-2.5 text-white placeholder-white/20 text-sm outline-none transition-colors"
           placeholder="your_username"
         />
         {errors.username && <p className="text-red-400 text-xs mt-1">{errors.username.message}</p>}
@@ -51,7 +51,7 @@ export default function LoginForm() {
           {...register('password')}
           type="password"
           autoComplete="current-password"
-          className="w-full bg-white/5 border border-white/10 focus:border-[#1a9fd4]/60 rounded-lg px-4 py-2.5 text-white placeholder-white/20 text-sm outline-none transition-colors"
+          className="w-full bg-white/5 border border-white/10 focus:border-brand-primary/60 rounded-lg px-4 py-2.5 text-white placeholder-white/20 text-sm outline-none transition-colors"
           placeholder="••••••••"
         />
         {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>}
@@ -64,7 +64,7 @@ export default function LoginForm() {
       )}
 
       <button type="submit" disabled={isSubmitting}
-        className="w-full bg-[#1a9fd4] hover:bg-[#158bbf] disabled:bg-[#1a9fd4]/50 text-white font-medium py-2.5 rounded-lg text-sm transition-colors">
+        className="w-full bg-brand-primary hover:bg-[#158bbf] disabled:bg-brand-primary/50 text-white font-medium py-2.5 rounded-lg text-sm transition-colors">
         {isSubmitting ? 'Signing in…' : 'Sign In'}
       </button>
     </form>

@@ -1,6 +1,6 @@
 export default function GalleryHero() {
   return (
-    <section className="relative pt-32 pb-20 px-4 bg-[#022b3d] overflow-hidden">
+    <section className="relative pt-32 pb-20 px-4 bg-brand-dark overflow-hidden">
       {/* Subtle wave pattern */}
       <div className="absolute inset-0 opacity-10">
         <svg viewBox="0 0 1440 200" className="absolute bottom-0 w-full" preserveAspectRatio="none">
@@ -12,10 +12,10 @@ export default function GalleryHero() {
       </div>
 
       <div className="relative max-w-4xl mx-auto text-center">
-        <p className="text-[#1a9fd4] text-sm font-medium uppercase tracking-widest mb-4">
+        <p className="text-brand-primary text-xs font-semibold uppercase tracking-widest mb-4">
           Kite Side Beach Club
         </p>
-        <h1 className="font-outfit font-bold text-4xl sm:text-5xl text-white mb-5">
+        <h1 className="font-display font-bold text-4xl sm:text-5xl text-white mb-5 tracking-[-0.02em]">
           Gallery
         </h1>
         <p className="text-white/60 text-lg max-w-xl mx-auto">

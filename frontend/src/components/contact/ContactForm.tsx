@@ -49,7 +49,7 @@ export default function ContactForm() {
     return (
       <div className="flex flex-col items-center text-center py-12 px-6">
         <CheckCircle size={52} className="text-green-500 mb-4" />
-        <h3 className="font-outfit font-bold text-2xl text-[#022b3d] mb-2">Message Sent!</h3>
+        <h3 className="font-outfit font-bold text-2xl text-brand-dark mb-2">Message Sent!</h3>
         <p className="text-gray-600 max-w-sm mb-6">
           Thanks {submittedName}, we received your message and will reply within 24 hours.
         </p>
@@ -71,7 +71,7 @@ export default function ContactForm() {
     return (
       <div className="flex flex-col items-center text-center py-12 px-6">
         <div className="text-4xl mb-4">⏳</div>
-        <h3 className="font-outfit font-bold text-xl text-[#022b3d] mb-2">Too many messages</h3>
+        <h3 className="font-outfit font-bold text-xl text-brand-dark mb-2">Too many messages</h3>
         <p className="text-gray-500 mb-5">
           Please wait 15 minutes before sending another message, or reach us directly on WhatsApp.
         </p>
@@ -153,7 +153,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="flex items-center justify-center gap-2 bg-[#1a9fd4] hover:bg-[#0a8cc0] disabled:opacity-60 text-white font-semibold py-3.5 rounded-xl transition-colors"
+        className="flex items-center justify-center gap-2 bg-brand-primary hover:bg-[#0a8cc0] disabled:opacity-60 text-white font-semibold py-3.5 rounded-xl transition-colors"
       >
         {status === 'loading'
           ? <><Loader2 size={18} className="animate-spin" /> Sending…</>
@@ -179,6 +179,6 @@ function inp(hasError: boolean) {
     'w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors',
     hasError
       ? 'border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100'
-      : 'border-gray-200 focus:border-[#1a9fd4] focus:ring-2 focus:ring-[#1a9fd4]/10',
+      : 'border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10',
   ].join(' ')
 }

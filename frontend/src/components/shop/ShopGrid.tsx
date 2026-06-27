@@ -22,7 +22,7 @@ export default function ShopGrid({ items, activeFilter }: Props) {
           href={`https://wa.me/${WA}?text=${encodeURIComponent('Hi! Do you have any gear available in this category?')}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1a9fd4] text-white text-sm font-semibold"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand-primary text-white text-sm font-semibold"
         >
           Ask on WhatsApp
         </a>

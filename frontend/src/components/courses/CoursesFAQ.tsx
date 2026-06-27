@@ -36,7 +36,7 @@ export default function CoursesFAQ() {
   return (
     <section className="py-20 px-4 bg-gray-50">
       <div className="max-w-2xl mx-auto">
-        <h2 className="font-outfit font-bold text-3xl text-[#022b3d] text-center mb-4">
+        <h2 className="font-display font-bold text-3xl text-brand-dark text-center mb-4">
           Frequently Asked Questions
         </h2>
         <p className="text-gray-500 text-center mb-10">
@@ -50,7 +50,7 @@ export default function CoursesFAQ() {
                 onClick={() => setOpen(open === i ? null : i)}
                 className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left"
               >
-                <span className="font-medium text-[#022b3d] text-sm">{q}</span>
+                <span className="font-medium text-brand-dark text-sm">{q}</span>
                 <ChevronDown
                   size={18}
                   className={`text-gray-400 flex-none transition-transform duration-200 ${open === i ? 'rotate-180' : ''}`}

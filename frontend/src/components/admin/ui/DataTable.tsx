@@ -15,12 +15,15 @@ interface Props<T> {
 
 export default function DataTable<T>({ columns, data, keyField }: Props<T>) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-white/10">
+    <div className="overflow-x-auto rounded-2xl border border-white/[0.08]" style={{ background: 'rgba(255,255,255,0.03)' }}>
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-white/10 bg-white/5">
+          <tr className="border-b border-white/[0.08]">
             {columns.map(col => (
-              <th key={col.key} className={`px-4 py-3 text-left text-white/40 font-medium text-xs uppercase tracking-wide ${col.className ?? ''}`}>
+              <th
+                key={col.key}
+                className={`px-5 py-3.5 text-left text-white/35 font-semibold text-xs uppercase tracking-wider ${col.className ?? ''}`}
+              >
                 {col.label}
               </th>
             ))}
@@ -28,9 +31,15 @@ export default function DataTable<T>({ columns, data, keyField }: Props<T>) {
         </thead>
         <tbody>
           {data.map(row => (
-            <tr key={String(row[keyField])} className="border-b border-white/5 hover:bg-white/3 transition-colors last:border-0">
+            <tr
+              key={String(row[keyField])}
+              className="border-b border-white/[0.05] last:border-0 transition-colors duration-100 hover:bg-white/[0.04]"
+            >
               {columns.map(col => (
-                <td key={col.key} className={`px-4 py-3 text-white/70 ${col.className ?? ''}`}>
+                <td
+                  key={col.key}
+                  className={`px-5 py-3.5 text-white/65 ${col.className ?? ''}`}
+                >
                   {col.render ? col.render(row) : String((row as Record<string, unknown>)[col.key] ?? '')}
                 </td>
               ))}

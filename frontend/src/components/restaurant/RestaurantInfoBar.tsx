@@ -12,7 +12,7 @@ export default function RestaurantInfoBar() {
           <div key={label} className="flex items-center gap-3 p-4 rounded-xl bg-gray-50">
             <span className="text-2xl">{emoji}</span>
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-[#1a9fd4]">{label}</div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-brand-primary">{label}</div>
               <div className="text-sm text-gray-700 mt-0.5">{detail}</div>
             </div>
           </div>

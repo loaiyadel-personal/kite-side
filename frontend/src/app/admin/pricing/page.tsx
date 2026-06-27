@@ -151,13 +151,13 @@ export default function PricingPage() {
   const RENTAL_CATS: Category[] = ['RENTAL_KITE', 'RENTAL_BOARD', 'RENTAL_HARNESS', 'RENTAL_WETSUIT', 'RENTAL_FULL_GEAR']
   const visible = items.filter(i => tab === 'Rentals' ? RENTAL_CATS.includes(i.category) : i.category === 'BEACH_USE')
 
-  const inputCls = 'w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20'
+  const inputCls = 'w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20'
 
   return (
     <div>
       <PageHeader title="Pricing" subtitle="Manage rental and beach pricing"
         action={
-          <button onClick={openAdd} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg transition-colors">
+          <button onClick={openAdd} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg transition-colors">
             + Add Item
           </button>
         }
@@ -166,29 +166,29 @@ export default function PricingPage() {
       <div className="flex gap-1 mb-5 bg-[#1e293b] border border-white/10 rounded-xl p-1 w-fit">
         {TAB_GROUPS.map(g => (
           <button key={g} onClick={() => setTab(g)}
-            className={`px-4 py-1.5 rounded-lg text-sm transition-colors ${tab === g ? 'bg-[#1a9fd4] text-white' : 'text-white/40 hover:text-white/70'}`}>
+            className={`px-4 py-1.5 rounded-lg text-sm transition-colors ${tab === g ? 'bg-brand-primary text-white' : 'text-white/40 hover:text-white/70'}`}>
             {g}
           </button>
         ))}
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-20"><div className="w-6 h-6 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" /></div>
+        <div className="flex justify-center py-20"><div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" /></div>
       ) : visible.length === 0 ? (
         <EmptyState icon="💰" title="No pricing items" message="Add the first pricing item for this section" />
       ) : (
         <div className="grid gap-3">
           {visible.map(item => (
-            <div key={item.id} className={`bg-[#1e293b] border rounded-xl p-4 flex items-center gap-4 ${item.isHighlighted ? 'border-[#1a9fd4]/40' : 'border-white/10'}`}>
+            <div key={item.id} className={`bg-[#1e293b] border rounded-xl p-4 flex items-center gap-4 ${item.isHighlighted ? 'border-brand-primary/40' : 'border-white/10'}`}>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
                   <p className="text-white font-medium">{item.name}</p>
-                  {item.isHighlighted && <span className="text-[10px] bg-[#1a9fd4]/20 text-[#1a9fd4] px-1.5 py-0.5 rounded font-medium">Featured</span>}
+                  {item.isHighlighted && <span className="text-[10px] bg-brand-primary/20 text-brand-primary px-1.5 py-0.5 rounded font-medium">Featured</span>}
                   <span className="text-white/30 text-xs">{CATEGORIES.find(c => c.value === item.category)?.label}</span>
                 </div>
                 {item.description && <p className="text-white/40 text-xs truncate">{item.description}</p>}
                 <div className="flex items-center gap-3 mt-1 text-sm">
-                  <span className="text-[#1a9fd4] font-semibold">EGP {Number(item.priceEGP).toLocaleString()}</span>
+                  <span className="text-brand-primary font-semibold">EGP {Number(item.priceEGP).toLocaleString()}</span>
                   {item.priceUSD && <span className="text-white/30">/ ${Number(item.priceUSD)}</span>}
                   <span className="text-white/30 text-xs">{item.unit}</span>
                 </div>
@@ -209,7 +209,7 @@ export default function PricingPage() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs text-white/40 mb-1">Category *</label>
-              <select {...form.register('category')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors">
+              <select {...form.register('category')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors">
                 {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
               </select>
             </div>
@@ -240,12 +240,12 @@ export default function PricingPage() {
             </div>
           </div>
           <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" {...form.register('isHighlighted')} className="w-4 h-4 rounded accent-[#1a9fd4]" />
+            <input type="checkbox" {...form.register('isHighlighted')} className="w-4 h-4 rounded accent-brand-primary" />
             <span className="text-white/60 text-sm">Feature / highlight this item</span>
           </label>
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={() => setModalOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
-            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
               {saving ? 'Saving…' : editing ? 'Update' : 'Create'}
             </button>
           </div>

@@ -21,19 +21,19 @@ function AdminShell({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-[#0f172a] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" />
+      <div className="fixed inset-0 bg-[#0b1622] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
   if (!isAuthenticated) return null
 
   return (
-    <div className="flex h-screen bg-[#0f172a] overflow-hidden">
+    <div className="flex h-screen bg-[#0b1622] overflow-hidden">
       <AdminSidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <AdminTopBar />
-        <main className="flex-1 overflow-y-auto p-6 bg-[#0f172a]">
+        <main className="flex-1 overflow-y-auto p-6 bg-[#0b1622]">
           {children}
         </main>
       </div>

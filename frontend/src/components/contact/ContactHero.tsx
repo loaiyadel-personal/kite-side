@@ -2,7 +2,7 @@ import { Zap } from 'lucide-react'
 
 export default function ContactHero() {
   return (
-    <section className="relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#022b3d] via-[#0a4f6e] to-[#1a9fd4]"
+    <section className="relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-brand-dark via-[#0a4f6e] to-brand-primary"
       style={{ minHeight: '50vh' }}>
       <div className="absolute inset-0 opacity-10"
         style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}
@@ -12,7 +12,7 @@ export default function ContactHero() {
           <Zap size={14} className="text-[#f5c842]" />
           We reply within 24 hours
         </div>
-        <h1 className="font-outfit font-bold text-5xl md:text-6xl text-white leading-tight mb-5">
+        <h1 className="font-display font-bold text-5xl md:text-6xl text-white leading-tight mb-5 tracking-[-0.02em]">
           Get in Touch
         </h1>
         <p className="text-white/70 text-lg max-w-xl mx-auto">

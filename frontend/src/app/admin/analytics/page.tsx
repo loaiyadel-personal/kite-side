@@ -32,7 +32,7 @@ export default function AnalyticsPage() {
     return (
       <div>
         <PageHeader title="Analytics" subtitle="Site traffic and engagement" />
-        <div className="flex justify-center py-20"><div className="w-6 h-6 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" /></div>
+        <div className="flex justify-center py-20"><div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" /></div>
       </div>
     )
   }
@@ -84,7 +84,7 @@ export default function AnalyticsPage() {
                 {data.topPages.map(p => (
                   <div key={p.path} className="flex items-center justify-between py-1.5">
                     <p className="text-white/70 text-sm font-mono">{p.path}</p>
-                    <p className="text-[#1a9fd4] text-sm font-semibold">{p.views.toLocaleString()}</p>
+                    <p className="text-brand-primary text-sm font-semibold">{p.views.toLocaleString()}</p>
                   </div>
                 ))}
               </div>

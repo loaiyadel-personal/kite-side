@@ -32,7 +32,7 @@ export default function ConfirmDialog({
           className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 ${
             danger
               ? 'bg-red-500 hover:bg-red-600 text-white'
-              : 'bg-[#1a9fd4] hover:bg-[#158bbf] text-white'
+              : 'bg-brand-primary hover:bg-[#158bbf] text-white'
           }`}>
           {loading ? 'Loading…' : confirmLabel}
         </button>

@@ -29,7 +29,7 @@ export default function CourseLevelTabs({ activeLevel, onChange }: Props) {
             className={[
               'px-4 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap',
               activeLevel === value
-                ? 'bg-[#1a9fd4] text-white shadow-sm'
+                ? 'bg-brand-primary text-white shadow-sm'
                 : 'text-gray-600 hover:bg-gray-100',
             ].join(' ')}
           >

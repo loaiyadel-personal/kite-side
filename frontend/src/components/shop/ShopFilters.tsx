@@ -32,7 +32,7 @@ export default function ShopFilters({ active, onChange, counts }: Props) {
               className={[
                 'px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all',
                 isActive
-                  ? 'bg-[#1a9fd4] text-white shadow-md shadow-[#1a9fd4]/30'
+                  ? 'bg-brand-primary text-white shadow-md shadow-brand-primary/30'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200',
               ].join(' ')}
             >

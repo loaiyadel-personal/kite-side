@@ -5,6 +5,7 @@ import { useAdminAuth } from '@/lib/auth/AdminAuthContext'
 import PageHeader from '@/components/admin/ui/PageHeader'
 import Link from 'next/link'
 import { formatDistanceToNow } from 'date-fns'
+import { Inbox, Images, UtensilsCrossed, ShoppingBag, Camera, Plus, Wind, ShoppingCart, type LucideIcon } from 'lucide-react'
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
 
@@ -22,14 +23,24 @@ interface RecentMessage {
   createdAt: string
 }
 
-function StatCard({ label, value, icon, href }: { label: string; value: number | string; icon: string; href: string }) {
+function StatCard({
+  label, value, icon: Icon, href,
+}: {
+  label: string; value: number | string; icon: LucideIcon; href: string
+}) {
   return (
-    <Link href={href} className="bg-[#1e293b] border border-white/10 rounded-xl p-5 flex items-center gap-4 hover:border-[#1a9fd4]/30 transition-colors group">
-      <div className="w-12 h-12 rounded-xl bg-[#1a9fd4]/10 flex items-center justify-center text-2xl group-hover:bg-[#1a9fd4]/20 transition-colors">
-        {icon}
+    <Link
+      href={href}
+      className="group flex items-center gap-4 p-5 rounded-2xl border border-white/[0.08] transition-all duration-200 hover:border-brand-primary/25 hover:bg-white/[0.03]"
+      style={{ backgroundColor: 'rgba(255,255,255,0.04)' }}
+    >
+      <div
+        className="w-12 h-12 rounded-xl flex items-center justify-center flex-none transition-colors duration-200 group-hover:bg-brand-primary/20 bg-brand-primary/10"
+      >
+        <Icon size={20} className="text-brand-primary" />
       </div>
       <div>
-        <p className="text-white font-outfit font-bold text-2xl">{value}</p>
+        <p className="text-white font-outfit font-bold text-2xl leading-none mb-0.5 tabular-nums">{value}</p>
         <p className="text-white/40 text-sm">{label}</p>
       </div>
     </Link>
@@ -67,35 +78,44 @@ export default function DashboardPage() {
   return (
     <div>
       <PageHeader
-        title={`${greeting}, ${admin?.name?.split(' ')[0] ?? 'Admin'} 👋`}
+        title={`${greeting}, ${admin?.name?.split(' ')[0] ?? 'Admin'}`}
         subtitle="Here's what's happening with your site"
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard label="New Messages"  value={stats?.newMessages  ?? '–'} icon="📬" href="/admin/contact" />
-        <StatCard label="Gallery Items" value={stats?.galleryItems ?? '–'} icon="🖼️" href="/admin/gallery" />
-        <StatCard label="Menu Items"    value={stats?.menuItems    ?? '–'} icon="🍽️" href="/admin/menu" />
-        <StatCard label="Shop Items"    value={stats?.shopItems    ?? '–'} icon="🏪" href="/admin/shop" />
+        <StatCard label="New Messages"  value={stats?.newMessages  ?? '–'} icon={Inbox}          href="/admin/contact" />
+        <StatCard label="Gallery Items" value={stats?.galleryItems ?? '–'} icon={Images}         href="/admin/gallery" />
+        <StatCard label="Menu Items"    value={stats?.menuItems    ?? '–'} icon={UtensilsCrossed} href="/admin/menu" />
+        <StatCard label="Shop Items"    value={stats?.shopItems    ?? '–'} icon={ShoppingBag}    href="/admin/shop" />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        <div className="bg-[#1e293b] border border-white/10 rounded-xl p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-white font-outfit font-semibold">Recent Messages</h2>
-            <Link href="/admin/contact" className="text-[#1a9fd4] text-sm hover:underline">View all →</Link>
+        {/* Recent messages */}
+        <div
+          className="rounded-2xl border border-white/[0.08] p-5"
+          style={{ backgroundColor: 'rgba(255,255,255,0.04)' }}
+        >
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-white font-display font-semibold tracking-[-0.01em]">Recent Messages</h2>
+            <Link href="/admin/contact" className="text-sm font-medium hover:underline text-brand-primary">
+              View all →
+            </Link>
           </div>
           {recent.length === 0 ? (
-            <p className="text-white/30 text-sm py-6 text-center">No messages yet</p>
+            <p className="text-white/25 text-sm py-6 text-center">No messages yet</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-1">
               {recent.map(m => (
-                <Link key={m.id} href={`/admin/contact?id=${m.id}`}
-                  className="flex items-center justify-between py-2 border-b border-white/5 last:border-0 hover:opacity-80 transition-opacity">
+                <Link
+                  key={m.id}
+                  href={`/admin/contact?id=${m.id}`}
+                  className="flex items-center justify-between py-2.5 px-2 rounded-xl border border-transparent hover:border-white/[0.06] hover:bg-white/[0.04] transition-all duration-150"
+                >
                   <div className="min-w-0">
                     <p className="text-white/80 text-sm font-medium truncate">{m.name}</p>
-                    {m.subject && <p className="text-white/40 text-xs truncate">{m.subject}</p>}
+                    {m.subject && <p className="text-white/35 text-xs truncate">{m.subject}</p>}
                   </div>
-                  <p className="text-white/30 text-xs ml-3 flex-none">
+                  <p className="text-white/25 text-xs ml-3 flex-none">
                     {formatDistanceToNow(new Date(m.createdAt), { addSuffix: true })}
                   </p>
                 </Link>
@@ -104,18 +124,26 @@ export default function DashboardPage() {
           )}
         </div>
 
-        <div className="bg-[#1e293b] border border-white/10 rounded-xl p-5">
-          <h2 className="text-white font-outfit font-semibold mb-4">Quick Actions</h2>
+        {/* Quick actions */}
+        <div
+          className="rounded-2xl border border-white/[0.08] p-5"
+          style={{ backgroundColor: 'rgba(255,255,255,0.04)' }}
+        >
+          <h2 className="text-white font-display font-semibold mb-5 tracking-[-0.01em]">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-3">
-            {[
-              { label: 'Add Photo',    href: '/admin/gallery', icon: '📸' },
-              { label: 'Add Menu Item', href: '/admin/menu',   icon: '➕' },
-              { label: 'Add Course',   href: '/admin/courses', icon: '🪁' },
-              { label: 'Add Product',  href: '/admin/shop',    icon: '🛍️' },
-            ].map(({ label, href, icon }) => (
-              <Link key={label} href={href}
-                className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg px-4 py-3 flex items-center gap-2.5 text-white/60 hover:text-white transition-colors text-sm">
-                <span>{icon}</span> {label}
+            {([
+              { label: 'Add Photo',     href: '/admin/gallery',  icon: Camera },
+              { label: 'Add Menu Item', href: '/admin/menu',     icon: Plus },
+              { label: 'Add Course',    href: '/admin/courses',  icon: Wind },
+              { label: 'Add Product',   href: '/admin/shop',     icon: ShoppingCart },
+            ] as { label: string; href: string; icon: LucideIcon }[]).map(({ label, href, icon: Icon }) => (
+              <Link
+                key={label}
+                href={href}
+                className="flex items-center gap-2.5 px-4 py-3 rounded-xl border border-white/[0.08] text-white/55 hover:text-white hover:border-brand-primary/25 hover:bg-white/[0.04] transition-all duration-150 text-sm font-medium"
+              >
+                <Icon size={15} className="flex-none" />
+                {label}
               </Link>
             ))}
           </div>

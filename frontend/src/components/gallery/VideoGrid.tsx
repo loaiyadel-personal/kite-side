@@ -26,11 +26,11 @@ export default function VideoGrid({ videos }: Props) {
   return (
     <section className="px-4 pb-16">
       <div className="max-w-6xl mx-auto">
-        <h2 className="font-outfit font-bold text-2xl text-[#022b3d] mb-6">Videos</h2>
+        <h2 className="font-outfit font-bold text-2xl text-brand-dark mb-6">Videos</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {videos.map(video => (
             <div key={video.id} className="group rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-              <div className="relative aspect-video bg-[#022b3d]">
+              <div className="relative aspect-video bg-brand-dark">
                 <iframe
                   src={getEmbedUrl(video.url)}
                   title={video.caption ?? 'Video'}
@@ -44,7 +44,7 @@ export default function VideoGrid({ videos }: Props) {
                 <div className="px-4 py-3 bg-white">
                   <p className="text-sm text-gray-700 font-medium truncate">{video.caption}</p>
                   {video.category && (
-                    <span className="text-xs text-[#1a9fd4] capitalize">{video.category}</span>
+                    <span className="text-xs text-brand-primary capitalize">{video.category}</span>
                   )}
                 </div>
               )}

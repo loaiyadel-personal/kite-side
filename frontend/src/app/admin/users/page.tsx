@@ -150,14 +150,14 @@ export default function UsersPage() {
       <PageHeader title="User Management" subtitle={`${users.length} admins`}
         action={
           <button onClick={() => { createForm.reset(); setWatchPw(''); setCreateOpen(true) }}
-            className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg transition-colors">
+            className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg transition-colors">
             + Add User
           </button>
         }
       />
 
       {loading ? (
-        <div className="flex justify-center py-20"><div className="w-6 h-6 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" /></div>
+        <div className="flex justify-center py-20"><div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" /></div>
       ) : users.length === 0 ? (
         <EmptyState icon="👥" title="No users" message="Create the first admin user" />
       ) : (
@@ -219,28 +219,28 @@ export default function UsersPage() {
         <form onSubmit={createForm.handleSubmit(onCreateSubmit)} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <input {...createForm.register('username')} placeholder="Username *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+              <input {...createForm.register('username')} placeholder="Username *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
               {createForm.formState.errors.username && <p className="text-red-400 text-xs mt-1">{createForm.formState.errors.username.message}</p>}
             </div>
             <div>
-              <input {...createForm.register('name')} placeholder="Display name *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+              <input {...createForm.register('name')} placeholder="Display name *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
               {createForm.formState.errors.name && <p className="text-red-400 text-xs mt-1">{createForm.formState.errors.name.message}</p>}
             </div>
           </div>
-          <input {...createForm.register('email')} type="email" placeholder="Email (optional)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
-          <select {...createForm.register('role')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors">
+          <input {...createForm.register('email')} type="email" placeholder="Email (optional)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
+          <select {...createForm.register('role')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors">
             <option value="EDITOR">Editor</option>
             <option value="SUPER_ADMIN">Super Admin</option>
           </select>
           <div>
-            <input {...createForm.register('password')} type="password" placeholder="Password *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20"
+            <input {...createForm.register('password')} type="password" placeholder="Password *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20"
               onChange={e => { createForm.setValue('password', e.target.value); setWatchPw(e.target.value) }} />
             {createForm.formState.errors.password && <p className="text-red-400 text-xs mt-1">{createForm.formState.errors.password.message}</p>}
             <PasswordStrength password={watchPw} />
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={() => setCreateOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
-            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
               {saving ? 'Creating…' : 'Create User'}
             </button>
           </div>
@@ -251,22 +251,22 @@ export default function UsersPage() {
       {editTarget && (
         <Modal open={!!editTarget} onClose={() => { setEditTarget(null); editForm.reset() }} title={`Edit ${editTarget.name}`}>
           <form onSubmit={editForm.handleSubmit(onEditSubmit)} className="space-y-4">
-            <input {...editForm.register('name')} placeholder="Display name *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+            <input {...editForm.register('name')} placeholder="Display name *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
             {editForm.formState.errors.name && <p className="text-red-400 text-xs mt-1">{editForm.formState.errors.name.message}</p>}
-            <input {...editForm.register('email')} type="email" placeholder="Email (optional)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+            <input {...editForm.register('email')} type="email" placeholder="Email (optional)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
             <div className="grid grid-cols-2 gap-3">
-              <select {...editForm.register('role')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors">
+              <select {...editForm.register('role')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors">
                 <option value="EDITOR">Editor</option>
                 <option value="SUPER_ADMIN">Super Admin</option>
               </select>
               <label className="flex items-center gap-2 px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg cursor-pointer">
-                <input type="checkbox" {...editForm.register('isActive')} className="w-4 h-4 rounded accent-[#1a9fd4]" />
+                <input type="checkbox" {...editForm.register('isActive')} className="w-4 h-4 rounded accent-brand-primary" />
                 <span className="text-white/60 text-sm">Active</span>
               </label>
             </div>
             <div className="flex justify-end gap-3 pt-2">
               <button type="button" onClick={() => setEditTarget(null)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
-              <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+              <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
                 {saving ? 'Saving…' : 'Update'}
               </button>
             </div>
@@ -277,11 +277,11 @@ export default function UsersPage() {
       {/* Temp password modal */}
       <Modal open={!!tempPassword} onClose={() => setTempPassword(null)} title="Temporary Password" size="sm">
         <p className="text-white/60 text-sm mb-3">Share this password securely. It will only be shown once.</p>
-        <div className="bg-[#0f172a] rounded-lg px-4 py-3 font-mono text-[#1a9fd4] text-lg tracking-widest text-center select-all mb-4">
+        <div className="bg-[#0f172a] rounded-lg px-4 py-3 font-mono text-brand-primary text-lg tracking-widest text-center select-all mb-4">
           {tempPassword}
         </div>
         <button onClick={() => { navigator.clipboard.writeText(tempPassword ?? ''); toast.success('Copied') }}
-          className="w-full py-2 bg-[#1a9fd4] hover:bg-[#158bbf] text-white text-sm rounded-lg transition-colors">
+          className="w-full py-2 bg-brand-primary hover:bg-[#158bbf] text-white text-sm rounded-lg transition-colors">
           Copy to Clipboard
         </button>
       </Modal>

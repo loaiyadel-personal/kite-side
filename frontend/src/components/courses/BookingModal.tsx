@@ -88,7 +88,7 @@ export default function BookingModal({ course, onClose }: Props) {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 sticky top-0 bg-white z-10">
           <div>
-            <h2 className="font-outfit font-bold text-xl text-[#022b3d]">Book a Course</h2>
+            <h2 className="font-outfit font-bold text-xl text-brand-dark">Book a Course</h2>
             <p className="text-sm text-gray-500 mt-0.5">{course.name}</p>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-lg hover:bg-gray-100">
@@ -100,9 +100,9 @@ export default function BookingModal({ course, onClose }: Props) {
         {status === 'success' && (
           <div className="px-6 py-12 text-center">
             <div className="text-5xl mb-4">🤙</div>
-            <h3 className="font-outfit font-bold text-xl text-[#022b3d] mb-2">Request received!</h3>
+            <h3 className="font-outfit font-bold text-xl text-brand-dark mb-2">Request received!</h3>
             <p className="text-gray-500 mb-6">We'll contact you within 24 hours to confirm your booking.</p>
-            <button onClick={onClose} className="bg-[#1a9fd4] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#0a8cc0] transition-colors">
+            <button onClick={onClose} className="bg-brand-primary text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#0a8cc0] transition-colors">
               Close
             </button>
           </div>
@@ -112,7 +112,7 @@ export default function BookingModal({ course, onClose }: Props) {
         {status === 'rate_limited' && (
           <div className="px-6 py-12 text-center">
             <div className="text-5xl mb-4">⏳</div>
-            <h3 className="font-outfit font-bold text-xl text-[#022b3d] mb-2">Too many requests</h3>
+            <h3 className="font-outfit font-bold text-xl text-brand-dark mb-2">Too many requests</h3>
             <p className="text-gray-500 mb-6">Please wait a while before submitting again, or reach us directly on WhatsApp.</p>
             <a href="https://wa.me/201116407080" target="_blank" rel="noopener noreferrer"
               className="inline-block bg-[#25d366] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#1eb557] transition-colors">
@@ -189,7 +189,7 @@ export default function BookingModal({ course, onClose }: Props) {
             <button
               type="submit"
               disabled={status === 'loading'}
-              className="mt-2 bg-[#1a9fd4] hover:bg-[#0a8cc0] disabled:opacity-60 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
+              className="mt-2 bg-brand-primary hover:bg-[#0a8cc0] disabled:opacity-60 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
             >
               {status === 'loading' && <Loader2 size={16} className="animate-spin" />}
               {status === 'loading' ? 'Sending…' : 'Send Booking Request'}
@@ -216,6 +216,6 @@ function input(hasError: boolean) {
     'w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-colors',
     hasError
       ? 'border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100'
-      : 'border-gray-200 focus:border-[#1a9fd4] focus:ring-2 focus:ring-[#1a9fd4]/10',
+      : 'border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10',
   ].join(' ')
 }

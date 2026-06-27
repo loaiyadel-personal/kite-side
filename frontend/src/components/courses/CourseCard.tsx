@@ -38,13 +38,13 @@ export default function CourseCard({ course, onBook }: Props) {
   const waLink = `https://wa.me/201116407080?text=${waMsg}`
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-2xl flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-2" style={{ boxShadow: '0 8px 32px rgba(2,43,61,0.10), 0 2px 8px rgba(90,172,188,0.07)', border: '1px solid rgba(90,172,188,0.12)' }}>
       {/* Header */}
-      <div className="bg-[#022b3d] px-6 pt-6 pb-5">
+      <div className="bg-gradient-to-br from-brand-dark to-brand-deep px-6 pt-6 pb-5">
         <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold mb-3 ${badge.cls}`}>
           {badge.label}
         </span>
-        <h3 className="font-outfit font-bold text-xl text-white leading-snug">{course.name}</h3>
+        <h3 className="font-display font-bold text-xl text-white leading-snug">{course.name}</h3>
       </div>
 
       {/* Body */}
@@ -55,11 +55,11 @@ export default function CourseCard({ course, onBook }: Props) {
         {/* Key info */}
         <div className="flex items-center gap-5 text-sm text-gray-500">
           <span className="flex items-center gap-1.5">
-            <Clock size={15} className="text-[#1a9fd4]" />
+            <Clock size={15} className="text-brand-primary" />
             {course.durationHours}h
           </span>
           <span className="flex items-center gap-1.5">
-            <Users size={15} className="text-[#1a9fd4]" />
+            <Users size={15} className="text-brand-primary" />
             Max {course.maxStudents}
           </span>
         </div>
@@ -69,7 +69,7 @@ export default function CourseCard({ course, onBook }: Props) {
           <ul className="grid grid-cols-1 gap-1">
             {course.includes.map((item) => (
               <li key={item} className="flex items-center gap-2 text-sm text-gray-600">
-                <Check size={14} className="text-[#1a9fd4] flex-none" />
+                <Check size={14} className="text-brand-primary flex-none" />
                 {item}
               </li>
             ))}
@@ -90,7 +90,7 @@ export default function CourseCard({ course, onBook }: Props) {
         {/* Price */}
         <div className="border-t border-gray-100 pt-4 flex items-end justify-between gap-3">
           <div>
-            <div className="font-outfit font-bold text-3xl text-[#022b3d]">
+            <div className="font-outfit font-bold text-3xl text-brand-dark">
               {price.toLocaleString('en-EG')} <span className="text-lg font-normal text-gray-400">EGP</span>
             </div>
             {priceUsd != null && (
@@ -100,7 +100,7 @@ export default function CourseCard({ course, onBook }: Props) {
           <div className="flex flex-col items-end gap-2">
             <button
               onClick={() => onBook(course)}
-              className="bg-[#1a9fd4] hover:bg-[#0a8cc0] text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors"
+              className="text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] bg-brand-primary"
             >
               Book Now
             </button>

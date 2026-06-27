@@ -24,7 +24,7 @@ export default function ContactFAQ() {
   return (
     <section className="py-16 px-4 bg-gray-50">
       <div className="max-w-2xl mx-auto">
-        <h2 className="font-outfit font-bold text-2xl text-[#022b3d] text-center mb-8">
+        <h2 className="font-display font-bold text-2xl text-brand-dark text-center mb-8">
           Quick Answers
         </h2>
         <div className="flex flex-col gap-3">
@@ -34,7 +34,7 @@ export default function ContactFAQ() {
                 onClick={() => setOpen(open === i ? null : i)}
                 className="w-full flex items-center justify-between gap-4 px-6 py-4 text-left"
               >
-                <span className="font-medium text-[#022b3d] text-sm">{q}</span>
+                <span className="font-medium text-brand-dark text-sm">{q}</span>
                 <ChevronDown
                   size={18}
                   className={`text-gray-400 flex-none transition-transform duration-200 ${open === i ? 'rotate-180' : ''}`}

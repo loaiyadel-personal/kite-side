@@ -59,7 +59,7 @@ export default function SunTideWidget() {
   return (
     <section className="px-4 pb-16 bg-white">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-[#022b3d] rounded-2xl p-6 shadow-xl">
+        <div className="bg-brand-dark rounded-2xl p-6 shadow-xl">
 
           {/* Sun row */}
           <div className="grid grid-cols-2 gap-4 mb-4">
@@ -103,7 +103,7 @@ export default function SunTideWidget() {
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#1a9fd4" strokeWidth="2" className="w-4 h-4">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-primary)" strokeWidth="2" className="w-4 h-4">
                   <path d="M2 12c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0 3 2 4.5 0" strokeLinecap="round"/>
                   <path d="M2 17c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0 3 2 4.5 0" strokeLinecap="round"/>
                 </svg>
@@ -161,20 +161,20 @@ function TideCard({ entry }: { entry: TideEntry }) {
   return (
     <div className={[
       'rounded-xl p-4 flex flex-col gap-1',
-      isHigh ? 'bg-[#1a9fd4]/20 border border-[#1a9fd4]/30' : 'bg-white/5',
+      isHigh ? 'bg-brand-primary/20 border border-brand-primary/30' : 'bg-white/5',
     ].join(' ')}>
       <div className="flex items-center gap-1.5">
-        <span className={`text-sm leading-none ${isHigh ? 'text-[#1a9fd4]' : 'text-white/30'}`}>
+        <span className={`text-sm leading-none ${isHigh ? 'text-brand-primary' : 'text-white/30'}`}>
           {isHigh ? '▲' : '▼'}
         </span>
-        <span className={`text-xs font-medium uppercase tracking-wider ${isHigh ? 'text-[#1a9fd4]' : 'text-white/30'}`}>
+        <span className={`text-xs font-medium uppercase tracking-wider ${isHigh ? 'text-brand-primary' : 'text-white/30'}`}>
           {isHigh ? 'High' : 'Low'}
         </span>
       </div>
       <div className="font-outfit font-bold text-2xl text-white leading-none mt-1">
         {entry.time}
       </div>
-      <div className={`text-sm font-semibold ${isHigh ? 'text-[#1a9fd4]' : 'text-white/40'}`}>
+      <div className={`text-sm font-semibold ${isHigh ? 'text-brand-primary' : 'text-white/40'}`}>
         {entry.height.toFixed(1)} m
       </div>
     </div>

@@ -1,10 +1,11 @@
 import Image from 'next/image'
+import { Clock, MapPin } from 'lucide-react'
 
 export default function RestaurantHero() {
   return (
     <section
       className="relative py-24 px-4 text-center overflow-hidden"
-      style={{ background: 'linear-gradient(160deg, #022b3d 0%, #1a9fd4 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #022b3d 0%, #0a4f6e 50%, #1284a8 100%)' }}
     >
       <div className="relative z-10 max-w-2xl mx-auto">
         <div className="flex justify-center mb-6">
@@ -13,24 +14,26 @@ export default function RestaurantHero() {
             alt="Kite Side Beach Club"
             width={100}
             height={100}
-            className="rounded-full border-4 border-white/30 shadow-2xl"
+            className="rounded-full border-4 border-white/25 shadow-[0_8px_40px_rgba(90,172,188,0.25)]"
             priority
           />
         </div>
 
-        <h1 className="font-outfit font-bold text-5xl sm:text-6xl text-white mb-3">
+        <h1 className="font-display font-bold text-5xl sm:text-6xl text-white mb-3 tracking-[-0.02em]">
           Kite Side Beach Club
         </h1>
-        <p className="text-xl text-white/80 mb-8">
+        <p className="text-xl text-white/75 mb-8 leading-relaxed">
           Fresh food, sea views, good vibes
         </p>
 
         <div className="flex flex-wrap justify-center gap-3 mb-8">
-          <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white border border-white/20">
-            🕐 Open Daily 9:00 AM — Late
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-white/10 text-white border border-white/20">
+            <Clock size={14} className="text-brand-primary" />
+            Open Daily 9:00 AM — Late
           </span>
-          <span className="px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white border border-white/20">
-            📍 Ras Sudr, Red Sea
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-white/10 text-white border border-white/20">
+            <MapPin size={14} className="text-brand-primary" />
+            Ras Sudr, Red Sea
           </span>
         </div>
 
@@ -38,7 +41,7 @@ export default function RestaurantHero() {
           href="https://wa.me/201116407080?text=Hi!%20I'd%20like%20to%20reserve%20a%20table%20at%20Kite%20Side%20Beach%20Club"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-white transition-all hover:brightness-110 hover:scale-105 shadow-lg"
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-white transition-all duration-200 hover:scale-105 hover:shadow-[0_0_20px_rgba(37,211,102,0.45)] active:scale-[0.97] shadow-lg"
           style={{ backgroundColor: '#25D366' }}
         >
           <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">

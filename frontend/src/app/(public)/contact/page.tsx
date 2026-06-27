@@ -25,7 +25,7 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
               {/* Form — 60% */}
               <div className="lg:col-span-3">
-                <h2 className="font-outfit font-bold text-2xl text-[#022b3d] mb-6">Send a Message</h2>
+                <h2 className="font-display font-bold text-2xl text-brand-dark mb-6">Send a Message</h2>
                 <ContactForm />
               </div>
               {/* Info — 40% */}

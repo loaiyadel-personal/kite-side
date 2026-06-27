@@ -34,7 +34,7 @@ export default function MenuItemCard({ item }: { item: MenuItem }) {
         {imageUrl ? (
           <Image src={imageUrl} alt={item.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #1a9fd4 0%, #022b3d 100%)' }}>
+          <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #1a9fd4 0%, var(--color-brand-dark) 100%)' }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" className="w-12 h-12 opacity-40">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 1.343-3 3v2h6v-2c0-1.657-1.343-3-3-3zM5 21V8m14 13V8M3 3h18" />
             </svg>
@@ -53,7 +53,7 @@ export default function MenuItemCard({ item }: { item: MenuItem }) {
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="font-outfit font-semibold text-[#022b3d] text-base leading-snug mb-1">
+        <h3 className="font-display font-semibold text-brand-dark text-base leading-snug mb-1">
           {item.name}
         </h3>
 
@@ -64,7 +64,7 @@ export default function MenuItemCard({ item }: { item: MenuItem }) {
         )}
 
         <div className="flex items-center justify-between mt-2">
-          <span className="font-outfit font-bold text-lg" style={{ color: '#1a9fd4' }}>
+          <span className="font-outfit font-bold text-lg text-brand-primary">
             {Number(item.price).toFixed(0)} LE
           </span>
 

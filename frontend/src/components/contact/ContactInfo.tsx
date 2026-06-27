@@ -7,7 +7,7 @@ const cards = [
     detail: '+20 11 16407080',
     sub: 'Available daily 9AM – 9PM',
     href: 'tel:+201116407080',
-    color: 'text-[#1a9fd4]',
+    color: 'text-brand-primary',
     bg: 'bg-sky-50',
   },
   {
@@ -34,7 +34,7 @@ const cards = [
     detail: 'Ras Sudr, South Sinai',
     sub: 'On the beach road, Ras Sudr',
     href: 'https://maps.app.goo.gl/2wMvsj449P4FDDRe8',
-    color: 'text-[#022b3d]',
+    color: 'text-brand-dark',
     bg: 'bg-slate-50',
   },
 ]
@@ -42,7 +42,7 @@ const cards = [
 export default function ContactInfo() {
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="font-outfit font-bold text-2xl text-[#022b3d] mb-2">
+      <h2 className="font-display font-bold text-2xl text-brand-dark mb-2">
         Contact Details
       </h2>
       {cards.map(({ icon: Icon, title, detail, sub, href, color, bg }) => (
@@ -57,8 +57,8 @@ export default function ContactInfo() {
             <Icon size={20} className={color} />
           </div>
           <div className="min-w-0">
-            <div className="font-semibold text-sm text-[#022b3d] group-hover:text-[#1a9fd4] transition-colors">{title}</div>
-            <div className="text-[#022b3d] font-medium text-sm truncate">{detail}</div>
+            <div className="font-semibold text-sm text-brand-dark group-hover:text-brand-primary transition-colors">{title}</div>
+            <div className="text-brand-dark font-medium text-sm truncate">{detail}</div>
             <div className="text-xs text-gray-400 mt-0.5">{sub}</div>
           </div>
         </a>
