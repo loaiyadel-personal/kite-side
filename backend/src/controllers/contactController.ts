@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, InquiryStatus } from '@prisma/client'
 import { sendContactConfirmation, sendAdminNotification, sendAdminReply } from '../services/email/emailService'
 import { z } from 'zod'
 
@@ -56,7 +56,7 @@ export async function submitContact(req: Request, res: Response) {
 
 export async function getSubmissions(req: Request, res: Response) {
   const { status, page = '1', limit = '20' } = req.query as Record<string, string>
-  const where = status ? { status: status as any } : {}
+  const where = status ? { status: status as InquiryStatus } : {}
   const [items, total] = await Promise.all([
     prisma.contactSubmission.findMany({
       where,

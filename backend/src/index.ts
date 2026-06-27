@@ -15,10 +15,11 @@ dotenv.config()
 const REQUIRED_ENV = ['DATABASE_URL', 'JWT_SECRET']
 const missingVars = REQUIRED_ENV.filter((k) => !process.env[k])
 if (missingVars.length > 0) {
-  console.error(`[startup] Missing required environment variables: ${missingVars.join(', ')}`)
+  process.stderr.write(`[startup] Missing required environment variables: ${missingVars.join(', ')}\n`)
   process.exit(1)
 }
 
+import logger from './utils/logger'
 import authRoutes from './routes/auth'
 import galleryRoutes from './routes/gallery'
 import menuRoutes from './routes/menu'
@@ -82,7 +83,7 @@ app.get('/api/health', (_req, res) => res.json({ status: 'ok', timestamp: new Da
 app.use(errorHandler)
 
 app.listen(PORT, () => {
-  console.log(`🪁 Kite Side API running on http://localhost:${PORT}`)
+  logger.info(`Kite Side API running on http://localhost:${PORT}`)
 })
 
 export default app

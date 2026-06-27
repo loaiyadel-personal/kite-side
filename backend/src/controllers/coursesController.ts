@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { z } from 'zod'
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient, Prisma, InquiryStatus } from '@prisma/client'
 import { AuthRequest } from '../middleware/auth'
 import { sendCourseInquiryNotification } from '../services/email/emailService'
 
@@ -136,7 +136,7 @@ export async function deleteCourse(req: AuthRequest, res: Response) {
 export async function getInquiries(req: AuthRequest, res: Response) {
   const status = req.query.status as string | undefined
   const inquiries = await prisma.courseInquiry.findMany({
-    where: status ? { status: status as any } : undefined,
+    where: status ? { status: status as InquiryStatus } : undefined,
     include: { course: { select: { name: true, level: true } } },
     orderBy: { createdAt: 'desc' },
   })
