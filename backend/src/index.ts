@@ -11,6 +11,14 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+// Fail fast if required environment variables are missing
+const REQUIRED_ENV = ['DATABASE_URL', 'JWT_SECRET']
+const missingVars = REQUIRED_ENV.filter((k) => !process.env[k])
+if (missingVars.length > 0) {
+  console.error(`[startup] Missing required environment variables: ${missingVars.join(', ')}`)
+  process.exit(1)
+}
+
 import authRoutes from './routes/auth'
 import galleryRoutes from './routes/gallery'
 import menuRoutes from './routes/menu'
@@ -27,6 +35,7 @@ const PORT = process.env.PORT || 4000
 
 const allowedOrigins = [
   'http://localhost:3000',
+  'http://localhost:3001',
   process.env.PRODUCTION_URL,
 ].filter(Boolean) as string[]
 

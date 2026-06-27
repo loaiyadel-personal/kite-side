@@ -49,7 +49,15 @@ export async function sendContactConfirmation(to: string, name: string) {
   })
 }
 
-export async function sendAdminNotification(submission: any) {
+interface ContactSubmissionData {
+  name: string
+  email: string
+  phone?: string | null
+  subject: string
+  message: string
+}
+
+export async function sendAdminNotification(submission: ContactSubmissionData) {
   await transporter.sendMail({
     from: FROM,
     to: process.env.ADMIN_EMAIL,
@@ -84,7 +92,7 @@ export async function sendAdminNotification(submission: any) {
             </tr>
           </table>
           <div style="margin-top:24px">
-            <a href="${process.env.ADMIN_URL || 'http://localhost:3000'}/admin/contact"
+            <a href="${process.env.ADMIN_URL}/admin/contact"
                style="display:inline-block;background:#1a9fd4;color:#fff;text-decoration:none;padding:10px 20px;border-radius:8px;font-weight:600;font-size:13px">
               View in admin panel →
             </a>
@@ -119,7 +127,7 @@ export async function sendCourseInquiryNotification(inquiry: {
           <tr><td style="padding:6px;font-weight:bold">How they heard</td><td>${inquiry.howHeard ? esc(inquiry.howHeard) : '—'}</td></tr>
           <tr><td style="padding:6px;font-weight:bold;vertical-align:top">Message</td><td>${inquiry.message ? esc(inquiry.message) : '—'}</td></tr>
         </table>
-        <p><a href="${process.env.ADMIN_URL || 'http://localhost:3000'}/admin/courses">View in admin panel →</a></p>
+        <p><a href="${process.env.ADMIN_URL}/admin/courses">View in admin panel →</a></p>
       </div>
     `,
   })

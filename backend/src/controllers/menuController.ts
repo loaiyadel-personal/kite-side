@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
   },
 })
 
-const fileFilter = (_req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+const fileFilter = (_req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const ext = path.extname(file.originalname).toLowerCase()
   if (ALLOWED_EXTS.includes(ext)) cb(null, true)
   else cb(new Error('Images only (jpg, jpeg, png, webp)'))
