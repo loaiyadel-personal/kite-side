@@ -96,6 +96,42 @@ export interface WindData {
   updatedAt: string
 }
 
+export interface CourseInput {
+  level: CourseLevel
+  name: string
+  description: string
+  outcome?: string
+  durationHours: number
+  maxStudents: number
+  priceEGP: number
+  priceUSD?: number
+  includes: string[]
+  isPublished?: boolean
+  sortOrder?: number
+}
+
+export interface PriceItemInput {
+  category: Exclude<PriceCategory, 'SHOP_ITEM'>
+  name: string
+  description?: string
+  priceEGP: number
+  priceUSD?: number
+  unit: string
+  isHighlighted?: boolean
+  sortOrder?: number
+}
+
+export interface CourseInquiryInput {
+  name: string
+  email: string
+  phone?: string
+  courseId?: string
+  level?: string
+  preferredDates?: string
+  howHeard?: string
+  message?: string
+}
+
 export interface AnalyticsDashboard {
   totalViews: number
   uniqueSessions: number

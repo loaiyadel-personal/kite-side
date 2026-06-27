@@ -1,5 +1,5 @@
 import api from './client'
-import type { ContactFormData } from '@/types'
+import type { ContactFormData, CourseInput, CourseInquiryInput, PriceItemInput } from '@/types'
 
 // ── Shop
 export const shopApi = {
@@ -59,11 +59,11 @@ export const menuApi = {
 // ── Courses
 export const coursesApi = {
   getAll: () => api.get('/courses'),
-  create: (data: any) => api.post('/courses', data),
-  update: (id: string, data: any) => api.put(`/courses/${id}`, data),
+  create: (data: CourseInput) => api.post('/courses', data),
+  update: (id: string, data: Partial<CourseInput>) => api.put(`/courses/${id}`, data),
   togglePublish: (id: string) => api.put(`/courses/${id}/publish`),
   delete: (id: string) => api.delete(`/courses/${id}`),
-  submitInquiry: (data: any) => api.post('/courses/inquiry', data),
+  submitInquiry: (data: CourseInquiryInput) => api.post('/courses/inquiry', data),
   getInquiries: (params?: { status?: string }) => api.get('/courses/inquiries', { params }),
   updateInquiryStatus: (id: string, status: string) =>
     api.put(`/courses/inquiries/${id}/status`, { status }),
@@ -73,8 +73,8 @@ export const coursesApi = {
 export const pricingApi = {
   getAll:  (category?: string) =>
     api.get('/pricing', { params: category ? { category } : undefined }),
-  create:  (data: any) => api.post('/pricing', data),
-  update:  (id: string, data: any) => api.put(`/pricing/${id}`, data),
+  create:  (data: PriceItemInput) => api.post('/pricing', data),
+  update:  (id: string, data: Partial<PriceItemInput>) => api.put(`/pricing/${id}`, data),
   toggle:  (id: string) => api.put(`/pricing/${id}/toggle`),
   delete:  (id: string) => api.delete(`/pricing/${id}`),
 }
