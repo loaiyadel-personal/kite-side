@@ -22,6 +22,9 @@ model AdminUser {
   lockedUntil         DateTime?
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
+
+  @@index([role])
+  @@index([isActive])
 }
 
 model SiteSettings {
@@ -44,16 +47,21 @@ enum AdminRole {
 // ── Gallery ───────────────────────────────────────────────────────────────────
 
 model GalleryItem {
-  id          String          @id @default(cuid())
-  type        GalleryItemType
-  url         String          // relative path or external URL
+  id           String          @id @default(cuid())
+  type         GalleryItemType
+  url          String
   thumbnailUrl String?
-  caption     String?
-  altText     String?
-  category    String?         // "kiting", "restaurant", "sunset", etc.
-  sortOrder   Int             @default(0)
-  isPublished Boolean         @default(true)
-  createdAt   DateTime        @default(now())
+  caption      String?
+  altText      String?
+  category     String?
+  sortOrder    Int             @default(0)
+  isPublished  Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([isPublished])
+  @@index([category])
+  @@index([type])
 }
 
 enum GalleryItemType {
@@ -68,24 +76,29 @@ model MenuCategory {
   name      String
   nameAr    String?
   sortOrder Int        @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   items     MenuItem[]
 }
 
 model MenuItem {
-  id           String       @id @default(cuid())
-  categoryId   String
-  category     MenuCategory @relation(fields: [categoryId], references: [id])
-  name         String
-  nameAr       String?
-  description  String?
+  id            String       @id @default(cuid())
+  categoryId    String
+  category      MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  name          String
+  nameAr        String?
+  description   String?
   descriptionAr String?
-  price        Decimal      @db.Decimal(8,2)
-  imageUrl     String?
-  tags         String[]     // ["vegan","seafood","spicy"]
-  isAvailable  Boolean      @default(true)
-  sortOrder    Int          @default(0)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  price         Decimal      @db.Decimal(8, 2)
+  imageUrl      String?
+  tags          String[]
+  isAvailable   Boolean      @default(true)
+  sortOrder     Int          @default(0)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([categoryId])
+  @@index([isAvailable])
 }
 
 // ── Courses ───────────────────────────────────────────────────────────────────
@@ -98,12 +111,17 @@ model Course {
   outcome       String?
   durationHours Int
   maxStudents   Int
-  priceEGP      Decimal         @db.Decimal(10,2)
-  priceUSD      Decimal?        @db.Decimal(8,2)
+  priceEGP      Decimal         @db.Decimal(10, 2)
+  priceUSD      Decimal?        @db.Decimal(8, 2)
   includes      String[]
   isPublished   Boolean         @default(true)
   sortOrder     Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   inquiries     CourseInquiry[]
+
+  @@index([isPublished])
+  @@index([level])
 }
 
 enum CourseLevel {
@@ -118,7 +136,7 @@ enum CourseLevel {
 model CourseInquiry {
   id             String        @id @default(cuid())
   courseId       String?
-  course         Course?       @relation(fields: [courseId], references: [id])
+  course         Course?       @relation(fields: [courseId], references: [id], onDelete: SetNull)
   name           String
   email          String
   phone          String?
@@ -128,6 +146,10 @@ model CourseInquiry {
   message        String?
   status         InquiryStatus @default(NEW)
   createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([courseId])
+  @@index([status])
 }
 
 // ── Rental & Beach Pricing ────────────────────────────────────────────────────
@@ -137,8 +159,8 @@ model PriceItem {
   category      PriceCategory
   name          String
   description   String?
-  priceEGP      Decimal       @db.Decimal(10,2)
-  priceUSD      Decimal?      @db.Decimal(8,2)
+  priceEGP      Decimal       @db.Decimal(10, 2)
+  priceUSD      Decimal?      @db.Decimal(8, 2)
   unit          String
   isActive      Boolean       @default(true)
   isHighlighted Boolean       @default(false)
@@ -146,7 +168,11 @@ model PriceItem {
   thumbnailUrl  String?
   tags          String[]
   sortOrder     Int           @default(0)
+  createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+
+  @@index([category])
+  @@index([isActive])
 }
 
 enum PriceCategory {
@@ -162,15 +188,18 @@ enum PriceCategory {
 // ── Contact ───────────────────────────────────────────────────────────────────
 
 model ContactSubmission {
-  id          String        @id @default(cuid())
-  name        String
-  email       String
-  phone       String?
-  subject     String
-  message     String
-  status      InquiryStatus @default(NEW)
-  repliedAt   DateTime?
-  createdAt   DateTime      @default(now())
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  status    InquiryStatus @default(NEW)
+  repliedAt DateTime?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status])
 }
 
 enum InquiryStatus {
@@ -187,11 +216,12 @@ model PageView {
   path       String
   referrer   String?
   userAgent  String?
-  deviceType String?  // "mobile", "tablet", "desktop"
+  deviceType String?
   country    String?
   sessionId  String?
   createdAt  DateTime @default(now())
 
   @@index([path])
   @@index([createdAt])
+  @@index([sessionId])
 }
