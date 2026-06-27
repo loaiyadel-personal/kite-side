@@ -10,15 +10,33 @@ datasource db {
 // ── Auth ──────────────────────────────────────────────────────────────────────
 
 model AdminUser {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String
-  role         AdminRole @default(EDITOR)
-  isActive     Boolean  @default(true)
-  lastLoginAt  DateTime?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                  String    @id @default(cuid())
+  username            String    @unique
+  email               String?
+  passwordHash        String
+  name                String
+  role                AdminRole @default(EDITOR)
+  isActive            Boolean   @default(true)
+  lastLoginAt         DateTime?
+  failedLoginAttempts Int       @default(0)
+  lockedUntil         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([role])
+  @@index([isActive])
+}
+
+model SiteSettings {
+  id            String   @id @default("main")
+  whatsapp      String   @default("+201116407080")
+  phone         String   @default("+201116407080")
+  email         String   @default("loaiy.adel@gmail.com")
+  address       String   @default("Ras Sudr, South Sinai, Egypt")
+  instagramUrl  String   @default("https://instagram.com/kite_side")
+  facebookUrl   String   @default("https://facebook.com/p/Kite-Side-100093408729310")
+  googleMapsUrl String   @default("")
+  updatedAt     DateTime @updatedAt
 }
 
 enum AdminRole {
@@ -29,16 +47,21 @@ enum AdminRole {
 // ── Gallery ───────────────────────────────────────────────────────────────────
 
 model GalleryItem {
-  id          String          @id @default(cuid())
-  type        GalleryItemType
-  url         String          // relative path or external URL
+  id           String          @id @default(cuid())
+  type         GalleryItemType
+  url          String
   thumbnailUrl String?
-  caption     String?
-  altText     String?
-  category    String?         // "kiting", "restaurant", "sunset", etc.
-  sortOrder   Int             @default(0)
-  isPublished Boolean         @default(true)
-  createdAt   DateTime        @default(now())
+  caption      String?
+  altText      String?
+  category     String?
+  sortOrder    Int             @default(0)
+  isPublished  Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([isPublished])
+  @@index([category])
+  @@index([type])
 }
 
 enum GalleryItemType {
@@ -53,41 +76,52 @@ model MenuCategory {
   name      String
   nameAr    String?
   sortOrder Int        @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   items     MenuItem[]
 }
 
 model MenuItem {
-  id           String       @id @default(cuid())
-  categoryId   String
-  category     MenuCategory @relation(fields: [categoryId], references: [id])
-  name         String
-  nameAr       String?
-  description  String?
+  id            String       @id @default(cuid())
+  categoryId    String
+  category      MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  name          String
+  nameAr        String?
+  description   String?
   descriptionAr String?
-  price        Decimal      @db.Decimal(8,2)
-  imageUrl     String?
-  tags         String[]     // ["vegan","seafood","spicy"]
-  isAvailable  Boolean      @default(true)
-  sortOrder    Int          @default(0)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  price         Decimal      @db.Decimal(8, 2)
+  imageUrl      String?
+  tags          String[]
+  isAvailable   Boolean      @default(true)
+  sortOrder     Int          @default(0)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([categoryId])
+  @@index([isAvailable])
 }
 
 // ── Courses ───────────────────────────────────────────────────────────────────
 
 model Course {
-  id           String       @id @default(cuid())
-  level        CourseLevel
-  name         String
-  description  String
+  id            String          @id @default(cuid())
+  level         CourseLevel
+  name          String
+  description   String
+  outcome       String?
   durationHours Int
-  maxStudents  Int
-  priceEGP     Decimal      @db.Decimal(10,2)
-  priceUSD     Decimal?     @db.Decimal(8,2)
-  includes     String[]     // ["kite","board","harness","theory book"]
-  isPublished  Boolean      @default(true)
-  sortOrder    Int          @default(0)
-  inquiries    CourseInquiry[]
+  maxStudents   Int
+  priceEGP      Decimal         @db.Decimal(10, 2)
+  priceUSD      Decimal?        @db.Decimal(8, 2)
+  includes      String[]
+  isPublished   Boolean         @default(true)
+  sortOrder     Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  inquiries     CourseInquiry[]
+
+  @@index([isPublished])
+  @@index([level])
 }
 
 enum CourseLevel {
@@ -100,32 +134,45 @@ enum CourseLevel {
 }
 
 model CourseInquiry {
-  id          String        @id @default(cuid())
-  courseId    String?
-  course      Course?       @relation(fields: [courseId], references: [id])
-  name        String
-  email       String
-  phone       String?
-  level       String?
+  id             String        @id @default(cuid())
+  courseId       String?
+  course         Course?       @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  name           String
+  email          String
+  phone          String?
+  level          String?
   preferredDates String?
-  message     String?
-  status      InquiryStatus @default(NEW)
-  createdAt   DateTime      @default(now())
+  howHeard       String?
+  message        String?
+  status         InquiryStatus @default(NEW)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([courseId])
+  @@index([status])
 }
 
 // ── Rental & Beach Pricing ────────────────────────────────────────────────────
 
 model PriceItem {
-  id          String        @id @default(cuid())
-  category    PriceCategory
-  name        String
-  description String?
-  priceEGP    Decimal       @db.Decimal(10,2)
-  priceUSD    Decimal?      @db.Decimal(8,2)
-  unit        String        // "per hour", "per day", "per session", "flat"
-  isActive    Boolean       @default(true)
-  sortOrder   Int           @default(0)
-  updatedAt   DateTime      @updatedAt
+  id            String        @id @default(cuid())
+  category      PriceCategory
+  name          String
+  description   String?
+  priceEGP      Decimal       @db.Decimal(10, 2)
+  priceUSD      Decimal?      @db.Decimal(8, 2)
+  unit          String
+  isActive      Boolean       @default(true)
+  isHighlighted Boolean       @default(false)
+  imageUrl      String?
+  thumbnailUrl  String?
+  tags          String[]
+  sortOrder     Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([category])
+  @@index([isActive])
 }
 
 enum PriceCategory {
@@ -141,15 +188,18 @@ enum PriceCategory {
 // ── Contact ───────────────────────────────────────────────────────────────────
 
 model ContactSubmission {
-  id          String        @id @default(cuid())
-  name        String
-  email       String
-  phone       String?
-  subject     String
-  message     String
-  status      InquiryStatus @default(NEW)
-  repliedAt   DateTime?
-  createdAt   DateTime      @default(now())
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  status    InquiryStatus @default(NEW)
+  repliedAt DateTime?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status])
 }
 
 enum InquiryStatus {
@@ -166,11 +216,12 @@ model PageView {
   path       String
   referrer   String?
   userAgent  String?
-  deviceType String?  // "mobile", "tablet", "desktop"
+  deviceType String?
   country    String?
   sessionId  String?
   createdAt  DateTime @default(now())
 
   @@index([path])
   @@index([createdAt])
+  @@index([sessionId])
 }

@@ -1,11 +1,24 @@
 import { Router } from 'express'
 import { requireAuth } from '../middleware/auth'
-// TODO: import controllers
+import {
+  getCourses, getCourse, submitInquiry,
+  createCourse, updateCourse, togglePublish, deleteCourse,
+  getInquiries, updateInquiryStatus,
+} from '../controllers/coursesController'
+
 const router = Router()
-// Public read routes
-router.get('/', (_req, res) => res.json({ message: 'courses route — implement controllers' }))
-// Protected write routes
-router.post('/', requireAuth, (_req, res) => res.json({ message: 'create courses' }))
-router.put('/:id', requireAuth, (_req, res) => res.json({ message: 'update courses' }))
-router.delete('/:id', requireAuth, (_req, res) => res.json({ message: 'delete courses' }))
+
+// Public
+router.get('/', getCourses)
+router.get('/inquiries', requireAuth, getInquiries)
+router.get('/:id', getCourse)
+router.post('/inquiry', submitInquiry)
+
+// Admin
+router.post('/', requireAuth, createCourse)
+router.put('/:id', requireAuth, updateCourse)
+router.put('/:id/publish', requireAuth, togglePublish)
+router.put('/inquiries/:id/status', requireAuth, updateInquiryStatus)
+router.delete('/:id', requireAuth, deleteCourse)
+
 export default router

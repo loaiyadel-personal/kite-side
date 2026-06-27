@@ -1,11 +1,24 @@
 import { Router } from 'express'
-import { requireAuth } from '../middleware/auth'
-// TODO: import controllers
+import { requireAuth, requireSuperAdmin } from '../middleware/auth'
+import {
+  getUsers, createUser, updateUser, resetUserPassword, deleteUser,
+  getSettings, updateSettings,
+} from '../controllers/adminController'
+
 const router = Router()
-// Public read routes
-router.get('/', (_req, res) => res.json({ message: 'admin route — implement controllers' }))
-// Protected write routes
-router.post('/', requireAuth, (_req, res) => res.json({ message: 'create admin' }))
-router.put('/:id', requireAuth, (_req, res) => res.json({ message: 'update admin' }))
-router.delete('/:id', requireAuth, (_req, res) => res.json({ message: 'delete admin' }))
+
+// All admin routes require auth
+router.use(requireAuth)
+
+// Settings — read any admin, write SUPER_ADMIN only
+router.get('/settings', getSettings)
+router.put('/settings', requireSuperAdmin, updateSettings)
+
+// User management — SUPER_ADMIN only
+router.get('/users',                      requireSuperAdmin, getUsers)
+router.post('/users',                     requireSuperAdmin, createUser)
+router.put('/users/:id',                  requireSuperAdmin, updateUser)
+router.put('/users/:id/reset-password',   requireSuperAdmin, resetUserPassword)
+router.delete('/users/:id',               requireSuperAdmin, deleteUser)
+
 export default router

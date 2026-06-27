@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Core brand tokens (from logo) */
+  --color-brand-primary: #5AACBC;
+  --color-brand-deep: #2B6070;
+  --color-brand-dark: #022b3d;
+  --color-brand-accent: #e4c97a;
+  --color-brand-surface: #EEF7F9;
+
+  /* Legacy aliases kept for existing component usage */
+  --color-ocean: #0a6d96;
+  --color-sand: #e4c97a;
+  --color-navy: #022b3d;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-inter), sans-serif;
+  line-height: 1.6;
+}
+
+.font-outfit {
+  font-family: var(--font-outfit), sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+/* Respect reduced-motion preference for all Framer Motion and CSS animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Smooth focus rings */
+:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Cursor pointer on interactive elements */
+button, [role="button"], a {
+  cursor: pointer;
+}
+
+/* Float keyframe for decorative elements */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* Brand gradient text utility */
+@layer utilities {
+  .text-brand-gradient {
+    background: linear-gradient(135deg, #7dd3e8, #5AACBC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-hero-gradient {
+    background: linear-gradient(135deg, #a8e6f0 0%, #5AACBC 50%, #2B6070 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-float-slow {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .section-dark {
+    background-color: var(--color-brand-dark);
+  }
+
+  .glass-card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.10);
+  }
+
+  .glass-card-light {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(90,172,188,0.15);
+  }
+}
