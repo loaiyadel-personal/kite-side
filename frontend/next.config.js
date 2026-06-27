@@ -66,6 +66,8 @@ const nextConfig = {
     ],
   },
   async headers() {
+    // Skip security headers in development — CSP blocks webpack eval/HMR
+    if (process.env.NODE_ENV !== 'production') return []
     return [
       {
         source: '/(.*)',
