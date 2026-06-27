@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import Image from 'next/image'
 import { useAdminAuth } from '@/lib/auth/AdminAuthContext'
 import PageHeader from '@/components/admin/ui/PageHeader'
 import Modal from '@/components/admin/ui/Modal'
@@ -156,7 +157,7 @@ export default function GalleryPage() {
         + Video
       </button>
       <button onClick={() => setAddPhotoOpen(true)}
-        className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg transition-colors">
+        className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg transition-colors">
         + Upload Photo
       </button>
     </div>
@@ -168,7 +169,7 @@ export default function GalleryPage() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <div className="w-6 h-6 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" />
         </div>
       ) : items.length === 0 ? (
         <EmptyState icon="🖼️" title="No gallery items" message="Upload your first photo or video" />
@@ -178,7 +179,7 @@ export default function GalleryPage() {
             <div key={item.id} className="bg-[#1e293b] border border-white/10 rounded-xl overflow-hidden group">
               <div className="aspect-square bg-white/5 relative">
                 {item.thumbnailUrl || item.url ? (
-                  <img src={item.thumbnailUrl ?? item.url} alt={item.title ?? ''} className="w-full h-full object-cover" />
+                  <Image src={item.thumbnailUrl ?? item.url} alt={item.title ?? ''} fill className="object-cover" unoptimized />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-3xl opacity-30">
                     {item.type === 'VIDEO' ? '🎬' : '🖼️'}
@@ -203,12 +204,12 @@ export default function GalleryPage() {
       <Modal open={addPhotoOpen} onClose={() => { setAddPhotoOpen(false); setImageFile(null); photoForm.reset() }} title="Upload Photo">
         <form onSubmit={photoForm.handleSubmit(submitPhoto)} className="space-y-4">
           <ImageUpload label="Photo *" onChange={setImageFile} aspectRatio="16/9" />
-          <input {...photoForm.register('title')} placeholder="Title (optional)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
-          <input {...photoForm.register('category')} placeholder="Category (e.g. kitesurfing)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
-          <textarea {...photoForm.register('caption')} placeholder="Caption (optional)" rows={2} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20 resize-none" />
+          <input {...photoForm.register('title')} placeholder="Title (optional)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
+          <input {...photoForm.register('category')} placeholder="Category (e.g. kitesurfing)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
+          <textarea {...photoForm.register('caption')} placeholder="Caption (optional)" rows={2} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20 resize-none" />
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={() => setAddPhotoOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
-            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
               {saving ? 'Uploading…' : 'Upload'}
             </button>
           </div>
@@ -219,18 +220,18 @@ export default function GalleryPage() {
       <Modal open={addVideoOpen} onClose={() => { setAddVideoOpen(false); videoForm.reset() }} title="Add Video">
         <form onSubmit={videoForm.handleSubmit(submitVideo)} className="space-y-4">
           <div>
-            <input {...videoForm.register('title')} placeholder="Title *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+            <input {...videoForm.register('title')} placeholder="Title *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
             {videoForm.formState.errors.title && <p className="text-red-400 text-xs mt-1">{videoForm.formState.errors.title.message}</p>}
           </div>
           <div>
-            <input {...videoForm.register('url')} placeholder="Video URL (YouTube/Vimeo) *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+            <input {...videoForm.register('url')} placeholder="Video URL (YouTube/Vimeo) *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
             {videoForm.formState.errors.url && <p className="text-red-400 text-xs mt-1">{videoForm.formState.errors.url.message}</p>}
           </div>
-          <input {...videoForm.register('category')} placeholder="Category" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
-          <textarea {...videoForm.register('caption')} placeholder="Caption" rows={2} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20 resize-none" />
+          <input {...videoForm.register('category')} placeholder="Category" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
+          <textarea {...videoForm.register('caption')} placeholder="Caption" rows={2} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20 resize-none" />
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={() => setAddVideoOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
-            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
               {saving ? 'Adding…' : 'Add Video'}
             </button>
           </div>

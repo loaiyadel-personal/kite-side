@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import Image from 'next/image'
 import { useAdminAuth } from '@/lib/auth/AdminAuthContext'
 import PageHeader from '@/components/admin/ui/PageHeader'
 import Modal from '@/components/admin/ui/Modal'
@@ -223,7 +224,7 @@ export default function MenuPage() {
   }
 
   const visible = activeCategory ? items.filter(i => i.categoryId === activeCategory) : items
-  const inputCls = 'w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20'
+  const inputCls = 'w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20'
 
   return (
     <div>
@@ -235,7 +236,7 @@ export default function MenuPage() {
             <button onClick={openAddCat} className="px-4 py-2 text-sm border border-white/10 hover:border-white/20 text-white/60 hover:text-white rounded-lg transition-colors">
               + Category
             </button>
-            <button onClick={openAddItem} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg transition-colors">
+            <button onClick={openAddItem} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg transition-colors">
               + Add Item
             </button>
           </div>
@@ -248,7 +249,7 @@ export default function MenuPage() {
           {categories.map(c => (
             <div key={c.id} className={`group flex items-center gap-1 rounded-lg text-sm transition-colors ${
               activeCategory === c.id
-                ? 'bg-[#1a9fd4] text-white'
+                ? 'bg-brand-primary text-white'
                 : 'bg-[#1e293b] border border-white/10 text-white/50 hover:text-white/80'
             }`}>
               <button
@@ -276,7 +277,7 @@ export default function MenuPage() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <div className="w-6 h-6 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" />
         </div>
       ) : visible.length === 0 ? (
         <EmptyState icon="🍽️" title="No items" message="Add items to this category" />
@@ -285,7 +286,7 @@ export default function MenuPage() {
           {visible.map(item => (
             <div key={item.id} className="bg-[#1e293b] border border-white/10 rounded-xl p-4 flex items-center gap-4">
               {item.imageUrl && (
-                <img src={item.imageUrl} alt={item.name} className="w-14 h-14 object-cover rounded-lg flex-none" />
+                <Image src={item.imageUrl} alt={item.name} width={56} height={56} className="object-cover rounded-lg flex-none" unoptimized />
               )}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
@@ -293,7 +294,7 @@ export default function MenuPage() {
                   {item.nameAr && <p className="text-white/40 text-sm truncate">{item.nameAr}</p>}
                 </div>
                 {item.description && <p className="text-white/40 text-xs truncate mt-0.5">{item.description}</p>}
-                <p className="text-[#1a9fd4] font-semibold text-sm mt-1">
+                <p className="text-brand-primary font-semibold text-sm mt-1">
                   EGP {Number(item.price).toLocaleString()}
                 </p>
               </div>
@@ -329,7 +330,7 @@ export default function MenuPage() {
               {itemForm.formState.errors.price && <p className="text-red-400 text-xs mt-1">{itemForm.formState.errors.price.message}</p>}
             </div>
             <div>
-              <select {...itemForm.register('categoryId')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors">
+              <select {...itemForm.register('categoryId')} className="w-full bg-[#0f172a] border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors">
                 <option value="">Select category</option>
                 {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
@@ -338,7 +339,7 @@ export default function MenuPage() {
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={() => setItemModalOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
-            <button type="submit" disabled={savingItem} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+            <button type="submit" disabled={savingItem} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
               {savingItem ? 'Saving…' : editItem ? 'Update' : 'Create'}
             </button>
           </div>
@@ -360,7 +361,7 @@ export default function MenuPage() {
           <input {...catForm.register('nameAr')} placeholder="Arabic name (optional)" className={inputCls} />
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={() => setCatModalOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
-            <button type="submit" disabled={savingCat} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+            <button type="submit" disabled={savingCat} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
               {savingCat ? 'Saving…' : editCat ? 'Rename' : 'Create'}
             </button>
           </div>

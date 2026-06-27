@@ -74,10 +74,15 @@ const nextConfig = {
     ]
   },
   async rewrites() {
+    const backendBase = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api').replace(/\/api$/, '')
     return [
       {
         source: '/api/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'}/:path*`,
+        destination: `${backendBase}/api/:path*`,
+      },
+      {
+        source: '/uploads/:path*',
+        destination: `${backendBase}/uploads/:path*`,
       },
     ]
   },

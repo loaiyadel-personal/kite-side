@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import Image from 'next/image'
 import { useAdminAuth } from '@/lib/auth/AdminAuthContext'
 import PageHeader from '@/components/admin/ui/PageHeader'
 import Modal from '@/components/admin/ui/Modal'
@@ -136,7 +137,7 @@ export default function ShopPage() {
     <div>
       <PageHeader title="Shop" subtitle={`${items.length} products`}
         action={
-          <button onClick={openAdd} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg transition-colors">
+          <button onClick={openAdd} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg transition-colors">
             + Add Product
           </button>
         }
@@ -144,7 +145,7 @@ export default function ShopPage() {
 
       {loading ? (
         <div className="flex justify-center py-20">
-          <div className="w-6 h-6 border-2 border-[#1a9fd4] border-t-transparent rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin" />
         </div>
       ) : items.length === 0 ? (
         <EmptyState icon="🏪" title="No products yet" message="Add your first shop item" />
@@ -152,16 +153,16 @@ export default function ShopPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {items.map(item => (
             <div key={item.id} className={`bg-[#1e293b] border rounded-xl overflow-hidden ${item.isActive ? 'border-white/10' : 'border-white/5 opacity-60'}`}>
-              <div className="aspect-square bg-white/5">
+              <div className="aspect-square bg-white/5 relative">
                 {item.thumbnailUrl || item.imageUrl ? (
-                  <img src={item.thumbnailUrl ?? item.imageUrl!} alt={item.name} className="w-full h-full object-cover" />
+                  <Image src={item.thumbnailUrl ?? item.imageUrl!} alt={item.name} fill className="object-cover" unoptimized />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-3xl opacity-30">🛍️</div>
                 )}
               </div>
               <div className="p-3">
                 <p className="text-white/80 text-sm font-medium truncate mb-0.5">{item.name}</p>
-                <p className="text-[#1a9fd4] text-sm font-semibold">
+                <p className="text-brand-primary text-sm font-semibold">
                   EGP {Number(item.priceEGP).toLocaleString()}
                   {item.priceUSD && <span className="text-white/30 font-normal"> / ${Number(item.priceUSD)}</span>}
                 </p>
@@ -190,23 +191,23 @@ export default function ShopPage() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <ImageUpload label="Product Image" value={editing?.imageUrl ?? undefined} onChange={setImageFile} aspectRatio="1/1" />
           <div>
-            <input {...form.register('name')} placeholder="Product name *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+            <input {...form.register('name')} placeholder="Product name *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
             {form.formState.errors.name && <p className="text-red-400 text-xs mt-1">{form.formState.errors.name.message}</p>}
           </div>
-          <textarea {...form.register('description')} placeholder="Description" rows={2} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20 resize-none" />
+          <textarea {...form.register('description')} placeholder="Description" rows={2} className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20 resize-none" />
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <input {...form.register('priceEGP')} type="number" placeholder="Price EGP *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+              <input {...form.register('priceEGP')} type="number" placeholder="Price EGP *" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
               {form.formState.errors.priceEGP && <p className="text-red-400 text-xs mt-1">{form.formState.errors.priceEGP.message}</p>}
             </div>
             <div>
-              <input {...form.register('priceUSD')} type="number" placeholder="Price USD (optional)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+              <input {...form.register('priceUSD')} type="number" placeholder="Price USD (optional)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
             </div>
           </div>
-          <input {...form.register('tags')} placeholder="Tags (comma-separated: kites, boards)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#1a9fd4]/60 transition-colors placeholder-white/20" />
+          <input {...form.register('tags')} placeholder="Tags (comma-separated: kites, boards)" className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-brand-primary/60 transition-colors placeholder-white/20" />
           <div className="flex justify-end gap-3 pt-2">
             <button type="button" onClick={() => setModalOpen(false)} className="px-4 py-2 text-sm text-white/50 hover:text-white border border-white/10 rounded-lg transition-colors">Cancel</button>
-            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-[#1a9fd4] hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
+            <button type="submit" disabled={saving} className="px-4 py-2 text-sm bg-brand-primary hover:bg-[#158bbf] text-white rounded-lg disabled:opacity-50 transition-colors">
               {saving ? 'Saving…' : editing ? 'Update' : 'Create'}
             </button>
           </div>
